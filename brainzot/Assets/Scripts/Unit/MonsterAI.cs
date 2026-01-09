@@ -2,6 +2,8 @@
 
 public class MonsterAI : MonoBehaviour
 {
+    public float laneTolerance = 0.2f;   // sai lệch Y cho phép (cùng lane)
+    public float xTolerance = 0.5f;      // sai lệch X cho phép (đứng ngang)
     public MonsterHealth monsterHealth;
     public LayerMask enemyLayer;
 
@@ -12,6 +14,12 @@ public class MonsterAI : MonoBehaviour
     private float attackTimer;
     private Rigidbody2D rb;
     private Transform currentTarget;
+    public GameObject projectile;
+
+    public float overlapCheckRadius = 0.3f;
+    public float ySpacing = 0.25f;
+    public LayerMask unitLayer;
+    public Transform visualRoot; // kéo child Visual vào đây
 
     void Awake()
     {
@@ -36,33 +44,57 @@ public class MonsterAI : MonoBehaviour
         {
             HandleRanged();
         }
+        HandleVerticalOffset();
     }
     void HandleMelee()
     {
         if (currentTarget == null) return;
+
         Vector2 myPos = transform.position;
         Vector2 targetPos = currentTarget.position;
-        float laneTolerance = 0.2f;   // sai lệch Y cho phép (cùng lane)
-        // Xác định hướng (giả sử team bạn đứng bên trái, enemy bên phải)
-        float direction = targetPos.x > myPos.x ? -1f : 1f;
-        // Vị trí chuẩn cần đứng để đánh
+
+        float attackRange = monsterHealth.stats.attackRange;
+        float moveSpeed = monsterHealth.stats.moveSpeed;
+
+        // Xác định hướng: enemy bên phải thì mình đứng bên trái và ngược lại
+        float sideDir = targetPos.x > myPos.x ? -1f : 1f;
+
+        // Vị trí chuẩn để đứng đánh
         Vector2 desiredPos = new Vector2(
-            targetPos.x + direction * 1f,
+            targetPos.x + sideDir * attackRange,
             targetPos.y
         );
-        // Clamp để đảm bảo không ra ngoài grid
+
         desiredPos = GridManager.Instance.ClampToGrid(desiredPos);
+
+        float distanceX = Mathf.Abs(myPos.x - targetPos.x);
         bool sameLane = Mathf.Abs(myPos.y - targetPos.y) <= laneTolerance;
-        bool correctX = Mathf.Abs(myPos.x - desiredPos.x) <= monsterHealth.stats.attackRange;
-        // Nếu chưa đúng lane hoặc chưa đúng X -> chạy chéo tới vị trí chuẩn
-        if (!sameLane || !correctX)
+
+        // ====== CASE 1: KHÔNG CÙNG LANE -> CHẠY CHÉO TỚI ======
+        if (!sameLane)
         {
-            Vector2 moveDir = (desiredPos - myPos).normalized;
-            rb.linearVelocity = moveDir * monsterHealth.stats.moveSpeed;
+            MoveTo(desiredPos, moveSpeed);
             return;
         }
-        // Đã đúng lane + đúng X -> đứng yên và đánh
+
+        // ====== CASE 2: QUÁ XA -> TIẾN LẠI ======
+        if (distanceX > attackRange + xTolerance)
+        {
+            MoveTo(desiredPos, moveSpeed);
+            return;
+        }
+
+        // ====== CASE 3: QUÁ GẦN -> LÙI RA ======
+        if (distanceX < attackRange - xTolerance)
+        {
+            Vector2 backDir = (myPos - targetPos).normalized;
+            rb.linearVelocity = backDir * moveSpeed;
+            return;
+        }
+
+        // ====== CASE 4: ĐÚNG KHOẢNG CÁCH -> ĐÁNH ======
         rb.linearVelocity = Vector2.zero;
+
         attackTimer -= Time.deltaTime;
         if (attackTimer <= 0f)
         {
@@ -70,6 +102,13 @@ public class MonsterAI : MonoBehaviour
             attackTimer = monsterHealth.stats.attackSpeed;
         }
     }
+
+    void MoveTo(Vector2 targetPos, float speed)
+    {
+        Vector2 dir = (targetPos - (Vector2)transform.position).normalized;
+        rb.linearVelocity = dir * speed;
+    }
+
 
     void HandleRanged()
     {
@@ -97,6 +136,35 @@ public class MonsterAI : MonoBehaviour
         }
         currentTarget = nearest;
     }
+    void HandleVerticalOffset()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, overlapCheckRadius, unitLayer);
+
+        float targetOffset = 0f;
+
+        if (hits.Length > 1)
+        {
+            System.Array.Sort(hits, (a, b) => a.GetInstanceID().CompareTo(b.GetInstanceID()));
+
+            int index = 0;
+            for (int i = 0; i < hits.Length; i++)
+            {
+                if (hits[i].gameObject == gameObject)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            float center = (hits.Length - 1) / 2f;
+            targetOffset = (index - center) * ySpacing;
+        }
+
+        // Lệch Y CHỈ ở visual, không đụng Rigidbody
+        Vector3 localPos = visualRoot.localPosition;
+        localPos.y = Mathf.Lerp(localPos.y, targetOffset, Time.deltaTime * 10f);
+        visualRoot.localPosition = localPos;
+    }
     void AttackMelee()
     {
         if (currentTarget == null) return;
@@ -113,8 +181,10 @@ public class MonsterAI : MonoBehaviour
 
     void Shoot()
     {
-        if (currentTarget == null) return;
+        if (currentTarget == null || projectile != null) return;
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
+        projectile = proj;
+        proj.GetComponent<Projectile>().enemy = currentTarget.gameObject;
         Vector2 dir = (currentTarget.position - attackPoint.position).normalized;
         proj.GetComponent<Rigidbody2D>().AddForce(dir * projectileForce, ForceMode2D.Impulse);
     }

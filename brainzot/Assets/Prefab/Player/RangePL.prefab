@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3355580138558990665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4185664463812087801}
+  m_Layer: 7
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4185664463812087801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3355580138558990665}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.9629999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6267916871649445724}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5926182648542500382
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HPBar
-  fill: {fileID: 9054868953577879451}
+  fill: {fileID: 1848856770379285704}
 --- !u!1 &7973801137191716203
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,8 +162,8 @@ Transform:
   m_GameObject: {fileID: 7973801137191716203}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0129874, y: 8.65714, z: 0}
-  m_LocalScale: {x: 1.3945493, y: 0.18936059, z: 1.0366876}
+  m_LocalPosition: {x: 0.03, y: 0.73, z: 0}
+  m_LocalScale: {x: 0.5292816, y: 0.06970219, z: 0.48735}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1848856770379285704}
@@ -214,7 +245,7 @@ GameObject:
   - component: {fileID: 8096694240590309180}
   m_Layer: 6
   m_Name: RangePL
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,6 +264,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5079203527850533403}
+  - {fileID: 4185664463812087801}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7127517159774211878
@@ -306,14 +338,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
-  stopThreshold: 0.05
+  laneTolerance: 0.2
+  xTolerance: 0.1
   monsterHealth: {fileID: 3463350441921700269}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   attackPoint: {fileID: 6267916871649445724}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
   projectileForce: 10
+  projectile: {fileID: 0}
+  overlapCheckRadius: 0.3
+  ySpacing: 0.1
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  visualRoot: {fileID: 1848856770379285704}
 --- !u!114 &3463350441921700269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,14 +374,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   stats:
     type: 1
+    level: 0
     maxHP: 100
     currentHP: 100
     attackDamage: 5
     attackSpeed: 1
     attackRange: 5
     moveSpeed: 0
-    level: 0
   hpBar: {fileID: 8350215555379370174}
+  damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
+  textSpawnPoint: {fileID: 4185664463812087801}
+  damageInSecond: 0
+  timeShowDameTxt: 1
 --- !u!61 &4680543719672247251
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -372,7 +416,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

@@ -15,16 +15,21 @@ public class BattleManager : MonoBehaviour
     }
     void Update()
     {
-        CheckBattleEnd();
+        if(startPvP) CheckBattleEnd();
     }
     void CheckBattleEnd()
     {
         playerTeam.RemoveAll(m => m == null);
         enemyTeam.RemoveAll(m => m == null);
         if (playerTeam.Count == 0)
+        {
             Debug.Log("Enemy Win");
-        else if (enemyTeam.Count == 0)
+            Time.timeScale = 0f;
+        } else if (enemyTeam.Count == 0)
+        {
             Debug.Log("Player Win");
+            Time.timeScale = 0f;
+        }
     }
     public void StartBattle()
     {

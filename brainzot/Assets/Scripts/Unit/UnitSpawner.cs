@@ -23,7 +23,6 @@ public class UnitSpawner : MonoBehaviour
                 {
                     GameObject unitObj = Instantiate(rangeUnitPrefab);
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
-
                     grid.Place(unit, x, y);
                     battleManager.playerTeam.Add(unitObj);
                     return;
@@ -46,7 +45,6 @@ public class UnitSpawner : MonoBehaviour
                 {
                     GameObject unitObj = Instantiate(meleeUnitPrefab);
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
-
                     grid.Place(unit, x, y);
                     battleManager.playerTeam.Add(unitObj);
                     return;

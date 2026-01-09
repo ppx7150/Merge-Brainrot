@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class MonsterHealth : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class MonsterHealth : MonoBehaviour
     public UnitVisualData[] visuals;
     public MonsterStats stats;
     public HPBar hpBar;
+    public GameObject damageTextPrefab;
+    public Transform textSpawnPoint;
+    public float damageInSecond=0;
+    public float timeShowDameTxt = 1f;
     void Awake()
     {
         stats.currentHP = stats.maxHP;
@@ -17,16 +22,32 @@ public class MonsterHealth : MonoBehaviour
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         UpdateVisual();
     }
+    private void Update()
+    {
+        if(timeShowDameTxt > 0) timeShowDameTxt -= Time.deltaTime;
+    }
     public void TakeDamage(float dmg)
     {
+        damageInSecond += dmg;
         stats.currentHP -= dmg;
         stats.currentHP = Mathf.Clamp(stats.currentHP, 0, stats.maxHP);
         if (hpBar != null)
             hpBar.SetHP(stats.currentHP / stats.maxHP);
         if (stats.currentHP <= 0)
             Die();
+        if (timeShowDameTxt <= 0)
+        {
+            ShowDamage(damageInSecond);
+        }
     }
-
+    void ShowDamage(float damage)
+    {
+        GameObject textObj = Instantiate(damageTextPrefab, textSpawnPoint.position, Quaternion.identity, textSpawnPoint);
+        DamageText dmgText = textObj.GetComponent<DamageText>();
+        dmgText.SetText(damage.ToString());
+        timeShowDameTxt = 1f;
+        damageInSecond = 0f;
+    }
     void Die()
     {
         Destroy(gameObject);

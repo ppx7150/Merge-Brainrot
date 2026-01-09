@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3250183020075200565}
   m_Layer: 6
   m_Name: MeleePL
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,6 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2950313533504591076}
+  - {fileID: 2163977473109316960}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1768595689794443955
@@ -109,6 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
+  laneTolerance: 0.2
+  xTolerance: 0.25
   monsterHealth: {fileID: 4826705724963595282}
   enemyLayer:
     serializedVersion: 2
@@ -116,6 +119,13 @@ MonoBehaviour:
   attackPoint: {fileID: 6183945271208750086}
   projectilePrefab: {fileID: 0}
   projectileForce: 0
+  projectile: {fileID: 0}
+  overlapCheckRadius: 0.3
+  ySpacing: 0.1
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  visualRoot: {fileID: 3643821676943472628}
 --- !u!114 &4826705724963595282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,9 +149,13 @@ MonoBehaviour:
     currentHP: 100
     attackDamage: 5
     attackSpeed: 1
-    attackRange: 0.001
+    attackRange: 0.8
     moveSpeed: 1
   hpBar: {fileID: 1939455055191878246}
+  damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
+  textSpawnPoint: {fileID: 2163977473109316960}
+  damageInSecond: 0
+  timeShowDameTxt: 1
 --- !u!114 &5568918496463615813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +198,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -227,6 +241,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &6961742265410148596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2163977473109316960}
+  m_Layer: 7
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2163977473109316960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961742265410148596}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.138, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6183945271208750086}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7193347732467448204
 GameObject:
   m_ObjectHideFlags: 0

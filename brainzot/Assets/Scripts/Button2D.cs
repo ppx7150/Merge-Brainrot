@@ -4,7 +4,11 @@ public enum ButtonType
 {
     SpawnMelee,
     SpawnRange,
-    Battle
+    Battle,
+    Summon,
+    Setting,
+    Collection,
+    DailyReward
 }
 public class Button2D : MonoBehaviour, IPointerClickHandler
 {
@@ -22,6 +26,18 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 break;
             case ButtonType.Battle:
                 BattleManager.Instance.StartBattle();
+                break;
+            case ButtonType.DailyReward:
+                PanelManager.Instance.showDailyRewardPanel();
+                break;
+            case ButtonType.Collection:
+                PanelManager.Instance.showCollectionPanel();
+                break;
+            case ButtonType.Setting:
+                PanelManager.Instance.showSettingPanel();
+                break;
+            case ButtonType.Summon:
+                PanelManager.Instance.showSummonPanel();
                 break;
         }
 

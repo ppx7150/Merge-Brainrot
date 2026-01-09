@@ -33,6 +33,8 @@ public class BattleManager : MonoBehaviour
     }
     public void StartBattle()
     {
+        playerTeam.RemoveAll(m => m == null);
+        enemyTeam.RemoveAll(m => m == null);
         foreach (var m in playerTeam)
             m.GetComponent<MonsterAI>().enabled = true;
 

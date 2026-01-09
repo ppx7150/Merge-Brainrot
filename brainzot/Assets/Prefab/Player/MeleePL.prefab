@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
-  stopThreshold: 0.05
   monsterHealth: {fileID: 4826705724963595282}
   enemyLayer:
     serializedVersion: 2
@@ -135,13 +134,13 @@ MonoBehaviour:
   visuals: []
   stats:
     type: 0
+    level: 0
     maxHP: 100
     currentHP: 100
     attackDamage: 5
     attackSpeed: 1
-    attackRange: 0.8
+    attackRange: 0.001
     moveSpeed: 1
-    level: 0
   hpBar: {fileID: 1939455055191878246}
 --- !u!114 &5568918496463615813
 MonoBehaviour:

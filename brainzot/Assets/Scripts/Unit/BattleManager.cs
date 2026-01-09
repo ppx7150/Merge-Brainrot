@@ -4,9 +4,15 @@ using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
+    public bool startPvP;
     public List<GameObject> playerTeam = new List<GameObject>();
     public List<GameObject> enemyTeam = new List<GameObject>();
-    public List<Button> BtnObj = new List<Button>();
+
+    public static BattleManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Update()
     {
         CheckBattleEnd();
@@ -27,7 +33,6 @@ public class BattleManager : MonoBehaviour
 
         foreach (var m in enemyTeam)
             m.GetComponent<MonsterAI>().enabled = true;
-        foreach (var m in BtnObj)
-            m.interactable = false;
+        startPvP = true;
     }
 }

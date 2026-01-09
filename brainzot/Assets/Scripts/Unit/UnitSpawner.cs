@@ -5,7 +5,11 @@ public class UnitSpawner : MonoBehaviour
     public BattleManager battleManager;
     public GameObject rangeUnitPrefab;
     public GameObject meleeUnitPrefab;
-
+    public static UnitSpawner Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
     public void SpawnRangeUnit()
     {
         GridManager grid = GridManager.Instance;

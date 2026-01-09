@@ -2,7 +2,6 @@
 
 public class MonsterAI : MonoBehaviour
 {
-    public float stopThreshold = 0.05f;
     public MonsterHealth monsterHealth;
     public LayerMask enemyLayer;
 
@@ -44,7 +43,6 @@ public class MonsterAI : MonoBehaviour
         Vector2 myPos = transform.position;
         Vector2 targetPos = currentTarget.position;
         float laneTolerance = 0.2f;   // sai lệch Y cho phép (cùng lane)
-        float xTolerance = 0.5f;      // sai lệch X cho phép (đứng ngang)
         // Xác định hướng (giả sử team bạn đứng bên trái, enemy bên phải)
         float direction = targetPos.x > myPos.x ? -1f : 1f;
         // Vị trí chuẩn cần đứng để đánh
@@ -55,7 +53,7 @@ public class MonsterAI : MonoBehaviour
         // Clamp để đảm bảo không ra ngoài grid
         desiredPos = GridManager.Instance.ClampToGrid(desiredPos);
         bool sameLane = Mathf.Abs(myPos.y - targetPos.y) <= laneTolerance;
-        bool correctX = Mathf.Abs(myPos.x - desiredPos.x) <= xTolerance;
+        bool correctX = Mathf.Abs(myPos.x - desiredPos.x) <= monsterHealth.stats.attackRange;
         // Nếu chưa đúng lane hoặc chưa đúng X -> chạy chéo tới vị trí chuẩn
         if (!sameLane || !correctX)
         {

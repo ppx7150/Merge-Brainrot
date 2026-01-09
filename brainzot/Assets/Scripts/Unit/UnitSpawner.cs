@@ -2,6 +2,7 @@
 
 public class UnitSpawner : MonoBehaviour
 {
+    public BattleManager battleManager;
     public GameObject rangeUnitPrefab;
     public GameObject meleeUnitPrefab;
 
@@ -17,9 +18,10 @@ public class UnitSpawner : MonoBehaviour
                 if (grid.IsEmpty(x, y))
                 {
                     GameObject unitObj = Instantiate(rangeUnitPrefab);
-                    Unit unit = unitObj.GetComponent<Unit>();
+                    MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
 
                     grid.Place(unit, x, y);
+                    battleManager.playerTeam.Add(unitObj);
                     return;
                 }
             }
@@ -39,9 +41,10 @@ public class UnitSpawner : MonoBehaviour
                 if (grid.IsEmpty(x, y))
                 {
                     GameObject unitObj = Instantiate(meleeUnitPrefab);
-                    Unit unit = unitObj.GetComponent<Unit>();
+                    MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
 
                     grid.Place(unit, x, y);
+                    battleManager.playerTeam.Add(unitObj);
                     return;
                 }
             }

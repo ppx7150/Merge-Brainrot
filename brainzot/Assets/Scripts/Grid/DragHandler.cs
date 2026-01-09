@@ -2,12 +2,12 @@
 
 public class DragHandler : MonoBehaviour
 {
-    private Unit unit;
+    private MonsterHealth unit;
     private Vector3 offset;
 
     void Awake()
     {
-        unit = GetComponent<Unit>();
+        unit = GetComponent<MonsterHealth>();
     }
 
     void OnMouseDown()
@@ -33,17 +33,17 @@ public class DragHandler : MonoBehaviour
         int x = Mathf.RoundToInt((transform.position.x - grid.origin.x) / grid.cellSize);   //tính tọa độ (x,y) của vị trí mới
         int y = Mathf.RoundToInt((transform.position.y - grid.origin.y) / grid.cellSize);
 
-        if (!grid.IsValid(x, y))    //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
+        if (!grid.IsValid(x, y) || y > 2)    //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
         {
             SnapBack();
             return;
         }
 
-        Unit other = grid.GetUnit(x, y);
+        MonsterHealth other = grid.GetUnit(x, y);
 
         if (other != null)
         {
-            if (other.level == unit.level && other.type == unit.type)
+            if (other.stats.level == unit.stats.level && other.stats.type == unit.stats.type)
             {
                 TryMerge(other);
             }
@@ -62,9 +62,9 @@ public class DragHandler : MonoBehaviour
         GridManager.Instance.Place(unit, unit.gridX, unit.gridY);
     }
 
-    void TryMerge(Unit other)   //hàm merge unit, cần sửa
+    void TryMerge(MonsterHealth other)   //hàm merge unit, cần sửa
     {
-        if (other.level != unit.level)
+        if (other.stats.level != unit.stats.level)
         {
             SnapBack();
             return;
@@ -79,7 +79,7 @@ public class DragHandler : MonoBehaviour
         GridManager.Instance.Place(unit, other.gridX, other.gridY);
     }
 
-    void SwapWith(Unit other)
+    void SwapWith(MonsterHealth other)
     {
         GridManager grid = GridManager.Instance;
 

@@ -14,12 +14,12 @@ public class GridManager : MonoBehaviour
     public float cellSize = 1.6f;       //khoảng cách giữa tâm các ô
     public Vector2 origin = new Vector2(-3.2f, -4.0f);      //tọa độ ô (0,0)
 
-    private Unit[,] grid;   //mảng 2 chiều grid
+    private MonsterHealth[,] grid;   //mảng 2 chiều grid
 
     void Awake()
     {
         Instance = this;
-        grid = new Unit[columns, rows];     //khởi tạo grid
+        grid = new MonsterHealth[columns, rows];     //khởi tạo grid
     }
 
     public Vector3 GetWorldPos(int x, int y)        
@@ -37,7 +37,7 @@ public class GridManager : MonoBehaviour
         return IsValid(x, y) && (grid[x, y] == null);
     }
 
-    public Unit GetUnit(int x, int y)   //lấy unit tại vị trí (x,y)
+    public MonsterHealth GetUnit(int x, int y)   //lấy unit tại vị trí (x,y)
     {
         //return IsValid(x, y) ? grid[x, y] : null;
         if (IsValid(x, y))
@@ -46,7 +46,7 @@ public class GridManager : MonoBehaviour
             return null;
     }
 
-    public void Place(Unit unit, int x, int y)  //đặt unit vào vị trí (x,y)
+    public void Place(MonsterHealth unit, int x, int y)  //đặt unit vào vị trí (x,y)
     {
         if (!IsEmpty(x, y)) return;
 
@@ -76,4 +76,18 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    public Vector2 ClampToGrid(Vector2 worldPos)
+    {
+        float minX = origin.x;
+        float maxX = origin.x + (columns - 1) * cellSize;
+
+        float minY = origin.y;
+        float maxY = origin.y + (rows - 1) * cellSize;
+
+        float clampedX = Mathf.Clamp(worldPos.x, minX, maxX);
+        float clampedY = Mathf.Clamp(worldPos.y, minY, maxY);
+
+        return new Vector2(clampedX, clampedY);
+    }
+
 }

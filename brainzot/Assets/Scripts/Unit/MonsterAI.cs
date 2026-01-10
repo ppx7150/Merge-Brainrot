@@ -28,12 +28,12 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
-        if (currentTarget == null)
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf)
         {
             FindNearestTarget();
             return;
         }
-        if (currentTarget == null)
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf)
             return;
         attackTimer -= Time.deltaTime;
         if (monsterHealth.stats.type == MonsterType.Melee)
@@ -48,7 +48,7 @@ public class MonsterAI : MonoBehaviour
     }
     void HandleMelee()
     {
-        if (currentTarget == null) return;
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
 
         Vector2 myPos = transform.position;
         Vector2 targetPos = currentTarget.position;
@@ -167,7 +167,7 @@ public class MonsterAI : MonoBehaviour
     }
     void AttackMelee()
     {
-        if (currentTarget == null) return;
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
         MonsterHealth hp = currentTarget.GetComponent<MonsterHealth>();
         if (hp != null)
         {
@@ -181,7 +181,7 @@ public class MonsterAI : MonoBehaviour
 
     void Shoot()
     {
-        if (currentTarget == null || projectile != null) return;
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf || projectile != null) return;
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
         projectile = proj;
         proj.GetComponent<Projectile>().enemy = currentTarget.gameObject;

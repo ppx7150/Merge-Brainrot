@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
   laneTolerance: 0.2
-  xTolerance: 0.25
+  xTolerance: 0.35
   monsterHealth: {fileID: 4826705724963595282}
   enemyLayer:
     serializedVersion: 2

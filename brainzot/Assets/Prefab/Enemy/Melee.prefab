@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 1768595689794443955}
   - component: {fileID: -4125358627283974148}
   - component: {fileID: 4826705724963595282}
-  - component: {fileID: 5568918496463615813}
   - component: {fileID: 6223354445588274637}
   - component: {fileID: 3250183020075200565}
   m_Layer: 7
@@ -143,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
   laneTolerance: 0.2
-  xTolerance: 0.25
+  xTolerance: 0.35
   monsterHealth: {fileID: 4826705724963595282}
   enemyLayer:
     serializedVersion: 2
@@ -188,18 +187,6 @@ MonoBehaviour:
   textSpawnPoint: {fileID: 3380226708007497256}
   damageInSecond: 0
   timeShowDameTxt: 1
---- !u!114 &5568918496463615813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4747127205807759293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c2adcad86a4dd40a12da3a9d5dde9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragHandler
 --- !u!61 &6223354445588274637
 BoxCollider2D:
   m_ObjectHideFlags: 0

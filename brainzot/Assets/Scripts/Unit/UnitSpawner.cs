@@ -25,6 +25,7 @@ public class UnitSpawner : MonoBehaviour
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
                     grid.Place(unit, x, y);
                     battleManager.playerTeam.Add(unitObj);
+                    Char.Instance.dataMyTeam.Add(unit);
                     return;
                 }
             }
@@ -47,6 +48,7 @@ public class UnitSpawner : MonoBehaviour
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
                     grid.Place(unit, x, y);
                     battleManager.playerTeam.Add(unitObj);
+                    Char.Instance.dataMyTeam.Add(unit);
                     return;
                 }
             }

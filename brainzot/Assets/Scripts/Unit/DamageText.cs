@@ -17,6 +17,7 @@ public class DamageText : MonoBehaviour
 
     public void SetText(string value)
     {
+        if (text == null) return;
         text.SetText(value);
     }
 

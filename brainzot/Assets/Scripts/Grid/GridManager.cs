@@ -60,6 +60,16 @@ public class GridManager : MonoBehaviour
         if (!IsValid(x, y)) return;
         grid[x, y] = null;
     }
+    public void CLear()
+    {
+        for(int i = 0; i <= 5; i++)
+        {
+            for (int j = 0; j <= 4; j++)
+            {
+                grid[j, i] = null;
+            }
+        }
+    }
 
     void OnDrawGizmos()     //vẽ grid trên Scene để xem
     {

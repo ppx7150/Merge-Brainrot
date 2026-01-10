@@ -379,7 +379,7 @@ MonoBehaviour:
     currentHP: 100
     attackDamage: 5
     attackSpeed: 1
-    attackRange: 5
+    attackRange: 10
     moveSpeed: 0
   hpBar: {fileID: 8350215555379370174}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}

@@ -241,7 +241,6 @@ GameObject:
   - component: {fileID: -2755056493500798928}
   - component: {fileID: 1932192664758145213}
   - component: {fileID: 4680543719672247251}
-  - component: {fileID: 6079721699848866302}
   - component: {fileID: 8096694240590309180}
   m_Layer: 7
   m_Name: Range
@@ -379,7 +378,7 @@ MonoBehaviour:
     currentHP: 100
     attackDamage: 5
     attackSpeed: 1
-    attackRange: 5
+    attackRange: 10
     moveSpeed: 0
   hpBar: {fileID: 6394125982353192692}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
@@ -432,18 +431,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6079721699848866302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8332007673813886209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c2adcad86a4dd40a12da3a9d5dde9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &8096694240590309180
 Rigidbody2D:
   serializedVersion: 5

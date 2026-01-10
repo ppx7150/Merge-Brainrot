@@ -18,6 +18,7 @@ public class DragHandler : MonoBehaviour
 
     void OnMouseDrag()
     {
+        if (BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         transform.position = GetMouseWorldPos() + offset;
     }
 
@@ -73,9 +74,10 @@ public class DragHandler : MonoBehaviour
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
-        unit.LevelUp();
+        unit.LevelUp(1);
 
         GridManager.Instance.Place(unit, other.gridX, other.gridY);
+        Char.Instance.dataMyTeam.RemoveAll(m => m == null);
     }
 
     void SwapWith(MonsterHealth other)

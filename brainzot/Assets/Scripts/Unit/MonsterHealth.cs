@@ -49,18 +49,18 @@ public class MonsterHealth : MonoBehaviour
     }
     void Die()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
-    public void LevelUp()
+    public void LevelUp(int count)
     {
-        stats.level++;
-        stats.maxHP *= 2;
-        stats.attackDamage *= 2;
+        stats.level+= count;
+        stats.maxHP *= Mathf.Pow(2,count);
+        stats.attackDamage *= Mathf.Pow(2, count);
         UpdateVisual();
     }
 
-    void UpdateVisual()
+    public void UpdateVisual()
     {
         foreach (var v in visuals)
         {
@@ -76,5 +76,10 @@ public class MonsterHealth : MonoBehaviour
     {
         gridX = x;
         gridY = y;
+    }
+    public void ResetStatus()
+    {
+        stats.currentHP = stats.maxHP;
+        hpBar.SetHP(1f);
     }
 }

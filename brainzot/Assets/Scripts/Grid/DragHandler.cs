@@ -73,7 +73,6 @@ public class DragHandler : MonoBehaviour
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
-
         unit.LevelUp();
 
         GridManager.Instance.Place(unit, other.gridX, other.gridY);

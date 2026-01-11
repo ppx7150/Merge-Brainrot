@@ -34,7 +34,7 @@ public class MonsterHealth : MonoBehaviour
             hpBar.SetHP(stats.currentHP / stats.maxHP);
         if (stats.currentHP <= 0)
             Die();
-        if (timeShowDameTxt <= 0)
+        if (CompareTag("Enemy") && timeShowDameTxt <= 0)
         {
             ShowDamage(damageInSecond);
         }
@@ -81,5 +81,6 @@ public class MonsterHealth : MonoBehaviour
     {
         stats.currentHP = stats.maxHP;
         hpBar.SetHP(1f);
+        GridManager.Instance.Place(this, gridX, gridY);
     }
 }

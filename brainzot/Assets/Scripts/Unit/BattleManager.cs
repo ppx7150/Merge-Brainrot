@@ -41,19 +41,13 @@ public class BattleManager : MonoBehaviour
         {
             m.SetActive(true);
             m.GetComponent<MonsterAI>().enabled = false;
-            MonsterHealth mh = m.GetComponent<MonsterHealth>();
-            m.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-            mh.ResetStatus();
-            GridManager.Instance.Place(mh, mh.gridX, mh.gridY);
+            m.GetComponent<MonsterHealth>().ResetStatus();
         }
         foreach (var m in playerTeam)
         {
             m.SetActive(true);
             m.GetComponent<MonsterAI>().enabled = false;
-            MonsterHealth mh = m.GetComponent<MonsterHealth>();
-            m.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-            mh.ResetStatus();
-            GridManager.Instance.Place(mh, mh.gridX, mh.gridY);
+            m.GetComponent<MonsterHealth>().ResetStatus();
         }
         losePanel.SetActive(false);
     }
@@ -65,12 +59,10 @@ public class BattleManager : MonoBehaviour
         {
             if (m == null) continue;
             m.GetComponent<MonsterAI>().enabled = true;
-            m.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         }
         foreach (var m in enemyTeam)
         {
             if (m == null) continue;
-            m.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             m.GetComponent<MonsterAI>().enabled = true;
         }
         startPvP = true;
@@ -89,10 +81,7 @@ public class BattleManager : MonoBehaviour
         {
             m.SetActive(true);
             m.GetComponent<MonsterAI>().enabled = false;
-            m.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-            MonsterHealth mht = m.GetComponent<MonsterHealth>();
-            mht.ResetStatus();
-            GridManager.Instance.Place(mht, mht.gridX, mht.gridY);
+            m.GetComponent<MonsterHealth>().ResetStatus();
         }
         GameObject obj;
         MonsterHealth mh;
@@ -104,7 +93,6 @@ public class BattleManager : MonoBehaviour
             {
                 obj = Instantiate(i == 5 ? rangeEnemyPrefabs: meleeEnemyPrefabs);
                 mh = obj.GetComponent<MonsterHealth>();
-                obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                 mh.LevelUp(Random.Range(1, 3));
                 enemyTeam.Add(obj);
                 int x = arr[Random.Range(0, arr.Count)];

@@ -15,16 +15,18 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
     public ButtonType buttonType;
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (BattleManager.Instance.startPvP) return;
         switch(buttonType)
         {
             case ButtonType.SpawnMelee:
+                if (BattleManager.Instance.startPvP) return;
                 UnitSpawner.Instance.SpawnMeleeUnit();
                 break;
             case ButtonType.SpawnRange:
+                if (BattleManager.Instance.startPvP) return;
                 UnitSpawner.Instance.SpawnRangeUnit();
                 break;
             case ButtonType.Battle:
+                if (BattleManager.Instance.startPvP) return;
                 BattleManager.Instance.StartBattle();
                 break;
             case ButtonType.DailyReward:

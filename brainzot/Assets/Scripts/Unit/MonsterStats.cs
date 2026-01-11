@@ -14,8 +14,8 @@ public class MonsterStats
     public float currentHP;
 
     public float attackDamage;
-    public float attackSpeed;   // thời gian giữa các đòn
-    public float attackRange;   // range đánh / bắn
+    public float attackSpeed;
+    public float attackRange;
 
-    public float moveSpeed;     // chỉ dùng cho melee
+    public float moveSpeed;
 }

@@ -23,8 +23,8 @@ public class SaveData
     public int coins;
     public int gems;
     public int level;
-    public int costMelee;
-    public int costRange;
+    public float costMelee;
+    public float costRange;
     public Team dataMyTeam;
 }
 [Serializable]

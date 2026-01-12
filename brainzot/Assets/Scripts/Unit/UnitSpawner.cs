@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class UnitSpawner : MonoBehaviour
 {
-    public int costMelee = 100;
-    public int costRange = 100;
+    public float costMelee = 100;
+    public float costRange = 100;
     public TMP_Text txtCostMelee;
     public TMP_Text txtCostRange;
     public BattleManager battleManager;
@@ -16,23 +16,23 @@ public class UnitSpawner : MonoBehaviour
         Instance = this;
         LoadCost(costMelee, costRange);
     }
-    public void LoadCost(int cM, int cR)
+    public void LoadCost(float cM, float cR)
     {
         costMelee = cM;
         costRange = cR;
-        txtCostMelee.SetText(costMelee + "$");
-        txtCostRange.SetText(costRange + "$");
+        txtCostMelee.SetText((int)costMelee + "$");
+        txtCostRange.SetText((int)costRange + "$");
     }
     public void UpgradeCost(bool isMelee)
     {
         if (isMelee)
         {
-            costMelee += 20;
-            txtCostMelee.SetText(costMelee + "$");
+            costMelee *= Char.Instance.level < 15 ? 1.175f:1.195f;
+            txtCostMelee.SetText((int)costMelee + "$");
         } else
         {
-            costRange += 20;
-            txtCostRange.SetText(costRange + "$");
+            costRange *= Char.Instance.level < 15 ? 1.175f : 1.195f;
+            txtCostRange.SetText((int)costRange + "$");
         }
     }
     public void SpawnRangeUnit(int level)

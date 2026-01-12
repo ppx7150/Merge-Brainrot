@@ -150,11 +150,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   projectileForce: 0
   projectile: {fileID: 0}
-  overlapCheckRadius: 0.3
-  ySpacing: 0.1
-  unitLayer:
-    serializedVersion: 2
-    m_Bits: 128
   visualRoot: {fileID: 5074020620299391516}
 --- !u!114 &4826705724963595282
 MonoBehaviour:
@@ -174,7 +169,7 @@ MonoBehaviour:
   visuals: []
   stats:
     type: 0
-    level: 0
+    level: 1
     maxHP: 100
     currentHP: 100
     attackDamage: 5

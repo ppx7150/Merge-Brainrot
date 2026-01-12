@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class BattleManager : MonoBehaviour
     public GameObject rangeEnemyPrefabs;
     public GameObject winPanel;
     public GameObject losePanel;
+    public TMP_Text[] txtCoinReward;
     private void Awake()
     {
         Instance = this;
@@ -26,11 +28,17 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("Enemy Win");
             losePanel.SetActive(true);
+            int coin = Random.Range(100, 200);
+            txtCoinReward[1].SetText("+" + coin + "$");
+            Char.Instance.AddCoins(coin);
             startPvP = false;
         } else if (!enemyTeam.Exists(m => m.activeSelf))
         {
             Debug.Log("Player Win");
             winPanel.SetActive(true);
+            int coin = Random.Range(150, 300);
+            txtCoinReward[0].SetText("+" + coin + "$");
+            Char.Instance.AddCoins(coin);
             startPvP = false;
         }
     }

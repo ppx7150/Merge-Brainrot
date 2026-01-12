@@ -346,11 +346,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
   projectileForce: 10
   projectile: {fileID: 0}
-  overlapCheckRadius: 0.3
-  ySpacing: 0.1
-  unitLayer:
-    serializedVersion: 2
-    m_Bits: 128
   visualRoot: {fileID: 5066677265385204835}
 --- !u!114 &1932192664758145213
 MonoBehaviour:
@@ -372,7 +367,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   stats:
     type: 1
-    level: 0
+    level: 1
     maxHP: 100
     currentHP: 100
     attackDamage: 5

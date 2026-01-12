@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb3c4c2b095f1c849a68325c3ada3758, type: 3}
   m_Name: LV1
   m_EditorClassIdentifier: Assembly-CSharp::UnitVisualData
-  level: 0
+  level: 1
   sprite: {fileID: 5589391628281626318, guid: 0380116219d34a84daad50c7edddf8e2, type: 3}
   scale: {x: 1, y: 1, z: 1}

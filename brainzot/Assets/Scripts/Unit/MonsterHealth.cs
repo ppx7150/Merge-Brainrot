@@ -27,13 +27,11 @@ public class MonsterHealth : MonoBehaviour
     }
     public void TakeDamage(float dmg)
     {
+        if (stats.currentHP > 0) dmg = Mathf.Min(dmg, stats.currentHP);
         damageInSecond += dmg;
         stats.currentHP -= dmg;
-        stats.currentHP = Mathf.Clamp(stats.currentHP, 0, stats.maxHP);
-        if (hpBar != null)
-            hpBar.SetHP(stats.currentHP / stats.maxHP);
-        if (stats.currentHP <= 0)
-            Die();
+        if (hpBar != null) hpBar.SetHP(stats.currentHP / stats.maxHP);
+        if (stats.currentHP <= 0) Die();
         if (CompareTag("Enemy") && timeShowDameTxt <= 0)
         {
             ShowDamage(damageInSecond);

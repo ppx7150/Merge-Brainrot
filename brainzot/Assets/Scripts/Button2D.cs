@@ -19,11 +19,11 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
         {
             case ButtonType.SpawnMelee:
                 if (BattleManager.Instance.startPvP) return;
-                UnitSpawner.Instance.SpawnMeleeUnit();
+                UnitSpawner.Instance.SpawnMeleeUnit(1);
                 break;
             case ButtonType.SpawnRange:
                 if (BattleManager.Instance.startPvP) return;
-                UnitSpawner.Instance.SpawnRangeUnit();
+                UnitSpawner.Instance.SpawnRangeUnit(1);
                 break;
             case ButtonType.Battle:
                 if (BattleManager.Instance.startPvP) return;

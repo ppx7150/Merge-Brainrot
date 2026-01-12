@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 [Serializable]
 public class DataUnit
@@ -20,7 +21,10 @@ public class DataUnit
 public class SaveData
 {
     public int coins;
+    public int gems;
     public int level;
+    public int costMelee;
+    public int costRange;
     public Team dataMyTeam;
 }
 [Serializable]
@@ -32,6 +36,9 @@ public class Char : MonoBehaviour
 {
     public int level;
     public int coins;
+    public int gems;
+    public TMP_Text txtCoins;
+    public TMP_Text txtGems;
     public List<MonsterHealth> dataMyTeam = new List<MonsterHealth>();
     public static Char Instance;
     public GameObject meleePrefabs;
@@ -43,12 +50,17 @@ public class Char : MonoBehaviour
     void Start()
     {
         Load(Application.persistentDataPath + "/save.json");
+        txtCoins.SetText(coins + "$");
+        txtGems.SetText(gems + "$");
     }
     public void Save(string path)
     {
         SaveData saveData = new SaveData();
         saveData.level = level;
         saveData.coins = coins;
+        saveData.gems = gems;
+        saveData.costMelee = UnitSpawner.Instance.costMelee;
+        saveData.costRange = UnitSpawner.Instance.costRange;
         List<DataUnit> data = new List<DataUnit>();
         foreach(var m in dataMyTeam)
         {
@@ -89,7 +101,9 @@ public class Char : MonoBehaviour
         SaveData saveData = JsonUtility.FromJson<SaveData>(json);
         level = saveData.level;
         coins = saveData.coins;
-        foreach(var m in saveData.dataMyTeam.units)
+        gems = saveData.gems;
+        UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
+        foreach (var m in saveData.dataMyTeam.units)
         {
             MonsterType tp = (MonsterType)Enum.Parse(typeof(MonsterType), m.type); ;
             GameObject obj = Instantiate(tp == MonsterType.Melee? meleePrefabs: rangePrefabs);
@@ -118,14 +132,40 @@ public class Char : MonoBehaviour
     {
         Save(Application.persistentDataPath + "/save.json");
     }
-    public void SubCoins(int a)
+    public bool SubCoins(int a)
     {
+        if (a > coins)
+        {
+            Debug.Log("Don't enough coins");
+            return false;
+        }
         coins -= a;
         coins = Mathf.Max(coins, 0);
+        txtCoins.SetText(coins + "$");
+        return true;
     }
     public void AddCoins(int a)
     {
         coins += a;
         coins = Mathf.Min(coins, int.MaxValue);
+        txtCoins.SetText(coins + "$");
+    }
+    public bool SubGems(int a)
+    {
+        if (a > gems)
+        {
+            Debug.Log("Don't enough gems");
+            return false;
+        }
+        gems -= a;
+        gems = Mathf.Max(gems, 0);
+        txtGems.SetText(gems.ToString());
+        return true;
+    }
+    public void AddGems(int a)
+    {
+        gems += a;
+        gems = Mathf.Min(gems, int.MaxValue);
+        txtGems.SetText(gems.ToString());
     }
 }

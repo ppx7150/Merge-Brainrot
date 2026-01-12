@@ -17,6 +17,7 @@ public class MonsterAI : MonoBehaviour
 
     public Transform visualRoot;
     public SpriteRenderer sprite;
+    private int retreatDir = 0;
 
     void Update()
     {
@@ -71,23 +72,49 @@ public class MonsterAI : MonoBehaviour
             MoveTo(desiredPos, moveSpeed);
             return;
         }
-        // ===== CASE 3: QUÁ GẦN -> LÙI SANG BÊN (CHỈ KHI LÙI ĐƯỢC) =====
+        // ===== CASE 3: QUÁ GẦN -> LÙI SANG BÊN =====
         if (distanceX < attackRange - xTolerance)
         {
-            float dirX = myPos.x < targetPos.x ? -1f : 1f;
+            float dirX;
+
+            // 🔒 TRƯỜNG HỢP TRÙNG X (hoặc rất gần)
+            if (Mathf.Abs(myPos.x - targetPos.x) < 0.001f)
+            {
+                // Quy ước cứng: Player & Enemy lùi ngược nhau
+                dirX = CompareTag("Enemy") ? 1f : -1f;
+            }
+            else
+            {
+                // Bình thường: lùi ra xa target
+                dirX = myPos.x < targetPos.x ? -1f : 1f;
+            }
+
+            float epsilon = Mathf.Max(0.05f, Mathf.Abs(attackRange - xTolerance - distanceX));
+
+            // 🔍 Nếu đang ở biên & lùi ra ngoài → đổi hướng
+            if (GridManager.Instance.IsNearEdgeX(myPos.x, epsilon))
+            {
+                // chỉ đổi nếu đang lùi RA biên
+                float minX = GridManager.Instance.MinX;
+                float maxX = GridManager.Instance.MaxX;
+
+                if ((myPos.x <= minX + epsilon && dirX < 0) ||
+                    (myPos.x >= maxX - epsilon && dirX > 0))
+                {
+                    dirX *= -1f;
+                }
+            }
+
             Vector2 backPos = new Vector2(
                 myPos.x + dirX * moveSpeed * Time.deltaTime,
                 myPos.y
             );
-            Vector2 clamped = GridManager.Instance.ClampToGrid(backPos);
-            // 🚫 Nếu không lùi được (đụng biên) → đứng im, KHÔNG đổi hướng
-            if (Mathf.Abs(clamped.x - myPos.x) < 0.001f)
-            {
-                return;
-            }
-            transform.position = clamped;
+
+            transform.position = GridManager.Instance.ClampToGrid(backPos);
             return;
         }
+
+
         // ===== CASE 4: ĐÚNG KHOẢNG CÁCH -> ĐÁNH =====
         attackTimer -= Time.deltaTime;
         if (attackTimer <= 0f)

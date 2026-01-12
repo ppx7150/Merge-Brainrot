@@ -18,11 +18,13 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
         switch(buttonType)
         {
             case ButtonType.SpawnMelee:
-                if (BattleManager.Instance.startPvP) return;
+                if (BattleManager.Instance.startPvP || !Char.Instance.SubCoins(UnitSpawner.Instance.costMelee)) return;
+                UnitSpawner.Instance.UpgradeCost(true);
                 UnitSpawner.Instance.SpawnMeleeUnit(0);
                 break;
             case ButtonType.SpawnRange:
-                if (BattleManager.Instance.startPvP) return;
+                if (BattleManager.Instance.startPvP! || Char.Instance.SubCoins(UnitSpawner.Instance.costRange)) return;
+                UnitSpawner.Instance.UpgradeCost(false);
                 UnitSpawner.Instance.SpawnRangeUnit(0);
                 break;
             case ButtonType.Battle:

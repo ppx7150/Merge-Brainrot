@@ -53,84 +53,27 @@ public class MonsterHealth : MonoBehaviour
     public void LevelUp(int count)
     {
         stats.level += count;
+        SetStats(stats.level);
+        UpdateVisual();
+    }
+    public void SetStats(int level)
+    {
+        if (level < 1 || level > 7) return;
+        int index = level - 1;
         if (stats.type == MonsterType.Melee)
         {
-            if (stats.level == 1)
-            {
-                stats.attackDamage = 5;
-                stats.maxHP = 18;
-            }
-            if (stats.level == 2)
-            {
-                stats.attackDamage = 12;
-                stats.maxHP = 43;
-            }
-            if (stats.level == 3)
-            {
-                stats.attackDamage = 27;
-                stats.maxHP = 105;
-            }
-            if (stats.level == 4)
-            {
-                stats.attackDamage = 64;
-                stats.maxHP = 225;
-            }
-            if (stats.level == 5)
-            {
-                stats.attackDamage = 152;
-                stats.maxHP = 605;
-            }
-            if (stats.level == 6)
-            {
-                stats.attackDamage = 315;
-                stats.maxHP = 1320;
-            }
-            if (stats.level == 7)
-            {
-                stats.attackDamage = 645;
-                stats.maxHP = 2765;
-            }
+            int[] damages = { 5, 12, 27, 64, 152, 315, 645 };
+            int[] hps = { 18, 43, 105, 225, 605, 1320, 2765 };
+            stats.attackDamage = damages[index];
+            stats.maxHP = hps[index];
         }
         else
         {
-            if (stats.level == 1)
-            {
-                stats.attackDamage = 3;
-                stats.maxHP = 45;
-            }
-            if (stats.level == 2)
-            {
-                stats.attackDamage = 7;
-                stats.maxHP = 115;
-            }
-            if (stats.level == 3)
-            {
-                stats.attackDamage = 15;
-                stats.maxHP = 270;
-            }
-            if (stats.level == 4)
-            {
-                stats.attackDamage = 33;
-                stats.maxHP = 625;
-            }
-            if (stats.level == 5)
-            {
-                stats.attackDamage = 70;
-                stats.maxHP = 1320;
-            }
-            if (stats.level == 6)
-            {
-                stats.attackDamage = 150;
-                stats.maxHP = 2675;
-            }
-            if (stats.level == 7)
-            {
-                stats.attackDamage = 315;
-                stats.maxHP = 5550;
-            }
+            int[] damages = { 3, 7, 15, 33, 70, 150, 315 };
+            int[] hps = { 45, 115, 270, 625, 1320, 2675, 5550 };
+            stats.attackDamage = damages[index];
+            stats.maxHP = hps[index];
         }
-
-        UpdateVisual();
     }
 
     public void UpdateVisual()

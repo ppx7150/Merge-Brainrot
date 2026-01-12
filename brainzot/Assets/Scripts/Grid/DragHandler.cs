@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DragHandler : MonoBehaviour
+public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private MonsterHealth unit;
     private Vector3 offset;
@@ -9,20 +10,30 @@ public class DragHandler : MonoBehaviour
     {
         unit = GetComponent<MonsterHealth>();
     }
+    bool IsPointerOverUI()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        return EventSystem.current.IsPointerOverGameObject();
+#else
+    if (Input.touchCount > 0)
+        return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+    return false;
+#endif
+    }
 
-    void OnMouseDown()
+    public void OnPointerDown(PointerEventData eventData)
     {
         offset = transform.position - GetMouseWorldPos();   
         GridManager.Instance.Remove(unit.gridX, unit.gridY);
     }
 
-    void OnMouseDrag()
+    public void OnDrag(PointerEventData eventData)
     {
-        if (BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
+        if (BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf   ) return;
         transform.position = GetMouseWorldPos() + offset;
     }
 
-    void OnMouseUp()
+    public void OnPointerUp(PointerEventData eventData)
     {
         TrySnap();
     }

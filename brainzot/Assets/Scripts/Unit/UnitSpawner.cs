@@ -37,8 +37,6 @@ public class UnitSpawner : MonoBehaviour
     }
     public void SpawnRangeUnit(int level)
     {
-        if (!Char.Instance.SubCoins(costRange)) return;
-        UpgradeCost(false);
         GridManager grid = GridManager.Instance;
 
         // Tìm ô trống đầu tiên (từ dưới lên)
@@ -63,8 +61,6 @@ public class UnitSpawner : MonoBehaviour
 
     public void SpawnMeleeUnit(int level)
     {
-        if (!Char.Instance.SubCoins(costMelee)) return;
-        UpgradeCost(true);
         GridManager grid = GridManager.Instance;
 
         for (int y = 2; y >= 0; y--)

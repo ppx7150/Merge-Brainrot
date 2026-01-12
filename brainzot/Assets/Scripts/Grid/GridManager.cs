@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
+    public float MinX => origin.x;
+    public float MaxX => origin.x + (columns - 1) * cellSize;
 
     [Header("Grid Size")]   //khai báo 6 hàng 5 cột.
     public int columns = 5;
@@ -99,6 +101,13 @@ public class GridManager : MonoBehaviour
         float clampedY = Mathf.Clamp(worldPos.y, minY, maxY);
 
         return new Vector2(clampedX, clampedY);
+    }
+    public bool IsNearEdgeX(float x, float epsilon = 0.05f)
+    {
+        float minX = origin.x;
+        float maxX = origin.x + (columns - 1) * cellSize;
+
+        return x <= minX + epsilon || x >= maxX - epsilon;
     }
 
 }

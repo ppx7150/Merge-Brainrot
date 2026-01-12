@@ -51,7 +51,7 @@ public class Char : MonoBehaviour
     {
         Load(Application.persistentDataPath + "/save.json");
         txtCoins.SetText(coins + "$");
-        txtGems.SetText(gems + "$");
+        txtGems.SetText(gems.ToString());
     }
     public void Save(string path)
     {

@@ -52,9 +52,84 @@ public class MonsterHealth : MonoBehaviour
 
     public void LevelUp(int count)
     {
-        stats.level+= count;
-        stats.maxHP *= Mathf.Pow(2,count);
-        stats.attackDamage *= Mathf.Pow(2, count);
+        stats.level += count;
+        if (stats.type == MonsterType.Melee)
+        {
+            if (stats.level == 1)
+            {
+                stats.attackDamage = 5;
+                stats.maxHP = 18;
+            }
+            if (stats.level == 2)
+            {
+                stats.attackDamage = 12;
+                stats.maxHP = 43;
+            }
+            if (stats.level == 3)
+            {
+                stats.attackDamage = 27;
+                stats.maxHP = 105;
+            }
+            if (stats.level == 4)
+            {
+                stats.attackDamage = 64;
+                stats.maxHP = 225;
+            }
+            if (stats.level == 5)
+            {
+                stats.attackDamage = 152;
+                stats.maxHP = 605;
+            }
+            if (stats.level == 6)
+            {
+                stats.attackDamage = 315;
+                stats.maxHP = 1320;
+            }
+            if (stats.level == 7)
+            {
+                stats.attackDamage = 645;
+                stats.maxHP = 2765;
+            }
+        }
+        else
+        {
+            if (stats.level == 1)
+            {
+                stats.attackDamage = 3;
+                stats.maxHP = 45;
+            }
+            if (stats.level == 2)
+            {
+                stats.attackDamage = 7;
+                stats.maxHP = 115;
+            }
+            if (stats.level == 3)
+            {
+                stats.attackDamage = 15;
+                stats.maxHP = 270;
+            }
+            if (stats.level == 4)
+            {
+                stats.attackDamage = 33;
+                stats.maxHP = 625;
+            }
+            if (stats.level == 5)
+            {
+                stats.attackDamage = 70;
+                stats.maxHP = 1320;
+            }
+            if (stats.level == 6)
+            {
+                stats.attackDamage = 150;
+                stats.maxHP = 2675;
+            }
+            if (stats.level == 7)
+            {
+                stats.attackDamage = 315;
+                stats.maxHP = 5550;
+            }
+        }
+
         UpdateVisual();
     }
 

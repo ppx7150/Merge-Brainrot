@@ -50,6 +50,7 @@ public class GridManager : MonoBehaviour
     {
         if (!IsEmpty(x, y)) return;
 
+        unit.GetComponent<SpriteRenderer>().sortingOrder = -y;
         grid[x, y] = unit;
         unit.SetGridPos(x, y);
         unit.transform.position = GetWorldPos(x, y);

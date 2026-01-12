@@ -13757,6 +13757,10 @@ PrefabInstance:
       propertyPath: buttonType
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7460548048336094881, guid: d6a0bf77ed18c454b8e8b919cbdbb545, type: 3}
+      propertyPath: m_SortingOrder
+      value: -20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

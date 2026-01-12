@@ -16,6 +16,7 @@ public class MonsterAI : MonoBehaviour
     public GameObject projectile;
 
     public Transform visualRoot;
+    public SpriteRenderer sprite;
 
     void Update()
     {
@@ -47,7 +48,7 @@ public class MonsterAI : MonoBehaviour
         float moveSpeed = monsterHealth.stats.moveSpeed;
 
         float sideDir = targetPos.x > myPos.x ? -1f : 1f;
-
+        sprite.flipX = targetPos.x < myPos.x;
         Vector2 desiredPos = new Vector2(
             targetPos.x + sideDir * attackRange,
             targetPos.y
@@ -70,11 +71,21 @@ public class MonsterAI : MonoBehaviour
             MoveTo(desiredPos, moveSpeed);
             return;
         }
-        // ===== CASE 3: QUÁ GẦN =====
+        // ===== CASE 3: QUÁ GẦN -> LÙI SANG BÊN (CHỈ KHI LÙI ĐƯỢC) =====
         if (distanceX < attackRange - xTolerance)
         {
-            Vector2 backPos = myPos + (myPos - targetPos).normalized * moveSpeed * Time.deltaTime;
-            transform.position = backPos;
+            float dirX = myPos.x < targetPos.x ? -1f : 1f;
+            Vector2 backPos = new Vector2(
+                myPos.x + dirX * moveSpeed * Time.deltaTime,
+                myPos.y
+            );
+            Vector2 clamped = GridManager.Instance.ClampToGrid(backPos);
+            // 🚫 Nếu không lùi được (đụng biên) → đứng im, KHÔNG đổi hướng
+            if (Mathf.Abs(clamped.x - myPos.x) < 0.001f)
+            {
+                return;
+            }
+            transform.position = clamped;
             return;
         }
         // ===== CASE 4: ĐÚNG KHOẢNG CÁCH -> ĐÁNH =====
@@ -96,6 +107,7 @@ public class MonsterAI : MonoBehaviour
         float dist = Vector2.Distance(transform.position, currentTarget.position);
         if (dist <= monsterHealth.stats.attackRange && attackTimer <= 0)
         {
+            sprite.flipX = currentTarget.position.x < transform.position.x;
             Shoot();
             attackTimer = monsterHealth.stats.attackSpeed;
         }

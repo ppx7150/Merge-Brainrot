@@ -6,7 +6,7 @@ public class MonsterHealth : MonoBehaviour
     public int gridY;
     [Header("Visual")]
     public SpriteRenderer spriteRenderer;
-    public UnitVisualData[] visuals;
+    public Sprite[] visuals;
     public MonsterStats stats;
     public HPBar hpBar;
     public GameObject damageTextPrefab;
@@ -60,15 +60,7 @@ public class MonsterHealth : MonoBehaviour
 
     public void UpdateVisual()
     {
-        foreach (var v in visuals)
-        {
-            if (v.level == stats.level)
-            {
-                spriteRenderer.sprite = v.sprite;
-                transform.localScale = v.scale;
-                return;
-            }
-        }
+        spriteRenderer.sprite = visuals[stats.level - 1];
     }
     public void SetGridPos(int x, int y)
     {

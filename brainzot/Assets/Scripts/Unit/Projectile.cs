@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject, lifeTime);
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other) //Kiểm tra va chạm của đạn với địch
     {
         MonsterHealth hp = other.GetComponent<MonsterHealth>();
         if (hp != null && other.gameObject == enemy)

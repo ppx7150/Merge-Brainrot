@@ -15,7 +15,7 @@ public class DamageText : MonoBehaviour
         color = text.color;
     }
 
-    public void SetText(string value)
+    public void SetText(string value) //Hiển thị gía trị dame gây ra trong 1 giây 
     {
         if (text == null) return;
         text.SetText(value);

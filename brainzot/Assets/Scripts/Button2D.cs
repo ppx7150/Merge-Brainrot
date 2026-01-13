@@ -13,7 +13,7 @@ public enum ButtonType
 public class Button2D : MonoBehaviour, IPointerClickHandler
 {
     public ButtonType buttonType;
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData) //Kiểm tra va chạm raycast của Button
     {
         switch(buttonType)
         {

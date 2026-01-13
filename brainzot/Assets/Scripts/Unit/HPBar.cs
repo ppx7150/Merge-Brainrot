@@ -5,7 +5,7 @@ public class HPBar : MonoBehaviour
     public Transform fill;
     private float maxWidth = 1f;
 
-    public void SetHP(float ratio)
+    public void SetHP(float ratio) //Hiển thị hp thực
     {
         ratio = Mathf.Clamp01(ratio);
         Vector3 scale = fill.localScale;

@@ -9,15 +9,14 @@ public class MonsterAI : MonoBehaviour
 
     public Transform attackPoint;
     public GameObject projectilePrefab;
-    public float projectileForce = 10f;
+    public float projectileForce = 10f; //Tốc độ bay của đạn
 
-    private float attackTimer;
+    private float attackTimer;  //Thời gian thực để đánh tiếp
     private Transform currentTarget;
     public GameObject projectile;
 
     public Transform visualRoot;
     public SpriteRenderer sprite;
-    private int retreatDir = 0;
 
     void Update()
     {
@@ -38,7 +37,7 @@ public class MonsterAI : MonoBehaviour
             HandleRanged();
         }
     }
-    void HandleMelee()
+    void HandleMelee() //AI của Unit cận chiến gồm: di chuyển và tấn công và xoay hướng
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
 
@@ -124,12 +123,12 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void MoveTo(Vector2 targetPos, float speed)
+    void MoveTo(Vector2 targetPos, float speed) //Hàm di chuyển tới vị trí targetPos với tốc độ speed
     {
         transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
     }
 
-    void HandleRanged()
+    void HandleRanged()  //Ai của Unit đánh xa gồm: tấn công và xoay hướng
     {
         float dist = Vector2.Distance(transform.position, currentTarget.position);
         if (dist <= monsterHealth.stats.attackRange && attackTimer <= 0)
@@ -140,7 +139,7 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void FindNearestTarget()
+    void FindNearestTarget() //Tìm kiếm địch gần nhất
     {
         Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 10f, enemyLayer);
         float minDist = Mathf.Infinity;
@@ -157,7 +156,7 @@ public class MonsterAI : MonoBehaviour
         currentTarget = nearest;
     }
     
-    void AttackMelee()
+    void AttackMelee() //Hàm tấn công của Unit cận chiến
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
         MonsterHealth hp = currentTarget.GetComponent<MonsterHealth>();
@@ -167,7 +166,7 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void Shoot()
+    void Shoot() //Hàm bắn của Unit đánh xa
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf || projectile != null) return;
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);

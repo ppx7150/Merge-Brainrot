@@ -23,18 +23,20 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         offset = transform.position - GetMouseWorldPos();   
         GridManager.Instance.Remove(unit.gridX, unit.gridY);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf   ) return;
+        if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         transform.position = GetMouseWorldPos() + offset;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         TrySnap();
     }
 

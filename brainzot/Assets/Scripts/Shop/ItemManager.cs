@@ -1,14 +1,14 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
-    public bool isMelee;
-    public int cost;
-    public int level;
-    public int dame;
-    public int hp;
+    public bool isMelee; //Kiểm tra xem có phải Unit cận chiến không
+    public int cost; //Giá tiền của Unit
+    public int level; //level của Unit
+    public int dame; //atk của Unit
+    public int hp; //hp của Unit
     public TMP_Text txtCost;
     public TMP_Text txtDame;
     public TMP_Text txtHp;
@@ -19,7 +19,7 @@ public class ItemManager : MonoBehaviour
         if (txtDame != null) txtDame.SetText(dame.ToString());
         if (txtHp != null) txtHp.SetText(hp.ToString());
     }
-    public void SetStats(int level)
+    public void SetStats(int level) //set chỉ số hp, dame cho unit ứng với level
     {
         if (level < 1 || level > 7) return;
         int index = level - 1;
@@ -38,7 +38,7 @@ public class ItemManager : MonoBehaviour
             hp = hps[index];
         }
     }
-    public void BuyUnit()
+    public void BuyUnit() //Mua unit
     {
         if (!Char.Instance.SubGems(cost)) return;
         if (isMelee)

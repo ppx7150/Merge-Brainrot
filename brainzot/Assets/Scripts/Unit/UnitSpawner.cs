@@ -16,14 +16,14 @@ public class UnitSpawner : MonoBehaviour
         Instance = this;
         LoadCost(costMelee, costRange);
     }
-    public void LoadCost(float cM, float cR)
+    public void LoadCost(float cM, float cR) //Làm mới giá tiền mua Unit
     {
         costMelee = cM;
         costRange = cR;
         txtCostMelee.SetText((int)costMelee + "$");
         txtCostRange.SetText((int)costRange + "$");
     }
-    public void UpgradeCost(bool isMelee)
+    public void UpgradeCost(bool isMelee) //Nâng giá tiền mua Unit
     {
         if (isMelee)
         {
@@ -35,7 +35,7 @@ public class UnitSpawner : MonoBehaviour
             txtCostRange.SetText((int)costRange + "$");
         }
     }
-    public void SpawnRangeUnit(int level)
+    public void SpawnRangeUnit(int level) //Spawn Unit đánh xa
     {
         GridManager grid = GridManager.Instance;
 
@@ -59,7 +59,7 @@ public class UnitSpawner : MonoBehaviour
         Debug.Log("Grid full - cannot spawn unit");
     }
 
-    public void SpawnMeleeUnit(int level)
+    public void SpawnMeleeUnit(int level) //Spawn unit cận chiến
     {
         GridManager grid = GridManager.Instance;
 

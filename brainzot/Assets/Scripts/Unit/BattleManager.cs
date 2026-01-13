@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
-    public bool startPvP;
+    public bool startPvP; //Kiểm tra xem có đang ở trạng thái Fight không
     public List<GameObject> playerTeam = new List<GameObject>();
     public List<GameObject> enemyTeam = new List<GameObject>();
     public static BattleManager Instance;
@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour
     public GameObject rangeEnemyPrefabs;
     public GameObject winPanel;
     public GameObject losePanel;
+    public GameObject ButtonList;
     public TMP_Text[] txtCoinReward;
     private void Awake()
     {
@@ -22,7 +23,7 @@ public class BattleManager : MonoBehaviour
     {
         if(startPvP) CheckBattleEnd();
     }
-    void CheckBattleEnd()
+    void CheckBattleEnd() //Kiểm tra xem team nào thắng team nào thua
     {
         if (!playerTeam.Exists(m => m.activeSelf))
         {
@@ -32,6 +33,7 @@ public class BattleManager : MonoBehaviour
             txtCoinReward[1].SetText("+" + coin + "$");
             Char.Instance.AddCoins(coin);
             startPvP = false;
+            ButtonList.SetActive(true);
         } else if (!enemyTeam.Exists(m => m.activeSelf))
         {
             Debug.Log("Player Win");
@@ -40,9 +42,10 @@ public class BattleManager : MonoBehaviour
             txtCoinReward[0].SetText("+" + coin + "$");
             Char.Instance.AddCoins(coin);
             startPvP = false;
+            ButtonList.SetActive(true);
         }
     }
-    public void resetlevel()
+    public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
     {
         GridManager.Instance.CLear();
         foreach (var m in enemyTeam)
@@ -59,7 +62,7 @@ public class BattleManager : MonoBehaviour
         }
         losePanel.SetActive(false);
     }
-    public void StartBattle()
+    public void StartBattle() //Bắt đầu Fight
     {
         playerTeam.RemoveAll(m => m == null);
         if (!playerTeam.Exists(m => m.activeSelf)) return;
@@ -74,8 +77,9 @@ public class BattleManager : MonoBehaviour
             m.GetComponent<MonsterAI>().enabled = true;
         }
         startPvP = true;
+        ButtonList.SetActive(false);
     }
-    public void ChangeLevelUp()
+    public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
         GridManager.Instance.CLear();
         Char.Instance.level++;

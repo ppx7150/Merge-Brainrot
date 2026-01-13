@@ -5,7 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 [Serializable]
-public class DataUnit
+public class DataUnit //Dữ liệu của mỗi Unit
 {
     public string type;
     public int level;
@@ -18,7 +18,7 @@ public class DataUnit
     public int gridY;
 }
 [Serializable]
-public class SaveData
+public class SaveData //Dữ liệu cần lưu
 {
     public int coins;
     public int gems;
@@ -30,14 +30,14 @@ public class SaveData
 [Serializable]
 public class Team
 {
-    public List<DataUnit> units;
+    public List<DataUnit> units; //Danh sách Unit hiện có
 }
 public class Char : MonoBehaviour
 {
-    public int level;
-    public int coins;
-    public int gems;
-    public TMP_Text txtCoins;
+    public int level; //Level màn chơi của người chơi 
+    public int coins; //Số tiền của người chơi 
+    public int gems; //Số tiền của người chơi 
+    public TMP_Text txtCoins; 
     public TMP_Text txtGems;
     public List<MonsterHealth> dataMyTeam = new List<MonsterHealth>();
     public static Char Instance;
@@ -53,7 +53,7 @@ public class Char : MonoBehaviour
         txtCoins.SetText(coins + "$");
         txtGems.SetText(gems.ToString());
     }
-    public void Save(string path)
+    public void Save(string path) //Lưu lại dữ liệu của người chơi
     {
         SaveData saveData = new SaveData();
         saveData.level = level;
@@ -75,7 +75,7 @@ public class Char : MonoBehaviour
         File.WriteAllText(path, json);
         Debug.Log("Saved: " + path);
     }
-    public DataUnit formatTodata(MonsterHealth m)
+    public DataUnit formatTodata(MonsterHealth m) //Hàm chuyển đổi dữ liệu MonsterHealth sang DataUnit
     {
         return new DataUnit
         {
@@ -90,7 +90,7 @@ public class Char : MonoBehaviour
             gridY = m.gridY
         };
     }
-    public void Load(string path)
+    public void Load(string path) //Load dữ liệu của người chơi
     {
         if (!File.Exists(path))
         {
@@ -124,15 +124,15 @@ public class Char : MonoBehaviour
         }
         Debug.Log("Loaded game");
     }
-    public void OnApplicationPause(bool pause)
+    public void OnApplicationPause(bool pause) //Lưu dữ liệu khi rời khỏi game(chưa out game)
     {
         if (pause) Save(Application.persistentDataPath + "/save.json");
     }
-    private void OnApplicationQuit()
+    private void OnApplicationQuit() //Lưu dữ liệu khi out game
     {
         Save(Application.persistentDataPath + "/save.json");
     }
-    public bool SubCoins(int a)
+    public bool SubCoins(int a) //Trừ coin của người chơi
     {
         if (a > coins)
         {
@@ -144,13 +144,13 @@ public class Char : MonoBehaviour
         txtCoins.SetText(coins + "$");
         return true;
     }
-    public void AddCoins(int a)
+    public void AddCoins(int a) //Thêm coin của người chơi
     {
         coins += a;
         coins = Mathf.Min(coins, int.MaxValue);
         txtCoins.SetText(coins + "$");
     }
-    public bool SubGems(int a)
+    public bool SubGems(int a) //Trừ gem của người chơi
     {
         if (a > gems)
         {
@@ -162,7 +162,7 @@ public class Char : MonoBehaviour
         txtGems.SetText(gems.ToString());
         return true;
     }
-    public void AddGems(int a)
+    public void AddGems(int a) //Thêm gem của người chơi
     {
         gems += a;
         gems = Mathf.Min(gems, int.MaxValue);

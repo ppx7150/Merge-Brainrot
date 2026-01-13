@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
-    public float MinX => origin.x;
-    public float MaxX => origin.x + (columns - 1) * cellSize;
+    public float MinX => origin.x; //vị trí biên nhỏ nhất của trục Ox
+    public float MaxX => origin.x + (columns - 1) * cellSize; //vị trí biên lớn nhất của trục Ox
 
     [Header("Grid Size")]   //khai báo 6 hàng 5 cột.
     public int columns = 5;
@@ -63,7 +63,7 @@ public class GridManager : MonoBehaviour
         if (!IsValid(x, y)) return;
         grid[x, y] = null;
     }
-    public void CLear()
+    public void CLear() //Đặt toàn bộ vị trí trong grid về null
     {
         for(int i = 0; i <= 5; i++)
         {
@@ -89,7 +89,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public Vector2 ClampToGrid(Vector2 worldPos)
+    public Vector2 ClampToGrid(Vector2 worldPos) //Kiểm tra vị trí nếu nằm ngoài grid thì sẽ trả về vị trí ở biên
     {
         float minX = origin.x;
         float maxX = origin.x + (columns - 1) * cellSize;
@@ -102,7 +102,7 @@ public class GridManager : MonoBehaviour
 
         return new Vector2(clampedX, clampedY);
     }
-    public bool IsNearEdgeX(float x, float epsilon = 0.05f)
+    public bool IsNearEdgeX(float x, float epsilon = 0.05f) //Xét trục Ox kiểm tra xem vị trí x có ở gần biên không với khoảng cách an toàn là epsilon
     {
         float minX = origin.x;
         float maxX = origin.x + (columns - 1) * cellSize;

@@ -345,7 +345,7 @@ MonoBehaviour:
     m_Bits: 128
   attackPoint: {fileID: 6267916871649445724}
   projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
-  projectileForce: 10
+  projectileForce: 7
   projectile: {fileID: 0}
   visualRoot: {fileID: 1848856770379285704}
   sprite: {fileID: 7127517159774211878}

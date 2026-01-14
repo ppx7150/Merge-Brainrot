@@ -21,27 +21,34 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 if (BattleManager.Instance.startPvP || !Char.Instance.SubCoins((int)UnitSpawner.Instance.costMelee)) return;
                 UnitSpawner.Instance.UpgradeCost(true);
                 UnitSpawner.Instance.SpawnMeleeUnit(0);
+                AudioManager.Instance.Play(GameSound.unitSound);
                 break;
             case ButtonType.SpawnRange:
                 if (BattleManager.Instance.startPvP! || !Char.Instance.SubCoins((int)UnitSpawner.Instance.costRange)) return;
                 UnitSpawner.Instance.UpgradeCost(false);
                 UnitSpawner.Instance.SpawnRangeUnit(0);
+                AudioManager.Instance.Play(GameSound.unitSound);
                 break;
             case ButtonType.Battle:
                 if (BattleManager.Instance.startPvP) return;
                 BattleManager.Instance.StartBattle();
+                AudioManager.Instance.Play(GameSound.fightSound);
                 break;
             case ButtonType.DailyReward:
                 PanelManager.Instance.showDailyRewardPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
                 break;
             case ButtonType.Collection:
                 PanelManager.Instance.showCollectionPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
                 break;
             case ButtonType.Setting:
                 PanelManager.Instance.showSettingPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
                 break;
             case ButtonType.Summon:
                 PanelManager.Instance.showSummonPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
                 break;
         }
 

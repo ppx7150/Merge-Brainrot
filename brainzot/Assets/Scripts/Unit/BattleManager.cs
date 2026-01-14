@@ -29,6 +29,7 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("Enemy Win");
             losePanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.loseSound);
             int coin = Random.Range(100, 200);
             txtCoinReward[1].SetText("+" + coin + "$");
             Char.Instance.AddCoins(coin);
@@ -38,6 +39,7 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("Player Win");
             winPanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.victorySound);
             int coin = Random.Range(150, 300);
             txtCoinReward[0].SetText("+" + coin + "$");
             Char.Instance.AddCoins(coin);
@@ -61,6 +63,7 @@ public class BattleManager : MonoBehaviour
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
         losePanel.SetActive(false);
+        AudioManager.Instance.Play(GameSound.coinSound);
     }
     public void StartBattle() //Bắt đầu Fight
     {
@@ -97,13 +100,15 @@ public class BattleManager : MonoBehaviour
         }
         GameObject obj;
         MonsterHealth mh;
+
+
         for (int i = 5; i >= 3; i--)
         {
             int sl = Random.Range(1, 4);
             List<int> arr = new List<int> { 0, 1, 2, 3, 4 };
             for (int j =0; j < sl; j++)
             {
-                obj = Instantiate(i == 5 ? rangeEnemyPrefabs: meleeEnemyPrefabs);
+                obj = Instantiate(i == 5 ? rangeEnemyPrefabs : meleeEnemyPrefabs);
                 mh = obj.GetComponent<MonsterHealth>();
                 mh.LevelUp(Random.Range(1, 3));
                 enemyTeam.Add(obj);
@@ -113,5 +118,6 @@ public class BattleManager : MonoBehaviour
             }
         }
         winPanel.SetActive(false);
+        AudioManager.Instance.Play(GameSound.coinSound);
     }
 }

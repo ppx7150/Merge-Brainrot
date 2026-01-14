@@ -28,6 +28,7 @@ public class PanelManager : MonoBehaviour
         if (dailyRewardPanel != null)
         {
             dailyRewardPanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideDailyRewardPanel()
@@ -35,6 +36,7 @@ public class PanelManager : MonoBehaviour
         if (dailyRewardPanel != null)
         {
             dailyRewardPanel.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void showDailyRewardAds()
@@ -42,6 +44,7 @@ public class PanelManager : MonoBehaviour
         if (adsPanel != null)
         {
             adsPanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideDailyRewardAds()
@@ -49,6 +52,7 @@ public class PanelManager : MonoBehaviour
         if (adsPanel != null)
         {
             adsPanel.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
 
@@ -59,6 +63,7 @@ public class PanelManager : MonoBehaviour
             collectionPanel.SetActive(true);
             rangeCollection.SetActive(true);
             meleeCollection.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideCollectionPanel()
@@ -68,6 +73,7 @@ public class PanelManager : MonoBehaviour
             collectionPanel.SetActive(false);
             rangeCollection.SetActive(false);
             meleeCollection.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void showRangeCollection()
@@ -76,6 +82,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeCollection.SetActive(true);
             meleeCollection.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void showMeleeCollection()
@@ -84,6 +91,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeCollection.SetActive(false);
             meleeCollection.SetActive(true);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
 
@@ -92,6 +100,7 @@ public class PanelManager : MonoBehaviour
         if (settingPanel != null)
         {
             settingPanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
 
@@ -100,6 +109,7 @@ public class PanelManager : MonoBehaviour
         if (settingPanel != null)
         {
             settingPanel.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
 
@@ -110,6 +120,7 @@ public class PanelManager : MonoBehaviour
             summonPanel.SetActive(true);
             rangeSummon.SetActive(true);
             meleeSummon.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideSummonPanel()
@@ -119,6 +130,7 @@ public class PanelManager : MonoBehaviour
             summonPanel.SetActive(false);
             rangeSummon.SetActive(false);
             meleeSummon.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void showRangeSummon()
@@ -127,6 +139,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeSummon.SetActive(true);
             meleeSummon.SetActive(false);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void showMeleeSummon()
@@ -135,6 +148,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeSummon.SetActive(false);
             meleeSummon.SetActive(true);
+            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
 }

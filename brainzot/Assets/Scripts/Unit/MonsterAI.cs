@@ -171,7 +171,9 @@ public class MonsterAI : MonoBehaviour
         if (currentTarget == null || !currentTarget.gameObject.activeSelf || projectile != null) return;
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
         projectile = proj;
-        proj.GetComponent<Projectile>().enemy = currentTarget.gameObject;
+        Projectile p = proj.GetComponent<Projectile>();
+        p.enemy = currentTarget.gameObject;
+        p.damage = monsterHealth.stats.attackDamage;
         Vector2 dir = (currentTarget.position - attackPoint.position).normalized;
         proj.GetComponent<Rigidbody2D>().AddForce(dir * projectileForce, ForceMode2D.Impulse);
     }

@@ -56,24 +56,20 @@ public class MonsterHealth : MonoBehaviour
         SetStats(stats.level);
         UpdateVisual();
     }
-    public void SetStats(int level) //Set chỉ số cho Unit phù hợp với level
+    public void SetStats(int level)
     {
         if (level < 1 || level > 7) return;
         int index = level - 1;
         if (stats.type == MonsterType.Melee)
         {
-            int[] damages = { 5, 12, 27, 64, 152, 315, 645 };
-            int[] hps = { 18, 43, 105, 225, 605, 1320, 2765 };
-            stats.attackDamage = damages[index];
-            stats.maxHP = hps[index];
+            stats.attackDamage = Char.Instance.damagesMelee[index];
+            stats.maxHP = Char.Instance.hpsMelee[index];
             stats.currentHP = stats.maxHP;
         }
         else
         {
-            int[] damages = { 3, 7, 15, 33, 70, 150, 315 };
-            int[] hps = { 45, 115, 270, 625, 1320, 2675, 5550 };
-            stats.attackDamage = damages[index];
-            stats.maxHP = hps[index];
+            stats.attackDamage = Char.Instance.damagesRange[index];
+            stats.maxHP = Char.Instance.hpsRange[index];
             stats.currentHP = stats.maxHP;
         }
     }

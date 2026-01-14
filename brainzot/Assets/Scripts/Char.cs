@@ -43,6 +43,10 @@ public class Char : MonoBehaviour
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
+    public int[] damagesMelee = { 5, 12, 27, 64, 152, 315, 645 };
+    public int[] hpsMelee = { 18, 43, 105, 225, 605, 1320, 2765 };
+    public int[] damagesRange = { 3, 7, 15, 33, 70, 150, 315 };
+    public int[] hpsRange = { 45, 115, 270, 625, 1320, 2675, 5550 };
     private void Awake()
     {
         Instance = this;
@@ -134,14 +138,17 @@ public class Char : MonoBehaviour
     }
     public bool SubCoins(int a) //Trừ coin của người chơi
     {
-        if (a > coins)
+        if (UnitSpawner.Instance.IsGridFull() == false)
         {
-            Debug.Log("Don't enough coins");
-            return false;
+            if (a > coins)
+            {
+                Debug.Log("Don't enough coins");
+                return false;
+            }
+            coins -= a;
+            coins = Mathf.Max(coins, 0);
+            txtCoins.SetText(coins + "$");
         }
-        coins -= a;
-        coins = Mathf.Max(coins, 0);
-        txtCoins.SetText(coins + "$");
         return true;
     }
     public void AddCoins(int a) //Thêm coin của người chơi

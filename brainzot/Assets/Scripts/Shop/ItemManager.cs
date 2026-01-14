@@ -19,23 +19,19 @@ public class ItemManager : MonoBehaviour
         if (txtDame != null) txtDame.SetText(dame.ToString());
         if (txtHp != null) txtHp.SetText(hp.ToString());
     }
-    public void SetStats(int level) //set chỉ số hp, dame cho unit ứng với level
+    public void SetStats(int level)
     {
         if (level < 1 || level > 7) return;
         int index = level - 1;
         if (isMelee)
         {
-            int[] damages = { 5, 12, 27, 64, 152, 315, 645 };
-            int[] hps = { 18, 43, 105, 225, 605, 1320, 2765 };
-            dame = damages[index];
-            hp = hps[index];
+            dame = Char.Instance.damagesMelee[index];
+            hp = Char.Instance.hpsMelee[index];
         }
         else
         {
-            int[] damages = { 3, 7, 15, 33, 70, 150, 315 };
-            int[] hps = { 45, 115, 270, 625, 1320, 2675, 5550 };
-            dame = damages[index];
-            hp = hps[index];
+            dame = Char.Instance.damagesRange[index];
+            hp = Char.Instance.hpsRange[index];
         }
     }
     public void BuyUnit() //Mua unit
@@ -50,4 +46,5 @@ public class ItemManager : MonoBehaviour
             UnitSpawner.Instance.SpawnRangeUnit(level);
         }
     }
+
 }

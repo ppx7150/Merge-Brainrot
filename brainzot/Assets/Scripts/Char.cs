@@ -115,8 +115,7 @@ public class Char : MonoBehaviour
             mh.gridX = m.gridX;
             mh.gridY = m.gridY;
             mh.stats.type = tp;
-            mh.stats.level = m.level;
-            mh.stats.maxHP = m.maxHP;
+            mh.LevelUp(m.level - 1);
             mh.stats.attackDamage = m.attackDamage;
             mh.stats.attackSpeed = m.attackSpeed;
             mh.stats.attackRange = m.attackRange;
@@ -124,7 +123,6 @@ public class Char : MonoBehaviour
             dataMyTeam.Add(mh);
             BattleManager.Instance.playerTeam.Add(obj);
             GridManager.Instance.Place(mh, mh.gridX, mh.gridY);
-            mh.UpdateVisual();
         }
         Debug.Log("Loaded game");
     }

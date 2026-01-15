@@ -7,7 +7,10 @@ public enum GameSound
     unitSound,
     fightSound,
     coinSound,
-    buySound,
+    buyMeleeSound,
+    buyRangeSound,
+    meleeAttackSound,
+    rangeAttackSound,
     loseSound,
     victorySound,
     clickButtonSound,
@@ -21,7 +24,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip unitClip;
     public AudioClip fightClip;
     public AudioClip coinClip;
-    public AudioClip buyClip;
+    public AudioClip buyMeleeClip;
+    public AudioClip buyRangeClip;
+    public AudioClip meleeAttackClip;
+    public AudioClip rangeAttackClip;
     public AudioClip victoryClip;
     public AudioClip loseClip;
     public AudioClip clickButtonClip;
@@ -56,7 +62,10 @@ public class AudioManager : MonoBehaviour
             soundMap[GameSound.unitSound] = unitClip;
             soundMap[GameSound.fightSound] = fightClip;
             soundMap[GameSound.coinSound] = coinClip;
-            soundMap[GameSound.buySound] = buyClip;
+            soundMap[GameSound.buyMeleeSound] = buyMeleeClip;
+            soundMap[GameSound.buyRangeSound] = buyRangeClip;
+            soundMap[GameSound.meleeAttackSound] = meleeAttackClip;
+            soundMap[GameSound.rangeAttackSound] = rangeAttackClip;
             soundMap[GameSound.victorySound] = victoryClip;
             soundMap[GameSound.loseSound] = loseClip;
             soundMap[GameSound.clickButtonSound] = clickButtonClip;

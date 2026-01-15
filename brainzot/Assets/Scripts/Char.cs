@@ -43,10 +43,10 @@ public class Char : MonoBehaviour
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
-    public int[] damagesMelee = { 5, 12, 27, 64, 152, 315, 645 };
-    public int[] hpsMelee = { 18, 43, 105, 225, 605, 1320, 2765 };
-    public int[] damagesRange = { 3, 7, 15, 33, 70, 150, 315 };
-    public int[] hpsRange = { 45, 115, 270, 625, 1320, 2675, 5550 };
+    public int[] damagesRange = { 5, 12, 27, 64, 152, 315, 645 };
+    public int[] hpsRange = { 7, 18, 43, 105, 225, 605, 1320, 2765 };
+    public int[] damagesMelee = { 1, 3, 7, 15, 33, 70, 150, 315 };
+    public int[] hpsMelee = { 18, 45, 115, 270, 625, 1320, 2675, 5550 };
     private void Awake()
     {
         Instance = this;

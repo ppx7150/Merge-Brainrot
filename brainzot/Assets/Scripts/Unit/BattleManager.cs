@@ -98,15 +98,23 @@ public class BattleManager : MonoBehaviour
             m.GetComponent<MonsterAI>().enabled = false;
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
+
+        GenerateEnemy();
+
+        winPanel.SetActive(false);
+        AudioManager.Instance.Play(GameSound.coinSound);
+    }
+
+    public void GenerateEnemy()
+    {
         GameObject obj;
         MonsterHealth mh;
-
 
         for (int i = 5; i >= 3; i--)
         {
             int sl = Random.Range(1, 4);
             List<int> arr = new List<int> { 0, 1, 2, 3, 4 };
-            for (int j =0; j < sl; j++)
+            for (int j = 0; j < sl; j++)
             {
                 obj = Instantiate(i == 5 ? rangeEnemyPrefabs : meleeEnemyPrefabs);
                 mh = obj.GetComponent<MonsterHealth>();
@@ -117,7 +125,5 @@ public class BattleManager : MonoBehaviour
                 GridManager.Instance.Place(mh, x, i);
             }
         }
-        winPanel.SetActive(false);
-        AudioManager.Instance.Play(GameSound.coinSound);
     }
 }

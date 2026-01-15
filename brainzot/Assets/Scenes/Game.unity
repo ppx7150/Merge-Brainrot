@@ -11423,12 +11423,24 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1768595689794443955, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_Size.x
+      value: 1.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768595689794443955, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_Size.y
+      value: 1.285
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768595689794443955, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3465286685962602723, guid: 1269258e950467d4e90cb4612b139244, type: 3}
+      objectReference: {fileID: 5088316998373936774, guid: 2883f6405174aa74285821ebe485f322, type: 3}
     - target: {fileID: 1768595689794443955, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: m_SortingOrder
       value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1768595689794443955, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2776292925255340814, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: m_Camera
@@ -11446,6 +11458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Melee
       objectReference: {fileID: 0}
+    - target: {fileID: 4747127205807759293, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: gridX
       value: 4
@@ -11458,6 +11474,10 @@ PrefabInstance:
       propertyPath: hpBar
       value: 
       objectReference: {fileID: 1051806261}
+    - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: stats.type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: stats.maxHP
       value: 18
@@ -11476,6 +11496,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: stats.attackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: stats.attackDamage
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183945271208750086, guid: f96813442063546488f17de3bfac209e, type: 3}
@@ -11519,8 +11543,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6223354445588274637, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223354445588274637, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
       value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223354445588274637, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223354445588274637, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.415
+      objectReference: {fileID: 0}
+    - target: {fileID: 6223354445588274637, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.085
       objectReference: {fileID: 0}
     - target: {fileID: 7420313260831619357, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: fill
@@ -14314,16 +14354,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1932192664758145213, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
+      propertyPath: stats.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932192664758145213, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: stats.maxHP
-      value: 45
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1932192664758145213, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: stats.currentHP
-      value: 45
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1932192664758145213, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: stats.attackDamage
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4680543719672247251, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
@@ -14384,7 +14428,7 @@ PrefabInstance:
     - target: {fileID: 7127517159774211878, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -855298285791758126, guid: f2cc582c267ba674182bb7e3bdec9d92, type: 3}
+      objectReference: {fileID: -855298285791758126, guid: b12dc06df6feb97428d10baa703c2c90, type: 3}
     - target: {fileID: 7127517159774211878, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: m_SortingOrder
       value: -5
@@ -14392,6 +14436,10 @@ PrefabInstance:
     - target: {fileID: 8332007673813886209, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
       propertyPath: m_Name
       value: Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 8332007673813886209, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -17123,10 +17171,10 @@ MonoBehaviour:
   dataMyTeam: []
   meleePrefabs: {fileID: 4747127205807759293, guid: fb66d71dfdf0b3f488acb910418365fc, type: 3}
   rangePrefabs: {fileID: 8332007673813886209, guid: a4f8af3414410db49a97615b8fa30579, type: 3}
-  damagesMelee: 050000000c0000001b00000040000000980000003b01000085020000
-  hpsMelee: 120000002b00000069000000e10000005d02000028050000cd0a0000
   damagesRange: 03000000070000000f0000002100000046000000960000003b010000
   hpsRange: 2d000000730000000e0100007102000028050000730a0000ae150000
+  damagesMelee: 050000000c0000001b00000040000000980000003b01000085020000
+  hpsMelee: 120000002b00000069000000e10000005d02000028050000cd0a0000
 --- !u!4 &2013666656
 Transform:
   m_ObjectHideFlags: 0
@@ -17585,12 +17633,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   unitClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
-  fightClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
+  fightClip: {fileID: 8300000, guid: 906715be299484b47bbf657830bf0923, type: 3}
   coinClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
-  buyClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
+  buyMeleeClip: {fileID: 8300000, guid: b7400625ae69e2e47bda1c725bec5c43, type: 3}
+  buyRangeClip: {fileID: 8300000, guid: 395d647c064a11d4d92c7b0e1bdf87ca, type: 3}
+  meleeAttackClip: {fileID: 0}
+  rangeAttackClip: {fileID: 0}
   victoryClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
-  loseClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
-  clickButtonClip: {fileID: 8300000, guid: cfd3782771335d840b1e148533c9d5b5, type: 3}
+  loseClip: {fileID: 8300000, guid: a288ac4aca7d81142a7188d95417f893, type: 3}
+  clickButtonClip: {fileID: 8300000, guid: 385abb309af8339439d422ce46edce15, type: 3}
   audioSourcePrefab: {fileID: 1859063813}
   sfxVolume: 1
   isMuted: 0
@@ -17649,6 +17700,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Melee (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4747127205807759293, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: gridY
       value: 5
@@ -17675,6 +17730,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
       propertyPath: stats.attackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826705724963595282, guid: f96813442063546488f17de3bfac209e, type: 3}
+      propertyPath: stats.attackDamage
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183945271208750086, guid: f96813442063546488f17de3bfac209e, type: 3}

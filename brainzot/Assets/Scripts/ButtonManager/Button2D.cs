@@ -21,13 +21,13 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 if (BattleManager.Instance.startPvP || !Char.Instance.SubCoins((int)UnitSpawner.Instance.costMelee)) return;
                 UnitSpawner.Instance.UpgradeCost(true);
                 UnitSpawner.Instance.SpawnMeleeUnit(0);
-                AudioManager.Instance.Play(GameSound.unitSound);
+                AudioManager.Instance.Play(GameSound.buyMeleeSound);
                 break;
             case ButtonType.SpawnRange:
                 if (BattleManager.Instance.startPvP! || !Char.Instance.SubCoins((int)UnitSpawner.Instance.costRange)) return;
                 UnitSpawner.Instance.UpgradeCost(false);
                 UnitSpawner.Instance.SpawnRangeUnit(0);
-                AudioManager.Instance.Play(GameSound.unitSound);
+                AudioManager.Instance.Play(GameSound.buyRangeSound);
                 break;
             case ButtonType.Battle:
                 if (BattleManager.Instance.startPvP) return;

@@ -42,6 +42,7 @@ public class MonsterHealth : MonoBehaviour
         GameObject textObj = Instantiate(damageTextPrefab, textSpawnPoint.position, Quaternion.identity, textSpawnPoint);
         DamageText dmgText = textObj.GetComponent<DamageText>();
         dmgText.SetText(damage.ToString());
+        dmgText.DamageSize(damage);
         timeShowDameTxt = 1f;
         damageInSecond = 0f;
     }
@@ -76,7 +77,7 @@ public class MonsterHealth : MonoBehaviour
 
     public void UpdateVisual() //Cập nhật visual cho phù hợp với level Unit
     {
-        spriteRenderer.sprite = visuals[stats.level - 1];
+        spriteRenderer.sprite = visuals[stats.level];
     }
     public void SetGridPos(int x, int y) //Lưu vị trí của Unit
     {

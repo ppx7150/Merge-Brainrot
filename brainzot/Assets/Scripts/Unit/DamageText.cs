@@ -9,6 +9,7 @@ public class DamageText : MonoBehaviour
     private TextMeshPro text;
     private Color color;
 
+
     void Awake()
     {
         text = GetComponent<TextMeshPro>();
@@ -19,6 +20,17 @@ public class DamageText : MonoBehaviour
     {
         if (text == null) return;
         text.SetText(value);
+    }
+
+    public void DamageSize(float damage)
+    {
+        transform.localScale *= (1f + (damage / 500));
+    }
+
+    private void Start()
+    {
+        transform.localPosition = new Vector3(Random.Range(-0.7f, 0.7f), 0, 0);
+        
     }
 
     void Update()

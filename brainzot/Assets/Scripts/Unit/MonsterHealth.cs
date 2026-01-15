@@ -63,12 +63,14 @@ public class MonsterHealth : MonoBehaviour
         int index = level - 1;
         if (stats.type == MonsterType.Melee)
         {
+            Debug.Log("Melee " + level);
             stats.attackDamage = Char.Instance.damagesMelee[index];
             stats.maxHP = Char.Instance.hpsMelee[index];
             stats.currentHP = stats.maxHP;
         }
         else
         {
+            Debug.Log("Range" + level);
             stats.attackDamage = Char.Instance.damagesRange[index];
             stats.maxHP = Char.Instance.hpsRange[index];
             stats.currentHP = stats.maxHP;
@@ -77,7 +79,7 @@ public class MonsterHealth : MonoBehaviour
 
     public void UpdateVisual() //Cập nhật visual cho phù hợp với level Unit
     {
-        spriteRenderer.sprite = visuals[stats.level];
+        spriteRenderer.sprite = visuals[stats.level - 1];
     }
     public void SetGridPos(int x, int y) //Lưu vị trí của Unit
     {

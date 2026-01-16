@@ -20,7 +20,7 @@ public class DataUnit //Dữ liệu của mỗi Unit
 [Serializable]
 public class SaveData //Dữ liệu cần lưu
 {
-    public int coins;
+    public long coins;
     public int gems;
     public int level;
     public float costMelee;
@@ -35,7 +35,7 @@ public class Team
 public class Char : MonoBehaviour
 {
     public int level; //Level màn chơi của người chơi 
-    public int coins; //Số tiền của người chơi 
+    public long coins; //Số tiền của người chơi 
     public int gems; //Số tiền của người chơi 
     public TMP_Text txtCoins; 
     public TMP_Text txtGems;
@@ -68,9 +68,10 @@ public class Char : MonoBehaviour
     void Start()
     {
         Load(Application.persistentDataPath + "/save.json");
-        txtCoins.SetText(coins + "$");
+        txtCoins.SetText(FormatMoney(coins) + "$");
         txtGems.SetText(gems.ToString());
         if (level <= 1) TutorialController.Instance.StartPhase1();
+        else if(level == 2) TutorialController.Instance.StartPhase2_Merge();
     }
     public void Save(string path) //Lưu lại dữ liệu của người chơi
     {
@@ -109,6 +110,18 @@ public class Char : MonoBehaviour
             gridY = m.gridY
         };
     }
+    public static string FormatMoney(long value)
+    {
+        if (value >= 1_000_000_000)
+            return (value / 1_000_000_000f).ToString("0.#") + "B";
+        if (value >= 1_000_000)
+            return (value / 1_000_000f).ToString("0.#") + "M";
+        if (value >= 10_000)
+            return (value / 1_000f).ToString("0.#") + "k";
+
+        return value.ToString();
+    }
+
     public void Load(string path) //Load dữ liệu của người chơi
     {
         if (!File.Exists(path))
@@ -122,7 +135,7 @@ public class Char : MonoBehaviour
         level = saveData.level;
         coins = saveData.coins;
         gems = saveData.gems;
-        UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
+        if(level > 2) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
         foreach (var m in saveData.dataMyTeam.units)
         {
             MonsterType tp = (MonsterType)Enum.Parse(typeof(MonsterType), m.type); ;
@@ -142,13 +155,13 @@ public class Char : MonoBehaviour
     }
     public void OnApplicationPause(bool pause) //Lưu dữ liệu khi rời khỏi game(chưa out game)
     {
-        if (pause) Save(Application.persistentDataPath + "/save.json");
+        if (pause && level > 2) Save(Application.persistentDataPath + "/save.json");
     }
     private void OnApplicationQuit() //Lưu dữ liệu khi out game
     {
-        Save(Application.persistentDataPath + "/save.json");
+        if(level > 2) Save(Application.persistentDataPath + "/save.json");
     }
-    public bool SubCoins(int a) //Trừ coin của người chơi
+    public bool SubCoins(long a) //Trừ coin của người chơi
     {
         if (a > coins)
         {
@@ -156,15 +169,23 @@ public class Char : MonoBehaviour
             return false;
         }
         coins -= a;
-        coins = Mathf.Max(coins, 0);
-        txtCoins.SetText(coins + "$");
+        coins = Max(coins, 0);
+        txtCoins.SetText(FormatMoney(coins) + "$");
         return true;
     }
-    public void AddCoins(int a) //Thêm coin của người chơi
+    public void AddCoins(long a) //Thêm coin của người chơi
     {
         coins += a;
-        coins = Mathf.Min(coins, int.MaxValue);
-        txtCoins.SetText(coins + "$");
+        coins = Min(coins, long.MaxValue);
+        txtCoins.SetText(FormatMoney(coins) + "$");
+    }
+    public long Min(long a, long b)
+    {
+        return (a < b) ? a : b;
+    }
+    public long Max(long a, long b)
+    {
+        return (a > b) ? a : b;
     }
     public bool SubGems(int a) //Trừ gem của người chơi
     {

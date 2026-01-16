@@ -112,7 +112,7 @@ public class TutorialController : MonoBehaviour
             // ... (Copy lại các case cũ của bạn vào đây) ...
             case TutorialState.Phase1_CheckGold:
                 if (btnBuyMeleeObj.GetComponent<SpriteRenderer>())
-                    btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                    btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = -10;
                 RestoreUI(btnBuyMeleeObj);
                 HighlightUI(goldDisplayUI, "You need gold to Buy Brain rot");
                 goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = 95;
@@ -122,7 +122,7 @@ public class TutorialController : MonoBehaviour
 
             case TutorialState.Phase1_BuyRange:
                 RestoreUI(goldDisplayUI);
-                goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = 0;
+                goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = -10;
                 HighlightUI(btnBuyRangeObj, "Buy your range brain rot");
                 ShowHandAt(btnBuyRangeObj.transform.position);
                 break;

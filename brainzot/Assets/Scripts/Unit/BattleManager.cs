@@ -50,6 +50,8 @@ public class BattleManager : MonoBehaviour
             Char.Instance.AddCoins(coin);
             startPvP = false;
             ButtonList.SetActive(true);
+            Char.Instance.level++;
+            if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
         }
     }
     public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
@@ -97,7 +99,6 @@ public class BattleManager : MonoBehaviour
     {
         GridManager.Instance.CLear();
         arrUnitReady.Clear();
-        Char.Instance.level++;
         foreach (var m in enemyTeam)
         {
             if (m == null) continue;
@@ -117,7 +118,8 @@ public class BattleManager : MonoBehaviour
 
         winPanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.coinSound);
-        if(TutorialController.Instance.currentState != TutorialController.TutorialState.None) TutorialController.Instance.StartPhase2_Merge();
+        if (Char.Instance.level == 2) TutorialController.Instance.StartPhase2_Merge();
+        else if (Char.Instance.level == 3) UnitSpawner.Instance.OnCost();
     }
 
     public void GenerateEnemy()

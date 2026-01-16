@@ -17,13 +17,19 @@ public class UnitSpawner : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        LoadCost(costMelee, costRange);
-
     }
     public void LoadCost(float cM, float cR) //Làm mới giá tiền mua Unit
     {
+        OnCost();
         costMelee = cM;
         costRange = cR;
+        txtCostMelee.SetText((int)costMelee + "$");
+        txtCostRange.SetText((int)costRange + "$");
+    }
+    public void OnCost() //Hien giá tiền mua Unit
+    {
+        if (!txtCostMelee.gameObject.activeSelf) txtCostMelee.gameObject.SetActive(true);
+        if (!txtCostRange.gameObject.activeSelf) txtCostRange.gameObject.SetActive(true);
         txtCostMelee.SetText((int)costMelee + "$");
         txtCostRange.SetText((int)costRange + "$");
     }
@@ -57,7 +63,7 @@ public class UnitSpawner : MonoBehaviour
                     Char.Instance.dataMyTeam.Add(unit);
                     unit.LevelUp(level);
                     grid.Place(unit, x, y);
-                    UpgradeCost(false);
+                    if(Char.Instance.level > 2) UpgradeCost(false);
                     return;
                 }
             }
@@ -80,7 +86,7 @@ public class UnitSpawner : MonoBehaviour
                     Char.Instance.dataMyTeam.Add(unit);
                     unit.LevelUp(level);
                     grid.Place(unit, x, y);
-                    UpgradeCost(true);
+                    if (Char.Instance.level > 2) UpgradeCost(true);
                     return;
                 }
             }

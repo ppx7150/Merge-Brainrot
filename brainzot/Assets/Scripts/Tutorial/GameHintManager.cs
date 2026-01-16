@@ -7,11 +7,19 @@ public class GameHintManager : MonoBehaviour
     public float idleTimeThreshold = 5.0f;
 
     [Header("References")]
+    public GameObject canvas;
     public RectTransform handCursor; // Ảnh bàn tay (UI)
     public GameObject battleButton;
 
     private float lastInputTime;
-    private bool isHinting = false;
+    public bool isHinting = false;
+    public Vector3 defaultScalebtn;
+    public static GameHintManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+        defaultScalebtn = battleButton.transform.localScale;
+    }
 
     void Update()
     {
@@ -32,10 +40,10 @@ public class GameHintManager : MonoBehaviour
     void StopAllHints()
     {
         isHinting = false;
-        handCursor.gameObject.SetActive(false);
+        canvas.SetActive(false);
         handCursor.DOKill(); // Dừng tween bàn tay
         battleButton.transform.DOKill(); // Dừng tween nút battle
-        battleButton.transform.localScale = Vector3.one; // Reset scale
+        battleButton.transform.localScale = defaultScalebtn;
     }
 
     void DecideAndShowHint()
@@ -60,11 +68,25 @@ public class GameHintManager : MonoBehaviour
     }
     void ShowMergeHint(Transform charA, Transform charB)
     {
-        handCursor.gameObject.SetActive(true);
+        canvas.SetActive(true);
+        // --- TÍNH TOÁN VỊ TRÍ ---
+        Canvas cv = canvas.GetComponent<Canvas>();
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
 
-        // Chuyển vị trí từ World Space (Game 3D/2D) sang UI Screen Space
-        Vector3 posA = Camera.main.WorldToScreenPoint(charA.position);
-        Vector3 posB = Camera.main.WorldToScreenPoint(charB.position);
+        Vector2 GetUIPos(Vector3 worldPos)
+        {
+            Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+            if (cv.renderMode == RenderMode.ScreenSpaceOverlay) return screenPos;
+            else
+            {
+                Vector2 localPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, cv.worldCamera, out localPoint);
+                return canvasRect.TransformPoint(localPoint);
+            }
+        }
+
+        Vector3 posA = GetUIPos(charA.position);
+        Vector3 posB = GetUIPos(charB.position);
 
         // Reset vị trí về A
         handCursor.position = posA;
@@ -80,7 +102,7 @@ public class GameHintManager : MonoBehaviour
 
         seq.SetLoops(3); // Lặp lại 3 lần
         seq.OnComplete(() => {
-            handCursor.gameObject.SetActive(false);
+            canvas.SetActive(false);
             // Sau khi xong 3 lần thì làm gì? 
             // Có thể reset timer để 5s sau nhắc lại nếu vẫn chưa merge
             lastInputTime = Time.time;
@@ -94,9 +116,9 @@ public class GameHintManager : MonoBehaviour
         var grid = GridManager.Instance;
 
         // Vòng lặp tìm Unit A
-        for (int x1 = 0; x1 < grid.columns; x1++)
+        for (int x1 = 0; x1 < 5; x1++)
         {
-            for (int y1 = 0; y1 < grid.rows; y1++)
+            for (int y1 = 0; y1 < 3; y1++)
             {
                 MonsterHealth unitA = grid.GetUnit(x1, y1);
 
@@ -105,9 +127,9 @@ public class GameHintManager : MonoBehaviour
                 if (unitA == null || unitA.stats.level >= 8) continue;
 
                 // Vòng lặp tìm Unit B để so sánh với A
-                for (int x2 = 0; x2 < grid.columns; x2++)
+                for (int x2 = 0; x2 < 5; x2++)
                 {
-                    for (int y2 = 0; y2 < grid.rows; y2++)
+                    for (int y2 = 0; y2 < 3; y2++)
                     {
                         MonsterHealth unitB = grid.GetUnit(x2, y2);
 
@@ -139,10 +161,10 @@ public class GameHintManager : MonoBehaviour
     }
     void ShowBattleHint()
     {
-        // Hiệu ứng Breath: Scale to lên 1.1 rồi nhỏ lại 1.0
-        battleButton.transform.DOScale(1.1f, 0.8f)
+        battleButton.transform
+            .DOScale(defaultScalebtn * 1.1f, 1f)
             .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo); // Loop vĩnh viễn cho đến khi người chơi chạm màn hình
+            .SetLoops(-1, LoopType.Yoyo);
     }
 
     bool CanStartBattle()

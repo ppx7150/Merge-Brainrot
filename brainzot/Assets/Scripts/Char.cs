@@ -43,7 +43,7 @@ public class Char : MonoBehaviour
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
-    public int[] damagesRange = { 2, 5, 12, 27, 64, 152, 315, 645 };
+    public int[] damagesRange = { 2, 5, 12, 27, 64, 152, 315, 645 }; //sửa trên unity obj char
     public int[] hpsRange = { 7, 18, 43, 105, 225, 605, 1320, 2765 };
     public int[] damagesMelee = { 1, 3, 7, 15, 33, 70, 150, 315 };
     public int[] hpsMelee = { 18, 45, 115, 270, 625, 1320, 2675, 5550 };
@@ -51,11 +51,26 @@ public class Char : MonoBehaviour
     {
         Instance = this;
     }
+    public void LoadMyTeamNewBie()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject obj = Instantiate(i == 0 ? meleePrefabs : rangePrefabs);
+            MonsterHealth mh = obj.GetComponent<MonsterHealth>();
+            mh.SetGridPos(i == 0 ? 1 : 3, 0);
+            mh.stats.type = (i == 0 ? MonsterType.Melee : MonsterType.Ranged);
+            mh.LevelUp(0);
+            dataMyTeam.Add(mh);
+            BattleManager.Instance.playerTeam.Add(obj);
+            GridManager.Instance.Place(mh, mh.gridX, mh.gridY);
+        }
+    }
     void Start()
     {
         Load(Application.persistentDataPath + "/save.json");
         txtCoins.SetText(coins + "$");
         txtGems.SetText(gems.ToString());
+        if (level <= 1) TutorialController.Instance.StartPhase1();
     }
     public void Save(string path) //Lưu lại dữ liệu của người chơi
     {
@@ -99,6 +114,7 @@ public class Char : MonoBehaviour
         if (!File.Exists(path))
         {
             Debug.Log("No save file");
+            //LoadMyTeamNewBie();
             return;
         }
         string json = File.ReadAllText(path);
@@ -112,8 +128,7 @@ public class Char : MonoBehaviour
             MonsterType tp = (MonsterType)Enum.Parse(typeof(MonsterType), m.type); ;
             GameObject obj = Instantiate(tp == MonsterType.Melee? meleePrefabs: rangePrefabs);
             MonsterHealth mh = obj.GetComponent<MonsterHealth>();
-            mh.gridX = m.gridX;
-            mh.gridY = m.gridY;
+            mh.SetGridPos(m.gridX, m.gridY);
             mh.stats.type = tp;
             mh.LevelUp(m.level - 1);
             mh.stats.attackSpeed = m.attackSpeed;
@@ -135,17 +150,14 @@ public class Char : MonoBehaviour
     }
     public bool SubCoins(int a) //Trừ coin của người chơi
     {
-        if (UnitSpawner.Instance.IsGridFull() == false)
+        if (a > coins)
         {
-            if (a > coins)
-            {
-                Debug.Log("Don't enough coins");
-                return false;
-            }
-            coins -= a;
-            coins = Mathf.Max(coins, 0);
-            txtCoins.SetText(coins + "$");
+            Debug.Log("Don't enough coins");
+            return false;
         }
+        coins -= a;
+        coins = Mathf.Max(coins, 0);
+        txtCoins.SetText(coins + "$");
         return true;
     }
     public void AddCoins(int a) //Thêm coin của người chơi

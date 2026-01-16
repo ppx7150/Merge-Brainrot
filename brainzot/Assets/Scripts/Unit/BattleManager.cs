@@ -8,6 +8,7 @@ public class BattleManager : MonoBehaviour
     public bool startPvP; //Kiểm tra xem có đang ở trạng thái Fight không
     public List<GameObject> playerTeam = new List<GameObject>();
     public List<GameObject> enemyTeam = new List<GameObject>();
+    public List<GameObject> arrUnitReady = new List<GameObject>();
     public static BattleManager Instance;
     public GameObject meleeEnemyPrefabs;
     public GameObject rangeEnemyPrefabs;
@@ -18,6 +19,10 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+    public bool isOkPvP()
+    {
+        return arrUnitReady.Count == playerTeam.Count + enemyTeam.Count;
     }
     void Update()
     {
@@ -50,20 +55,26 @@ public class BattleManager : MonoBehaviour
     public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
     {
         GridManager.Instance.CLear();
+        arrUnitReady.Clear();
         foreach (var m in enemyTeam)
         {
             m.SetActive(true);
-            m.GetComponent<MonsterAI>().enabled = false;
+            MonsterAI ai = m.GetComponent<MonsterAI>();
+            ai.enabled = false;
+            ai.isReady = false;
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
         foreach (var m in playerTeam)
         {
             m.SetActive(true);
-            m.GetComponent<MonsterAI>().enabled = false;
+            MonsterAI ai = m.GetComponent<MonsterAI>();
+            ai.enabled = false;
+            ai.isReady = false;
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
         losePanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.coinSound);
+        if (TutorialController.Instance.currentState != TutorialController.TutorialState.None) TutorialController.Instance.StartPhase2_Merge();
     }
     public void StartBattle() //Bắt đầu Fight
     {
@@ -85,6 +96,7 @@ public class BattleManager : MonoBehaviour
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
         GridManager.Instance.CLear();
+        arrUnitReady.Clear();
         Char.Instance.level++;
         foreach (var m in enemyTeam)
         {
@@ -95,7 +107,9 @@ public class BattleManager : MonoBehaviour
         foreach (var m in playerTeam)
         {
             m.SetActive(true);
-            m.GetComponent<MonsterAI>().enabled = false;
+            MonsterAI ai = m.GetComponent<MonsterAI>();
+            ai.enabled = false;
+            ai.isReady = false;
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
 
@@ -103,6 +117,7 @@ public class BattleManager : MonoBehaviour
 
         winPanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.coinSound);
+        if(TutorialController.Instance.currentState != TutorialController.TutorialState.None) TutorialController.Instance.StartPhase2_Merge();
     }
 
     public void GenerateEnemy()

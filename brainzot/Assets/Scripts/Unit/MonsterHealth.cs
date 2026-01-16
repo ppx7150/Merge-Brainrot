@@ -18,7 +18,7 @@ public class MonsterHealth : MonoBehaviour
         stats.currentHP = stats.maxHP;
         hpBar.SetHP(1f);
         if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateVisual();
     }
     private void Update()
@@ -59,7 +59,7 @@ public class MonsterHealth : MonoBehaviour
     }
     public void SetStats(int level)
     {
-        if (level < 1 || level > 7) return;
+        if (level < 1 || level > 8) return;
         int index = level - 1;
         if (stats.type == MonsterType.Melee)
         {
@@ -90,6 +90,8 @@ public class MonsterHealth : MonoBehaviour
     {
         stats.currentHP = stats.maxHP;
         hpBar.SetHP(1f);
+        GetComponent<MonsterAI>().currentTarget = null;
         GridManager.Instance.Place(this, gridX, gridY);
+        spriteRenderer.flipX = false;
     }
 }

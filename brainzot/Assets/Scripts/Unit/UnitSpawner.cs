@@ -29,20 +29,17 @@ public class UnitSpawner : MonoBehaviour
     }
     public void UpgradeCost(bool isMelee) //Nâng giá tiền mua Unit
     {
-        if (!IsGridFull())
+        if (TutorialController.Instance.currentState != TutorialController.TutorialState.None) return;
+        if (isMelee)
         {
-            if (isMelee)
-            {
-                costMelee *= Char.Instance.level < 15 ? 1.175f:1.195f;
-                txtCostMelee.SetText((int)costMelee + "$");
-            }
-            else
-            {
-                costRange *= Char.Instance.level < 15 ? 1.175f : 1.195f;
-                txtCostRange.SetText((int)costRange + "$");
-            }
+            costMelee *= Char.Instance.level < 15 ? 1.175f:1.195f;
+            txtCostMelee.SetText((int)costMelee + "$");
         }
-        
+        else
+        {
+            costRange *= Char.Instance.level < 15 ? 1.175f : 1.195f;
+            txtCostRange.SetText((int)costRange + "$");
+        }
     }
     public void SpawnRangeUnit(int level) //Spawn Unit đánh xa
     {
@@ -55,11 +52,12 @@ public class UnitSpawner : MonoBehaviour
                 if (grid.IsEmpty(x, y))
                 {
                     GameObject unitObj = Instantiate(rangeUnitPrefab);
+                    battleManager.playerTeam.Add(unitObj);
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
+                    Char.Instance.dataMyTeam.Add(unit);
                     unit.LevelUp(level);
                     grid.Place(unit, x, y);
-                    battleManager.playerTeam.Add(unitObj);
-                    Char.Instance.dataMyTeam.Add(unit);
+                    UpgradeCost(false);
                     return;
                 }
             }
@@ -77,33 +75,16 @@ public class UnitSpawner : MonoBehaviour
                 if (grid.IsEmpty(x, y))
                 {
                     GameObject unitObj = Instantiate(meleeUnitPrefab);
+                    battleManager.playerTeam.Add(unitObj);
                     MonsterHealth unit = unitObj.GetComponent<MonsterHealth>();
+                    Char.Instance.dataMyTeam.Add(unit);
                     unit.LevelUp(level);
                     grid.Place(unit, x, y);
-                    battleManager.playerTeam.Add(unitObj);
-                    Char.Instance.dataMyTeam.Add(unit);
+                    UpgradeCost(true);
                     return;
                 }
             }
         }
         Debug.Log("Grid full - cannot spawn unit");
     }
-
-    public bool IsGridFull()
-    {
-        GridManager grid = GridManager.Instance;
-        for (int y = 0; y <= 2; y++)
-        {
-            for (int x = 4; x >= 0; x--)
-            {
-                if (grid.IsEmpty(x, y))
-                {
-
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
 }

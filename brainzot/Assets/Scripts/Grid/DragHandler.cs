@@ -39,7 +39,6 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         TrySnap();
     }
-
     void TrySnap()  //thay đổi vị trí unit
     {
         GridManager grid = GridManager.Instance;
@@ -47,9 +46,10 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         int x = Mathf.RoundToInt((transform.position.x - grid.origin.x) / grid.cellSize);   //tính tọa độ (x,y) của vị trí mới
         int y = Mathf.RoundToInt((transform.position.y - grid.origin.y) / grid.cellSize);
 
-        if (!grid.IsValid(x, y) || y > 2)    //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
+        if (!grid.IsValid(x, y) || y > 2 || (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge && !TutorialController.Instance.isSucessPos(new Vector2(unit.gridX, unit.gridY), new Vector2(x, y))))  //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
         {
             SnapBack();
+            if(TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge) unit.GetComponent<SpriteRenderer>().sortingOrder = 95;
             return;
         }
 
@@ -87,8 +87,13 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
+        unit.GetComponent<SpriteRenderer>().sortingOrder = -other.gridY;
+        BattleManager.Instance.playerTeam.Remove(other.gameObject);
         unit.LevelUp(1);
-
+        if (TutorialController.Instance != null)
+        {
+            TutorialController.Instance.OnMergeCompleted();
+        }
         GridManager.Instance.Place(unit, other.gridX, other.gridY);
         Char.Instance.dataMyTeam.RemoveAll(m => m == null);
     }

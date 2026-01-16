@@ -2,6 +2,7 @@
 
 public class MonsterAI : MonoBehaviour
 {
+    public bool isReady;
     public float laneTolerance = 0.2f;   // sai lệch Y cho phép (cùng lane)
     public float xTolerance = 0.5f;      // sai lệch X cho phép (đứng ngang)
     public MonsterHealth monsterHealth;
@@ -12,7 +13,7 @@ public class MonsterAI : MonoBehaviour
     public float projectileForce = 10f; //Tốc độ bay của đạn
 
     private float attackTimer;  //Thời gian thực để đánh tiếp
-    private Transform currentTarget;
+    public Transform currentTarget;
     public GameObject projectile;
 
     public Transform visualRoot;
@@ -27,7 +28,7 @@ public class MonsterAI : MonoBehaviour
         }
         if (currentTarget == null || !currentTarget.gameObject.activeSelf)
             return;
-        attackTimer -= Time.deltaTime;
+        if (attackTimer > 0) attackTimer -= Time.deltaTime;
         if (monsterHealth.stats.type == MonsterType.Melee)
         {
             HandleMelee();
@@ -115,8 +116,12 @@ public class MonsterAI : MonoBehaviour
 
 
         // ===== CASE 4: ĐÚNG KHOẢNG CÁCH -> ĐÁNH =====
-        attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0f)
+        if (!isReady && !BattleManager.Instance.arrUnitReady.Exists(m => m == gameObject))
+        {
+            BattleManager.Instance.arrUnitReady.Add(gameObject);
+            isReady = true;
+        }
+        if (attackTimer <= 0f && currentTarget != null && currentTarget.gameObject.activeSelf && BattleManager.Instance.isOkPvP())
         {
             AttackMelee();
             attackTimer = monsterHealth.stats.attackSpeed;
@@ -130,8 +135,12 @@ public class MonsterAI : MonoBehaviour
 
     void HandleRanged()  //Ai của Unit đánh xa gồm: tấn công và xoay hướng
     {
-        float dist = Vector2.Distance(transform.position, currentTarget.position);
-        if (dist <= monsterHealth.stats.attackRange && attackTimer <= 0)
+        if (!isReady && !BattleManager.Instance.arrUnitReady.Exists(m => m == gameObject))
+        {
+            BattleManager.Instance.arrUnitReady.Add(gameObject);
+            isReady = true;
+        }
+        if (attackTimer <= 0 && projectile == null && currentTarget != null && currentTarget.gameObject.activeSelf && BattleManager.Instance.isOkPvP())
         {
             sprite.flipX = currentTarget.position.x < transform.position.x;
             Shoot();
@@ -158,7 +167,6 @@ public class MonsterAI : MonoBehaviour
     
     void AttackMelee() //Hàm tấn công của Unit cận chiến
     {
-        if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
         MonsterHealth hp = currentTarget.GetComponent<MonsterHealth>();
         if (hp != null)
         {
@@ -168,7 +176,6 @@ public class MonsterAI : MonoBehaviour
 
     void Shoot() //Hàm bắn của Unit đánh xa
     {
-        if (currentTarget == null || !currentTarget.gameObject.activeSelf || projectile != null) return;
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
         projectile = proj;
         Projectile p = proj.GetComponent<Projectile>();

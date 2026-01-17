@@ -22,7 +22,7 @@ public class ButtonAnimation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         // Xóa các Tween cũ để tránh xung đột
         transform.DOKill();
         // Phóng to lên
-        transform.DOScale(originalScale * scaleSize, duration).SetEase(easeType);
+        transform.DOScale(originalScale * scaleSize, duration).SetEase(easeType).SetUpdate(true);
     }
 
     // Khi nhả chuột ra
@@ -30,6 +30,6 @@ public class ButtonAnimation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         transform.DOKill();
         // Thu nhỏ về trạng thái ban đầu
-        transform.DOScale(originalScale, duration).SetEase(easeType);
+        transform.DOScale(originalScale, duration).SetEase(easeType).SetUpdate(true);
     }
 }

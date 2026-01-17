@@ -21,7 +21,7 @@ public class ItemManager : MonoBehaviour
     }
     public void SetStats(int level)
     {
-        if (level < 1 || level > 7) return;
+        if (level < 1 || level > 8) return;
         int index = level - 1;
         if (isMelee)
         {

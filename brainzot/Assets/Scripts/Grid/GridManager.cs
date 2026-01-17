@@ -41,17 +41,18 @@ public class GridManager : MonoBehaviour
 
     public MonsterHealth GetUnit(int x, int y)   //lấy unit tại vị trí (x,y)
     {
-        //return IsValid(x, y) ? grid[x, y] : null;
-        if (IsValid(x, y))
-            return grid[x, y];
-        else
-            return null;
+        return IsValid(x, y) ? grid[x, y] : null;
+    }
+    public Vector2 ConvertToPosGrid(float x, float y)
+    {
+        int x1 = Mathf.RoundToInt((x - origin.x) / cellSize);   //tính tọa độ (x,y) của vị trí mới
+        int y1 = Mathf.RoundToInt((y - origin.y) / cellSize);
+        return new Vector2(x1, y1);
     }
 
     public void Place(MonsterHealth unit, int x, int y)  //đặt unit vào vị trí (x,y)
     {
         if (!IsEmpty(x, y)) return;
-
         unit.GetComponent<SpriteRenderer>().sortingOrder = -y;
         grid[x, y] = unit;
         unit.SetGridPos(x, y);
@@ -63,11 +64,21 @@ public class GridManager : MonoBehaviour
         if (!IsValid(x, y)) return;
         grid[x, y] = null;
     }
-    public void CLear() //Đặt toàn bộ vị trí trong grid về null
+    public void CLear(int toX, int toY) //Đặt toàn bộ vị trí trong grid về null
     {
-        for(int i = 0; i <= 5; i++)
+        for(int i = 0; i <= toY; i++)
         {
-            for (int j = 0; j <= 4; j++)
+            for (int j = 0; j <= toX; j++)
+            {
+                grid[j, i] = null;
+            }
+        }
+    }
+    public void CLearEnemy(int toX, int toY) //Đặt toàn bộ vị trí trong grid về null
+    {
+        for (int i = 5; i >= toY; i--)
+        {
+            for (int j = 0; j <= toX; j++)
             {
                 grid[j, i] = null;
             }
@@ -109,5 +120,15 @@ public class GridManager : MonoBehaviour
 
         return x <= minX + epsilon || x >= maxX - epsilon;
     }
-
+    public bool isFull()
+    {
+        for (int i = 0; i <= 2; i++)
+        {
+            for (int j = 0; j <= 4; j++)
+            {
+                if (IsEmpty(j, i)) return false;
+            }
+        }
+        return true;
+    }
 }

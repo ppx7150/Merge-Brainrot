@@ -64,11 +64,21 @@ public class GridManager : MonoBehaviour
         if (!IsValid(x, y)) return;
         grid[x, y] = null;
     }
-    public void CLear() //Đặt toàn bộ vị trí trong grid về null
+    public void CLear(int toX, int toY) //Đặt toàn bộ vị trí trong grid về null
     {
-        for(int i = 0; i <= 5; i++)
+        for(int i = 0; i <= toY; i++)
         {
-            for (int j = 0; j <= 4; j++)
+            for (int j = 0; j <= toX; j++)
+            {
+                grid[j, i] = null;
+            }
+        }
+    }
+    public void CLearEnemy(int toX, int toY) //Đặt toàn bộ vị trí trong grid về null
+    {
+        for (int i = 5; i >= toY; i--)
+        {
+            for (int j = 0; j <= toX; j++)
             {
                 grid[j, i] = null;
             }

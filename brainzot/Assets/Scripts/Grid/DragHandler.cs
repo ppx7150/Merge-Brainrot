@@ -46,10 +46,11 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         int x = Mathf.RoundToInt((transform.position.x - grid.origin.x) / grid.cellSize);   //tính tọa độ (x,y) của vị trí mới
         int y = Mathf.RoundToInt((transform.position.y - grid.origin.y) / grid.cellSize);
 
-        if (!grid.IsValid(x, y) || y > 2 || (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge && !TutorialController.Instance.isSucessPos(new Vector2(unit.gridX, unit.gridY), new Vector2(x, y))))  //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
+        if (!grid.IsValid(x, y) || y > 2 || (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase1_dragUnit && (x != 2 || y != 0))
+            || (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge && !TutorialController.Instance.isSucessPos(new Vector2(unit.gridX, unit.gridY), new Vector2(x, y))))  //nếu vị trí nằm ngoài grid thì trả về chỗ cũ
         {
             SnapBack();
-            if(TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge) unit.GetComponent<SpriteRenderer>().sortingOrder = 95;
+            if(TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge || TutorialController.Instance.currentState == TutorialController.TutorialState.Phase1_dragUnit) unit.GetComponent<SpriteRenderer>().sortingOrder = 95;
             return;
         }
 
@@ -69,6 +70,7 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         }
 
         grid.Place(unit, x, y);     //nếu vị trí mới đang không có unit thì đặt unit vào vị trí mới
+        if (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase1_dragUnit) TutorialController.Instance.OnDragCompleted();
     }
 
     void SnapBack()     //trả unit về vị trí cũ trong trường hợp không di chuyển được

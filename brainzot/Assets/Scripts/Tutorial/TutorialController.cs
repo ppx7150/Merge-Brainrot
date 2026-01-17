@@ -30,7 +30,7 @@ public class TutorialController : MonoBehaviour
     public enum TutorialState
     {
         None,
-        Phase1_BuyMelee, Phase1_CheckGold, Phase1_BuyRange, Phase1_ClickBattle,
+        Phase1_BuyMelee, Phase1_CheckGold, Phase1_BuyRange, Phase1_dragUnit, Phase1_ClickBattle,
         Phase2_BuyMelee, Phase2_DragMerge, Phase2_ClickBattle
     }
     public TutorialState currentState = TutorialState.None;
@@ -61,7 +61,8 @@ public class TutorialController : MonoBehaviour
         }
         else if (currentState == TutorialState.Phase1_BuyRange && type == ButtonType.SpawnRange)
         {
-            SetState(TutorialState.Phase1_ClickBattle);
+            if (mergeCoroutine != null) StopCoroutine(mergeCoroutine);
+            mergeCoroutine = StartCoroutine(ShowDragUnit());
         }
         else if (currentState == TutorialState.Phase1_ClickBattle && type == ButtonType.Battle)
         {
@@ -95,7 +96,7 @@ public class TutorialController : MonoBehaviour
     }
     public bool isSucessPos(Vector2 start, Vector2 target)
     {
-        return StartPos == start && TargetPos == target;
+        return StartPos == start && TargetPos == target || StartPos == target && TargetPos == start;
     }
 
     void SetState(TutorialState state)
@@ -109,7 +110,6 @@ public class TutorialController : MonoBehaviour
                 if (btnBuyMeleeObj.GetComponent<SpriteRenderer>())
                     btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = 101;
                 break;
-            // ... (Copy lại các case cũ của bạn vào đây) ...
             case TutorialState.Phase1_CheckGold:
                 if (btnBuyMeleeObj.GetComponent<SpriteRenderer>())
                     btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = -10;
@@ -119,16 +119,13 @@ public class TutorialController : MonoBehaviour
                 handPointer.gameObject.SetActive(false);
                 Invoke(nameof(MoveToBuyRange), 2.5f);
                 break;
-
             case TutorialState.Phase1_BuyRange:
                 RestoreUI(goldDisplayUI);
                 goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = -10;
                 HighlightUI(btnBuyRangeObj, "Buy your range brain rot");
                 ShowHandAt(btnBuyRangeObj.transform.position);
                 break;
-
             case TutorialState.Phase1_ClickBattle:
-                RestoreUI(btnBuyRangeObj);
                 HighlightUI(btnBattleObj, "Click here to start");
                 ShowHandAt(btnBattleObj.transform.position);
                 break;
@@ -225,6 +222,39 @@ public class TutorialController : MonoBehaviour
             currentHandTween.SetLink(handPointer.gameObject);
         }
     }
+    IEnumerator ShowDragUnit()
+    {
+        currentState = TutorialState.Phase1_dragUnit;
+
+        RestoreUI(btnBuyRangeObj);
+        darkMaskSprite.SetActive(true);
+        instructionText.text = "Drag to here!";
+
+        yield return new WaitForSeconds(0.2f);
+
+        // KIỂM TRA LẠI: Nếu trong lúc chờ 0.2s mà người chơi đã Merge xong rồi thì dừng luôn
+        if (currentState != TutorialState.Phase1_dragUnit) yield break;
+        Vector3 posA = GridManager.Instance.GetWorldPos(4,0);
+        Vector3 posB = GridManager.Instance.GetWorldPos(2,0);
+        unit1 = GridManager.Instance.GetUnit(4, 0).transform;
+        unit1.GetComponent<SpriteRenderer>().sortingOrder = 95;
+        // Reset vị trí về A
+        handPointer.position = posA;
+        // --- SỬA LỖI DOTWEEN Ở ĐÂY ---
+        KillCurrentTween(); // Kill cái cũ nếu có
+        // Sử dụng DOTween để tạo Sequence
+        Sequence seq = DOTween.Sequence();
+
+        // Hiệu ứng: Hiện tay -> Di chuyển đến B -> Ẩn -> Lặp lại
+        seq.Append(handPointer.GetComponent<CanvasGroup>().DOFade(1, 0.2f)); // Hiện lên
+        seq.Append(handPointer.DOMove(posB, 1.0f).SetEase(Ease.InOutQuad)); // Di chuyển
+        seq.Append(handPointer.GetComponent<CanvasGroup>().DOFade(0, 0.2f)); // Mờ đi
+        seq.AppendInterval(0.5f); // Nghỉ một chút
+        seq.SetLoops(-1);
+
+        currentHandTween = seq;
+        currentHandTween.SetLink(handPointer.gameObject);
+    }
 
     // --- SỬA LẠI HÀM ON MERGE COMPLETED ---
     public void OnMergeCompleted()
@@ -246,7 +276,25 @@ public class TutorialController : MonoBehaviour
             SetState(TutorialState.Phase2_ClickBattle);
         }
     }
+    // --- SỬA LẠI HÀM ON DRAG COMPLETED ---
+    public void OnDragCompleted()
+    {
+        Debug.Log("Tutorial: OnDragCompleted called!");
 
+        if (currentState == TutorialState.Phase1_dragUnit)
+        {
+            // 1. Dừng Coroutine đang chờ (nếu có)
+            if (mergeCoroutine != null) StopCoroutine(mergeCoroutine);
+
+            // 2. Kill Tween một cách an toàn (False = Stop, không Complete)
+            KillCurrentTween();
+
+            // 4. Reset trạng thái
+            if (unit1 != null) unit1.GetComponent<SpriteRenderer>().sortingOrder = -unit1.GetComponent<MonsterHealth>().gridY;
+
+            SetState(TutorialState.Phase1_ClickBattle);
+        }
+    }
     // Hàm tiện ích để Kill Tween
     void KillCurrentTween()
     {

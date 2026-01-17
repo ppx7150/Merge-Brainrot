@@ -38,12 +38,12 @@ public class UnitSpawner : MonoBehaviour
         if (TutorialController.Instance.currentState != TutorialController.TutorialState.None) return;
         if (isMelee)
         {
-            costMelee *= Char.Instance.level < 15 ? 1.175f:1.195f;
+            costMelee *= 1.1f;
             txtCostMelee.SetText((int)costMelee + "$");
         }
         else
         {
-            costRange *= Char.Instance.level < 15 ? 1.175f : 1.195f;
+            costRange *= 1.1f;
             txtCostRange.SetText((int)costRange + "$");
         }
     }

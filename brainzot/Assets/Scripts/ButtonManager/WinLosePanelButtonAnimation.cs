@@ -13,7 +13,7 @@ public class WinLosePanelButtonAnimation : MonoBehaviour
         // Phóng to lên 1.2 lần trong 0.8 giây
         adsButton.transform.DOScale(1.2f, 0.8f)
         .SetEase(Ease.InOutSine) // Chuyển động mượt mà ở hai đầu
-        .SetLoops(-1, LoopType.Yoyo); // -1 là lặp vô tận, Yoyo là to ra rồi nhỏ lại
+        .SetLoops(-1, LoopType.Yoyo).SetUpdate(true); // -1 là lặp vô tận, Yoyo là to ra rồi nhỏ lại
     }
 
     void OnEnable()
@@ -26,8 +26,8 @@ public class WinLosePanelButtonAnimation : MonoBehaviour
         // Dùng DOVirtual.DelayedCall để kích hoạt Active trước khi Tween
         DOVirtual.DelayedCall(delayTime, () => {
             noThanksButton.SetActive(true);
-            noThanksButton.transform.DOScale(Vector3.one, animDuration);
-        }).SetLink(gameObject); // Tự động xóa nếu Panel bị ẩn trước khi tới 5s
+            noThanksButton.transform.DOScale(Vector3.one, animDuration).SetUpdate(true);
+        }).SetLink(gameObject).SetUpdate(true); // Tự động xóa nếu Panel bị ẩn trước khi tới 5s
     }
 
 

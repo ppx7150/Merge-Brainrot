@@ -24,7 +24,7 @@ public class GameHintManager : MonoBehaviour
     void Update()
     {
         // 1. Reset timer nếu người chơi chạm vào màn hình
-        if (Input.GetMouseButtonDown(0) || Input.touchCount > 0)
+        if (Char.Instance.level > 2 && (Input.GetMouseButtonDown(0) || Input.touchCount > 0))
         {
             lastInputTime = Time.time;
             StopAllHints();

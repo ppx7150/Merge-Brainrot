@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using TMPro;
-
+using System.IO;
 public class BattleManager : MonoBehaviour
 {
     public bool startPvP; //Kiểm tra xem có đang ở trạng thái Fight không
@@ -16,6 +15,8 @@ public class BattleManager : MonoBehaviour
     public GameObject losePanel;
     public GameObject ButtonList;
     public TMP_Text[] txtCoinReward;
+    public GameObject rangeEnemyPrefab;
+    public GameObject meleeEnemyPrefab;
     private void Awake()
     {
         Instance = this;
@@ -30,17 +31,7 @@ public class BattleManager : MonoBehaviour
     }
     void CheckBattleEnd() //Kiểm tra xem team nào thắng team nào thua
     {
-        if (!playerTeam.Exists(m => m.activeSelf))
-        {
-            Debug.Log("Enemy Win");
-            losePanel.SetActive(true);
-            AudioManager.Instance.Play(GameSound.loseSound);
-            int coin = Random.Range(100, 200);
-            txtCoinReward[1].SetText("+" + coin + "$");
-            Char.Instance.AddCoins(coin);
-            startPvP = false;
-            ButtonList.SetActive(true);
-        } else if (!enemyTeam.Exists(m => m.activeSelf))
+        if (!enemyTeam.Exists(m => m.activeSelf))
         {
             Debug.Log("Player Win");
             winPanel.SetActive(true);
@@ -52,11 +43,25 @@ public class BattleManager : MonoBehaviour
             ButtonList.SetActive(true);
             Char.Instance.level++;
             if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
+            Time.timeScale = 0f;
+        }
+        else if (!playerTeam.Exists(m => m.activeSelf))
+        {
+            Debug.Log("Enemy Win");
+            losePanel.SetActive(true);
+            AudioManager.Instance.Play(GameSound.loseSound);
+            int coin = Random.Range(100, 200);
+            txtCoinReward[1].SetText("+" + coin + "$");
+            Char.Instance.AddCoins(coin);
+            startPvP = false;
+            ButtonList.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
     public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
     {
-        GridManager.Instance.CLear();
+        Time.timeScale = 1f;
+        GridManager.Instance.CLear(4,5);
         arrUnitReady.Clear();
         foreach (var m in enemyTeam)
         {
@@ -76,7 +81,6 @@ public class BattleManager : MonoBehaviour
         }
         losePanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.coinSound);
-        if (TutorialController.Instance.currentState != TutorialController.TutorialState.None) TutorialController.Instance.StartPhase2_Merge();
     }
     public void StartBattle() //Bắt đầu Fight
     {
@@ -97,14 +101,9 @@ public class BattleManager : MonoBehaviour
     }
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
-        GridManager.Instance.CLear();
+        Time.timeScale = 1f;
+        GridManager.Instance.CLear(4,5);
         arrUnitReady.Clear();
-        foreach (var m in enemyTeam)
-        {
-            if (m == null) continue;
-            Destroy(m);
-        }
-        enemyTeam.Clear();
         foreach (var m in playerTeam)
         {
             m.SetActive(true);
@@ -113,8 +112,7 @@ public class BattleManager : MonoBehaviour
             ai.isReady = false;
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
-
-        GenerateEnemy();
+        LoadLevel();
 
         winPanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.coinSound);
@@ -141,6 +139,35 @@ public class BattleManager : MonoBehaviour
                 arr.Remove(x);
                 GridManager.Instance.Place(mh, x, i);
             }
+        }
+    }
+    public void LoadLevel()
+    {
+        if (!File.Exists(Application.persistentDataPath + "/" + Char.Instance.level + ".json"))
+        {
+            Debug.Log("No save file level");
+            return;
+        }
+        GridManager grid = GridManager.Instance;
+        //CLear het
+        grid.CLearEnemy(4,3);
+        foreach (var m in enemyTeam)
+        {
+            if (m == null) continue;
+            Destroy(m.gameObject);
+        }
+        enemyTeam.Clear();
+        string json = File.ReadAllText(Application.persistentDataPath + "/" + Char.Instance.level + ".json");
+        DataSave dataSave = JsonUtility.FromJson<DataSave>(json);
+        foreach (var m in dataSave.enemyTeam.units)
+        {
+            GameObject obj = Instantiate(m.type == MonsterType.Melee.ToString() ? meleeEnemyPrefab : rangeEnemyPrefab);
+            MonsterHealth mh = obj.GetComponent<MonsterHealth>();
+            mh.stats.type = (MonsterType)System.Enum.Parse(typeof(MonsterType), m.type);
+            mh.SetGridPos(m.gridX, m.gridY);
+            mh.LevelUp(m.level - 1);
+            grid.Place(mh, mh.gridX, mh.gridY);
+            enemyTeam.Add(obj);
         }
     }
 }

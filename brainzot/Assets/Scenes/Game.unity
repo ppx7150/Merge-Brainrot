@@ -815,6 +815,8 @@ MonoBehaviour:
   txtCoinReward:
   - {fileID: 874997385}
   - {fileID: 928106420}
+  rangeEnemyPrefab: {fileID: 8332007673813886209, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
+  meleeEnemyPrefab: {fileID: 4747127205807759293, guid: f96813442063546488f17de3bfac209e, type: 3}
 --- !u!4 &90523042
 Transform:
   m_ObjectHideFlags: 0

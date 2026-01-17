@@ -32,6 +32,12 @@ public class Team
 {
     public List<DataUnit> units; //Danh sách Unit hiện có
 }
+[System.Serializable]
+public class DataSave
+{
+    public int level;
+    public Team enemyTeam;
+}
 public class Char : MonoBehaviour
 {
     public int level; //Level màn chơi của người chơi 
@@ -72,6 +78,7 @@ public class Char : MonoBehaviour
         txtGems.SetText(gems.ToString());
         if (level <= 1) TutorialController.Instance.StartPhase1();
         else if(level == 2) TutorialController.Instance.StartPhase2_Merge();
+        BattleManager.Instance.LoadLevel();
     }
     public void Save(string path) //Lưu lại dữ liệu của người chơi
     {

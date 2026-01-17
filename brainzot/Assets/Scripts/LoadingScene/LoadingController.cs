@@ -10,7 +10,7 @@ public class LoadingController : MonoBehaviour
     [Header("Cài đặt UI")]
     public Slider loadingBar;
     public Transform characterSpawnPoint; // Vị trí nhân vật đứng
-
+    public GameObject charObj;
     [Header("Dữ liệu")]
     public List<GameObject> characterPrefabs; // Kéo thả các nhân vật (Ninja, Samurai...) vào đây
 
@@ -31,7 +31,7 @@ public class LoadingController : MonoBehaviour
             int randomIndex = Random.Range(0, characterPrefabs.Count);
 
             // Tạo nhân vật tại vị trí định sẵn
-            GameObject charObj = Instantiate(characterPrefabs[randomIndex], characterSpawnPoint);
+            charObj = Instantiate(characterPrefabs[randomIndex], characterSpawnPoint);
 
             // Reset vị trí về 0 so với cha để căn giữa
             charObj.transform.localPosition = Vector3.zero;
@@ -42,7 +42,6 @@ public class LoadingController : MonoBehaviour
                 .SetEase(Ease.InOutSine);
         }
     }
-
     IEnumerator LoadSceneAsync()
     {
         // Bắt đầu load ngầm scene gameplay
@@ -66,6 +65,7 @@ public class LoadingController : MonoBehaviour
             {
                 // Cho phép chuyển cảnh
                 operation.allowSceneActivation = true;
+                charObj.transform.DOKill();
             }
 
             yield return null;

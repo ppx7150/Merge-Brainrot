@@ -23,6 +23,7 @@ public class MonsterAI : MonoBehaviour
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf)
         {
+            if (projectile != null) Destroy(projectile);
             FindNearestTarget();
             return;
         }

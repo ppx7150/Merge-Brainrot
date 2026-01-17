@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
@@ -90,18 +91,45 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
-        
+
         unit.LevelUp(1);
         AudioManager.Instance.PlayUnitSound(unit.stats.level, unit.stats.type);
         unit.GetComponent<SpriteRenderer>().sortingOrder = -other.gridY;
         BattleManager.Instance.playerTeam.Remove(other.gameObject);
-        unit.LevelUp(1);
         if (TutorialController.Instance != null)
         {
             TutorialController.Instance.OnMergeCompleted();
         }
         GridManager.Instance.Place(unit, other.gridX, other.gridY);
         Char.Instance.dataMyTeam.RemoveAll(m => m == null);
+        PanelManager.Instance.statsUnit.level = unit.stats.level;
+        if (unit.stats.type == MonsterType.Melee && !Char.Instance.unlockUnitMelee[unit.stats.level - 1])
+        {
+            PanelManager.Instance.statsUnit.isMelee = true;
+            if (unit.stats.type == MonsterType.Melee)
+            {
+                Char.Instance.unlockUnitMelee[unit.stats.level - 1] = true;
+            }
+            else
+            {
+                Char.Instance.unlockUnitRange[unit.stats.level - 1] = true;
+            }
+            PanelManager.Instance.OpenPanel(PanelManager.Instance.unlockUnit);
+        }
+        else if (unit.stats.type == MonsterType.Ranged && !Char.Instance.unlockUnitRange[unit.stats.level - 1])
+        {
+            PanelManager.Instance.statsUnit.isMelee = false;
+            PanelManager.Instance.OpenPanel(PanelManager.Instance.unlockUnit);
+            if (unit.stats.type == MonsterType.Melee)
+            {
+                Char.Instance.unlockUnitMelee[unit.stats.level - 1] = true;
+            }
+            else
+            {
+                Char.Instance.unlockUnitRange[unit.stats.level - 1] = true;
+            }
+            PanelManager.Instance.OpenPanel(PanelManager.Instance.unlockUnit);
+        }
     }
 
     void SwapWith(MonsterHealth other)

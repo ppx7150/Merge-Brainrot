@@ -27,14 +27,19 @@ public class DamageText : MonoBehaviour
         transform.localScale *= (1f + (damage / 500));
     }
 
-    private void Start()
-    {
-        transform.localPosition = new Vector3(Random.Range(-0.7f, 0.7f), 0, 0);
+    //private void Start()
+    //{
+    //    transform.localPosition = new Vector3(Random.Range(-0.7f, 0.7f), 0, 0);
         
-    }
+    //}
 
     void Update()
     {
+        if (!BattleManager.Instance.startPvP)
+        {
+            Destroy(gameObject);
+            return;
+        }
         // Bay lên
         transform.Translate(Vector3.up * moveUpSpeed * Time.deltaTime);
 

@@ -23,9 +23,11 @@ public class SaveData //Dữ liệu cần lưu
     public long coins;
     public int gems;
     public int level;
-    public float costMelee;
-    public float costRange;
+    public long costMelee;
+    public long costRange;
     public Team dataMyTeam;
+    public List<bool> unlockUnitMelee;
+    public List<bool> unlockUnitRange;
 }
 [Serializable]
 public class Team
@@ -46,6 +48,8 @@ public class Char : MonoBehaviour
     public TMP_Text txtCoins; 
     public TMP_Text txtGems;
     public List<MonsterHealth> dataMyTeam = new List<MonsterHealth>();
+    public List<bool> unlockUnitMelee = new List<bool>() { true, false, false, false, false, false, false, false };
+    public List<bool> unlockUnitRange = new List<bool>() { true, false, false, false, false, false, false, false };
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
@@ -53,6 +57,10 @@ public class Char : MonoBehaviour
     public int[] hpsRange = { 7, 18, 43, 105, 225, 605, 1320, 2765 };
     public int[] damagesMelee = { 1, 3, 7, 15, 33, 70, 150, 315 };
     public int[] hpsMelee = { 18, 45, 115, 270, 625, 1320, 2675, 5550 };
+    public string[] nameUnitMelee;
+    public string[] nameUnitRange;
+    public List<ItemManager> itemMelee;
+    public List<ItemManager> itemRange;
 
     private void Awake()
     {
@@ -99,6 +107,8 @@ public class Char : MonoBehaviour
         {
             units = data
         };
+        saveData.unlockUnitMelee = unlockUnitMelee;
+        saveData.unlockUnitRange = unlockUnitRange;
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(path, json);
         Debug.Log("Saved: " + path);
@@ -143,7 +153,9 @@ public class Char : MonoBehaviour
         level = saveData.level;
         coins = saveData.coins;
         gems = saveData.gems;
-        if(level > 2) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
+        unlockUnitMelee = saveData.unlockUnitMelee;
+        unlockUnitRange = saveData.unlockUnitRange;
+        if (level >= 2) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
         foreach (var m in saveData.dataMyTeam.units)
         {
             MonsterType tp = (MonsterType)Enum.Parse(typeof(MonsterType), m.type); ;

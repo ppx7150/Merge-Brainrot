@@ -32,7 +32,7 @@ public class MonsterHealth : MonoBehaviour
         stats.currentHP -= dmg;
         if (hpBar != null) hpBar.SetHP(stats.currentHP / stats.maxHP);
         if (stats.currentHP <= 0) Die();
-        if (CompareTag("Enemy") && timeShowDameTxt <= 0)
+        if (CompareTag("Enemy") && timeShowDameTxt <= 0 && BattleManager.Instance.startPvP)
         {
             ShowDamage(damageInSecond);
         }

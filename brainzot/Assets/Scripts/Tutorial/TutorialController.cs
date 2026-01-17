@@ -99,7 +99,7 @@ public class TutorialController : MonoBehaviour
         return StartPos == start && TargetPos == target || StartPos == target && TargetPos == start;
     }
 
-    void SetState(TutorialState state)
+    public void SetState(TutorialState state)
     {
         currentState = state;
         switch (state)
@@ -131,6 +131,7 @@ public class TutorialController : MonoBehaviour
                 break;
 
             case TutorialState.Phase2_BuyMelee:
+                UnitSpawner.Instance.txtCostMelee.GetComponent<MeshRenderer>().sortingOrder = 95;
                 HighlightUI(btnBuyMeleeObj, "Buy one more to Merge!");
                 ShowHandAt(btnBuyMeleeObj.transform.position);
                 break;
@@ -147,10 +148,9 @@ public class TutorialController : MonoBehaviour
     IEnumerator SetupMergeDragState()
     {
         currentState = TutorialState.Phase2_DragMerge;
-
+        UnitSpawner.Instance.txtCostMelee.GetComponent<MeshRenderer>().sortingOrder = -10;
         RestoreUI(btnBuyMeleeObj);
         darkMaskSprite.SetActive(true);
-        instructionText.text = "Drag to Merge two units!";
 
         yield return new WaitForSeconds(0.2f);
 
@@ -272,8 +272,7 @@ public class TutorialController : MonoBehaviour
             // 4. Reset trạng thái
             if (unit1 != null) unit1.GetComponent<SpriteRenderer>().sortingOrder = -unit1.GetComponent<MonsterHealth>().gridY;
             if (unit2 != null) unit2.GetComponent<SpriteRenderer>().sortingOrder = -unit2.GetComponent<MonsterHealth>().gridY;
-
-            SetState(TutorialState.Phase2_ClickBattle);
+            tutorialCanvas.SetActive(false);
         }
     }
     // --- SỬA LẠI HÀM ON DRAG COMPLETED ---
@@ -321,6 +320,7 @@ public class TutorialController : MonoBehaviour
         RestoreUI(btnBattleObj);
         tutorialCanvas.SetActive(false);
         currentState = TutorialState.None;
+        tutorialCanvas.GetComponent<Canvas>().sortingOrder = 3;
     }
 
     void HighlightUI(GameObject target, string text)

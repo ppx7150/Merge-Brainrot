@@ -1,11 +1,12 @@
 ﻿using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 public class UnitSpawner : MonoBehaviour
 {
-    public float costMelee = 100;
-    public float costRange = 100;
+    public long costMelee = 100;
+    public long costRange = 100;
     public TMP_Text txtCostMelee;
     public TMP_Text txtCostRange;
     public BattleManager battleManager;
@@ -18,34 +19,30 @@ public class UnitSpawner : MonoBehaviour
     {
         Instance = this;
     }
-    public void LoadCost(float cM, float cR) //Làm mới giá tiền mua Unit
+    public void LoadCost(long cM, long cR) //Làm mới giá tiền mua Unit
     {
-        OnCost();
         costMelee = cM;
         costRange = cR;
-        txtCostMelee.SetText((int)costMelee + "$");
-        txtCostRange.SetText((int)costRange + "$");
+        OnCost();
     }
     public void OnCost() //Hien giá tiền mua Unit
     {
         if (!txtCostMelee.gameObject.activeSelf) txtCostMelee.gameObject.SetActive(true);
         if (!txtCostRange.gameObject.activeSelf) txtCostRange.gameObject.SetActive(true);
-        txtCostMelee.SetText((int)costMelee + "$");
-        txtCostRange.SetText((int)costRange + "$");
+        txtCostMelee.SetText(Char.FormatMoney(costMelee) + "$");
+        txtCostRange.SetText(Char.FormatMoney(costRange) + "$");
     }
     public void UpgradeCost(bool isMelee) //Nâng giá tiền mua Unit
     {
-        if (TutorialController.Instance.currentState != TutorialController.TutorialState.None) return;
         if (isMelee)
         {
-            costMelee *= 1.1f;
-            txtCostMelee.SetText((int)costMelee + "$");
+            costMelee = (long)System.Math.Round(costMelee * 1.1);
         }
         else
         {
-            costRange *= 1.1f;
-            txtCostRange.SetText((int)costRange + "$");
+            costRange = (long)System.Math.Round(costRange * 1.1);
         }
+        OnCost();
     }
     public void SpawnRangeUnit(int level) //Spawn Unit đánh xa
     {
@@ -64,7 +61,7 @@ public class UnitSpawner : MonoBehaviour
                     unit.LevelUp(level);
                     AudioManager.Instance.PlayUnitSound(level, unit.stats.type);
                     grid.Place(unit, x, y);
-                    if(Char.Instance.level > 2) UpgradeCost(false);
+                    if(Char.Instance.level >= 2) UpgradeCost(false);
                     return;
                 }
             }
@@ -88,7 +85,7 @@ public class UnitSpawner : MonoBehaviour
                     unit.LevelUp(level);
                     AudioManager.Instance.PlayUnitSound(level, unit.stats.type);
                     grid.Place(unit, x, y);
-                    if (Char.Instance.level > 2) UpgradeCost(true);
+                    if (Char.Instance.level >= 2) UpgradeCost(true);
                     return;
                 }
             }

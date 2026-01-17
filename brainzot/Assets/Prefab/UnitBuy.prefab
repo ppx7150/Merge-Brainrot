@@ -408,7 +408,33 @@ MonoBehaviour:
   isMelee: 0
   cost: 0
   level: 0
+  dame: 0
+  hp: 0
+  name: 
   txtCost: {fileID: 6295459243781636375}
+  txtDame: {fileID: 0}
+  txtHp: {fileID: 0}
+  txtName: {fileID: 0}
+  spriteRenderer: {fileID: 1247603764414467040}
+  visualsMelee:
+  - {fileID: 5088316998373936774, guid: 2883f6405174aa74285821ebe485f322, type: 3}
+  - {fileID: -855298285791758126, guid: f2cc582c267ba674182bb7e3bdec9d92, type: 3}
+  - {fileID: 6937817954938267909, guid: cbfb72287e86bf9499c48d3159fc9959, type: 3}
+  - {fileID: -6470460504253458178, guid: bf0d8bbf9c1c7c343ba4f83d307295a4, type: 3}
+  - {fileID: -4178046375966092550, guid: 335d8aa72d0e8894dae4ecde7ab55158, type: 3}
+  - {fileID: -7200132072931614835, guid: c1fdee64ced78bd4ca1da5044261d222, type: 3}
+  - {fileID: 6653994858678897968, guid: 5e5a2119d6ecead43956d85c83cdfb38, type: 3}
+  - {fileID: 7028616704906629411, guid: 8b3549ba006584948bbb3ad66b15b74b, type: 3}
+  visualsRange:
+  - {fileID: 5088316998373936774, guid: 78734b7edac6cf44b8d745848a1972f5, type: 3}
+  - {fileID: -855298285791758126, guid: b12dc06df6feb97428d10baa703c2c90, type: 3}
+  - {fileID: 6937817954938267909, guid: 7abb79e71abbe794c84c11cac2708a46, type: 3}
+  - {fileID: -6470460504253458178, guid: 4cb166dc298b31546aa04fbb2a8f0d53, type: 3}
+  - {fileID: -4178046375966092550, guid: 35a3a97801c9c134ea8d25b6d6227690, type: 3}
+  - {fileID: 4130640169021434097, guid: efa74efb4298f544a80b8497b4c934ef, type: 3}
+  - {fileID: 3465286685962602723, guid: 1269258e950467d4e90cb4612b139244, type: 3}
+  - {fileID: 7028616704906629411, guid: 0bf673a3b059bc3459ccc75096c7a2ad, type: 3}
+  parent: {fileID: 0}
 --- !u!114 &7680127660581222705
 MonoBehaviour:
   m_ObjectHideFlags: 0

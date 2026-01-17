@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PanelManager : MonoBehaviour
     public GameObject summonPanel;
     public GameObject rangeSummon;
     public GameObject meleeSummon;
+    public GameObject unlockUnit;
+    public ItemManager statsUnit;
 
     public static PanelManager Instance;
 
@@ -25,10 +28,15 @@ public class PanelManager : MonoBehaviour
     public Ease closeEase = Ease.InBack; // Kiểu thu vào khi đóng
 
     private Vector3 initialScale;
+    public ScrollRect[] scolls;
 
     // Gọi hàm này để MỞ Panel
     public void OpenPanel(GameObject panel)
     {
+        if(panel == unlockUnit)
+        {
+            statsUnit.Load();
+        }
         panel.SetActive(true);
         AudioManager.Instance.Play(GameSound.clickButtonSound);
         initialScale = new Vector3(1, 1, 1);
@@ -36,6 +44,15 @@ public class PanelManager : MonoBehaviour
 
         panel.transform.DOScale(initialScale, duration)
             .SetEase(openEase);
+        ResetScroll();
+    }
+    public void ResetScroll()
+    {
+        Canvas.ForceUpdateCanvases(); // bắt buộc
+        foreach(var m in scolls)
+        {
+            m.content.anchoredPosition = new Vector2(m.content.anchoredPosition.x, 0);
+        }
     }
 
     // Gọi hàm này để ĐÓNG Panel
@@ -50,6 +67,11 @@ public class PanelManager : MonoBehaviour
                 // Sau khi thu nhỏ xong -> Tắt toàn bộ Container (biến mất cả nền đen)
                 panel.SetActive(false);
             });
+        if (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge)
+        {
+            TutorialController.Instance.tutorialCanvas.SetActive(true);
+            TutorialController.Instance.SetState(TutorialController.TutorialState.Phase2_ClickBattle);
+        }
     }
 
     private void Awake()
@@ -93,6 +115,21 @@ public class PanelManager : MonoBehaviour
             OpenPanel(collectionPanel);
             rangeCollection.SetActive(true);
             meleeCollection.SetActive(false);
+            UpdatePanelRange();
+        }
+    }
+    public void UpdatePanelMelee()
+    {
+        foreach(var m in Char.Instance.itemMelee)
+        {
+            m.parent.SetActive(Char.Instance.unlockUnitMelee[m.level - 1]);
+        }
+    }
+    public void UpdatePanelRange()
+    {
+        foreach (var m in Char.Instance.itemRange)
+        {
+            m.parent.SetActive(Char.Instance.unlockUnitRange[m.level - 1]);
         }
     }
     public void hideCollectionPanel()
@@ -108,6 +145,8 @@ public class PanelManager : MonoBehaviour
         {
             rangeCollection.SetActive(true);
             meleeCollection.SetActive(false);
+            UpdatePanelRange();
+            ResetScroll();
             AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
@@ -117,6 +156,8 @@ public class PanelManager : MonoBehaviour
         {
             rangeCollection.SetActive(false);
             meleeCollection.SetActive(true);
+            UpdatePanelMelee();
+            ResetScroll();
             AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
@@ -159,6 +200,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeSummon.SetActive(true);
             meleeSummon.SetActive(false);
+            ResetScroll();
             AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
@@ -168,6 +210,7 @@ public class PanelManager : MonoBehaviour
         {
             rangeSummon.SetActive(false);
             meleeSummon.SetActive(true);
+            ResetScroll();
             AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }

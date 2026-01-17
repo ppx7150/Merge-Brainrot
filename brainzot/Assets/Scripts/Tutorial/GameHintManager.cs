@@ -19,6 +19,7 @@ public class GameHintManager : MonoBehaviour
     {
         Instance = this;
         defaultScalebtn = battleButton.transform.localScale;
+        lastInputTime = Time.time;
     }
 
     void Update()
@@ -31,7 +32,7 @@ public class GameHintManager : MonoBehaviour
         }
 
         // 2. Kiểm tra thời gian Idle
-        if (!isHinting && Time.time - lastInputTime > idleTimeThreshold)
+        if (!isHinting && !BattleManager.Instance.startPvP && !BattleManager.Instance.winPanel.activeSelf && !BattleManager.Instance.losePanel.activeSelf && Time.time - lastInputTime > idleTimeThreshold)
         {
             DecideAndShowHint();
         }
@@ -69,6 +70,7 @@ public class GameHintManager : MonoBehaviour
     void ShowMergeHint(Transform charA, Transform charB)
     {
         canvas.SetActive(true);
+        TutorialController.Instance.instructionText.SetText("");
         // --- TÍNH TOÁN VỊ TRÍ ---
         Canvas cv = canvas.GetComponent<Canvas>();
         RectTransform canvasRect = canvas.GetComponent<RectTransform>();

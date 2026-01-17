@@ -9,15 +9,36 @@ public class ItemManager : MonoBehaviour
     public int level; //level của Unit
     public int dame; //atk của Unit
     public int hp; //hp của Unit
+    public string nameItem;
     public TMP_Text txtCost;
     public TMP_Text txtDame;
     public TMP_Text txtHp;
-    private void Start()
+    public TMP_Text txtName;
+    public Image spriteRenderer;
+    public Sprite[] visualsMelee;
+    public Sprite[] visualsRange;
+    public GameObject parent;
+    private void Awake()
+    {
+        if (txtCost == null)
+        {
+            if (isMelee) Char.Instance.itemMelee.Add(this);
+            else Char.Instance.itemRange.Add(this);
+        }
+        nameItem = isMelee ? Char.Instance.nameUnitMelee[level - 1] : Char.Instance.nameUnitRange[level - 1];
+        Load();
+    }
+    public void Load()
     {
         SetStats(level);
         if (txtCost != null) txtCost.SetText(cost.ToString());
         if (txtDame != null) txtDame.SetText(dame.ToString());
         if (txtHp != null) txtHp.SetText(hp.ToString());
+        if (txtName != null) txtName.SetText(nameItem);
+    }
+    public void UpdateVisual() //Cập nhật visual cho phù hợp với level Unit
+    {
+        spriteRenderer.sprite = isMelee? visualsMelee[level - 1]:visualsRange[level-1];
     }
     public void SetStats(int level)
     {
@@ -33,6 +54,7 @@ public class ItemManager : MonoBehaviour
             dame = Char.Instance.damagesRange[index];
             hp = Char.Instance.hpsRange[index];
         }
+        UpdateVisual();
     }
     public void BuyUnit() //Mua unit
     {

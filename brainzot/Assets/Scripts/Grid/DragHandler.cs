@@ -37,6 +37,7 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
     public void OnPointerUp(PointerEventData eventData)
     {
         if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
+        AudioManager.Instance.Play(GameSound.snapSound);
         TrySnap();
     }
 
@@ -76,7 +77,7 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         GridManager.Instance.Place(unit, unit.gridX, unit.gridY);
     }
 
-    void TryMerge(MonsterHealth other)   //hàm merge unit, cần sửa
+    void TryMerge(MonsterHealth other)   //hàm merge unit
     {
         if (other.stats.level != unit.stats.level)
         {
@@ -87,8 +88,9 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
+        
         unit.LevelUp(1);
-
+        AudioManager.Instance.PlayUnitSound(unit.stats.level, unit.stats.type);
         GridManager.Instance.Place(unit, other.gridX, other.gridY);
         Char.Instance.dataMyTeam.RemoveAll(m => m == null);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public enum GameSound
 {
@@ -14,6 +15,7 @@ public enum GameSound
     loseSound,
     victorySound,
     clickButtonSound,
+    snapSound,
 }
 
 public class AudioManager : MonoBehaviour
@@ -31,6 +33,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip victoryClip;
     public AudioClip loseClip;
     public AudioClip clickButtonClip;
+    public AudioClip snapClip;
     
     
     [Header("Audio Source Pool")]
@@ -43,6 +46,12 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)]
     public float sfxVolume = 1f;
     public bool isMuted = false;
+
+    [Header("Melee Audio Clip")]
+    public AudioClip[] meleeAudioClip;
+
+    [Header("Range Audio Clip")]
+    public AudioClip[] rangeAudioClip;
 
     void Awake()
     {
@@ -69,6 +78,7 @@ public class AudioManager : MonoBehaviour
             soundMap[GameSound.victorySound] = victoryClip;
             soundMap[GameSound.loseSound] = loseClip;
             soundMap[GameSound.clickButtonSound] = clickButtonClip;
+            soundMap[GameSound.snapSound] = snapClip;
             
             LoadSettings();
         }
@@ -97,6 +107,28 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogWarning("AudioManager: Sound not found " + sound);
         }
+    }
+
+    public void PlayUnitSound(int level, MonsterType type, float volum = -1f)
+    {
+        if (isMuted) return;
+        if (level <= 0 || level > meleeAudioClip.Length || level > rangeAudioClip.Length) return;
+        AudioClip clip;
+        Debug.Log(type + " " + level);
+        if (type == MonsterType.Melee)
+        {
+            clip = meleeAudioClip[level - 1];
+        }
+        else
+        {
+            clip = rangeAudioClip[level - 1];
+        }
+        AudioSource src = audioSources.Find(s => !s.isPlaying);
+        if (src == null) src = audioSources[0];
+
+        src.volume = volum == -1 ? sfxVolume : volum;
+        src.pitch = 1f;
+        src.PlayOneShot(clip);
     }
 
     /// <summary>
@@ -130,12 +162,12 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Fade âm lượng SFX từ hiện tại về targetVolume trong duration giây
     /// </summary>
-    /*public void FadeVolume(float targetVolume, float duration)
+    public void FadeVolume(float targetVolume, float duration)
     {
         DOTween.To(() => sfxVolume, v => sfxVolume = v, targetVolume, duration)
             .SetEase(Ease.Linear)
             .OnComplete(SaveSettings);
-    }*/
+    }
 
     /// <summary>
     /// Save âm lượng + mute

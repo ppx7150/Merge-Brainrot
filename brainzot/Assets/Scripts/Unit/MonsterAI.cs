@@ -160,6 +160,7 @@ public class MonsterAI : MonoBehaviour
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;
         MonsterHealth hp = currentTarget.GetComponent<MonsterHealth>();
+        AudioManager.Instance.Play(GameSound.meleeAttackSound);
         if (hp != null)
         {
             hp.TakeDamage(monsterHealth.stats.attackDamage);
@@ -176,5 +177,6 @@ public class MonsterAI : MonoBehaviour
         p.damage = monsterHealth.stats.attackDamage;
         Vector2 dir = (currentTarget.position - attackPoint.position).normalized;
         proj.GetComponent<Rigidbody2D>().AddForce(dir * projectileForce, ForceMode2D.Impulse);
+        AudioManager.Instance.Play(GameSound.rangeAttackSound);
     }
 }

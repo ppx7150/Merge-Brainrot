@@ -37,6 +37,7 @@ public class ItemManager : MonoBehaviour
     public void BuyUnit() //Mua unit
     {
         if (!Char.Instance.SubGems(cost)) return;
+        PanelManager.Instance.hideSummonPanel();
         if (isMelee)
         {
             UnitSpawner.Instance.SpawnMeleeUnit(level);

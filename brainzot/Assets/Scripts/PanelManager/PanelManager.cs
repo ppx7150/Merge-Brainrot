@@ -1,3 +1,4 @@
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class PanelManager : MonoBehaviour
@@ -18,6 +19,39 @@ public class PanelManager : MonoBehaviour
 
     public static PanelManager Instance;
 
+    [Header("Cài đặt")]
+    public float duration = 0.5f; // Thời gian hiệu ứng
+    public Ease openEase = Ease.OutBack; // Kiểu nảy khi mở
+    public Ease closeEase = Ease.InBack; // Kiểu thu vào khi đóng
+
+    private Vector3 initialScale;
+
+    // Gọi hàm này để MỞ Panel
+    public void OpenPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+        AudioManager.Instance.Play(GameSound.clickButtonSound);
+        initialScale = new Vector3(1, 1, 1);
+        panel.transform.localScale = Vector3.zero;
+
+        panel.transform.DOScale(initialScale, duration)
+            .SetEase(openEase);
+    }
+
+    // Gọi hàm này để ĐÓNG Panel
+    public void ClosePanel(GameObject panel)
+    {
+        AudioManager.Instance.Play(GameSound.clickButtonSound);
+        // Thu nhỏ về 0
+        panel.transform.DOScale(Vector3.zero, duration) // Đóng thì nên nhanh hơn mở 1 chút
+            .SetEase(closeEase)
+            .OnComplete(() =>
+            {
+                // Sau khi thu nhỏ xong -> Tắt toàn bộ Container (biến mất cả nền đen)
+                panel.SetActive(false);
+            });
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -27,32 +61,28 @@ public class PanelManager : MonoBehaviour
     {
         if (dailyRewardPanel != null)
         {
-            dailyRewardPanel.SetActive(true);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            OpenPanel(dailyRewardPanel);
         }
     }
     public void hideDailyRewardPanel()
     {
         if (dailyRewardPanel != null)
         {
-            dailyRewardPanel.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            ClosePanel(dailyRewardPanel);
         }
     }
     public void showDailyRewardAds()
     {
         if (adsPanel != null)
         {
-            adsPanel.SetActive(true);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            OpenPanel(adsPanel);
         }
     }
     public void hideDailyRewardAds()
     {
         if (adsPanel != null)
         {
-            adsPanel.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            ClosePanel(adsPanel);
         }
     }
 
@@ -60,20 +90,16 @@ public class PanelManager : MonoBehaviour
     {
         if (collectionPanel != null)
         {
-            collectionPanel.SetActive(true);
+            OpenPanel(collectionPanel);
             rangeCollection.SetActive(true);
             meleeCollection.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideCollectionPanel()
     {
         if (collectionPanel != null)
         {
-            collectionPanel.SetActive(false);
-            rangeCollection.SetActive(false);
-            meleeCollection.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            ClosePanel(collectionPanel);
         }
     }
     public void showRangeCollection()
@@ -99,8 +125,7 @@ public class PanelManager : MonoBehaviour
     {
         if (settingPanel != null)
         {
-            settingPanel.SetActive(true);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            OpenPanel(settingPanel);
         }
     }
 
@@ -108,8 +133,7 @@ public class PanelManager : MonoBehaviour
     {
         if (settingPanel != null)
         {
-            settingPanel.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            ClosePanel(settingPanel);
         }
     }
 
@@ -117,20 +141,16 @@ public class PanelManager : MonoBehaviour
     {
         if (summonPanel != null)
         {
-            summonPanel.SetActive(true);
+            OpenPanel(summonPanel);
             rangeSummon.SetActive(true);
             meleeSummon.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
         }
     }
     public void hideSummonPanel()
     {
         if (summonPanel != null)
         {
-            summonPanel.SetActive(false);
-            rangeSummon.SetActive(false);
-            meleeSummon.SetActive(false);
-            AudioManager.Instance.Play(GameSound.clickButtonSound);
+            ClosePanel(summonPanel);
         }
     }
     public void showRangeSummon()

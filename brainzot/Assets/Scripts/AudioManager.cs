@@ -16,6 +16,9 @@ public enum GameSound
     victorySound,
     clickButtonSound,
     snapSound,
+    bombSound,
+    freezeSound,
+    planeSound
 }
 
 public class AudioManager : MonoBehaviour
@@ -34,8 +37,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip loseClip;
     public AudioClip clickButtonClip;
     public AudioClip snapClip;
-    
-    
+    public AudioClip bombBoosterClip;
+    public AudioClip freezeBoosterClip;
+    public AudioClip bombPlaneFlyClip;
+
+
     [Header("Audio Source Pool")]
     public AudioSource audioSourcePrefab;
     private List<AudioSource> audioSources = new List<AudioSource>();
@@ -79,7 +85,10 @@ public class AudioManager : MonoBehaviour
             soundMap[GameSound.loseSound] = loseClip;
             soundMap[GameSound.clickButtonSound] = clickButtonClip;
             soundMap[GameSound.snapSound] = snapClip;
-            
+            soundMap[GameSound.freezeSound] = freezeBoosterClip;
+            soundMap[GameSound.bombSound] = bombBoosterClip;
+            soundMap[GameSound.planeSound] = bombPlaneFlyClip;
+
             LoadSettings();
         }
         else

@@ -17,6 +17,7 @@ public class BattleManager : MonoBehaviour
     public TMP_Text[] txtCoinReward;
     public GameObject rangeEnemyPrefab;
     public GameObject meleeEnemyPrefab;
+    public GameObject Booster;
     private void Awake()
     {
         Instance = this;
@@ -73,6 +74,7 @@ public class BattleManager : MonoBehaviour
             Char.Instance.AddCoins(coin);
             startPvP = false;
             ButtonList.SetActive(true);
+            Booster.SetActive(false);
             Char.Instance.level++;
             if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
             Time.timeScale = 0f;
@@ -93,6 +95,7 @@ public class BattleManager : MonoBehaviour
             Char.Instance.AddCoins(coin);
             startPvP = false;
             ButtonList.SetActive(true);
+            Booster.SetActive(false);
             Time.timeScale = 0f;
         }
     }
@@ -138,6 +141,7 @@ public class BattleManager : MonoBehaviour
         }
         startPvP = true;
         ButtonList.SetActive(false);
+        Booster.SetActive(true);
     }
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {

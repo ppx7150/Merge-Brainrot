@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class MonsterAI : MonoBehaviour
 {
+    [Header("Booster Status")]
+    public bool isFrozen;
+
     public bool isReady;
     public float laneTolerance = 0.2f;   // sai lệch Y cho phép (cùng lane)
     public float xTolerance = 0.5f;      // sai lệch X cho phép (đứng ngang)
@@ -21,6 +25,7 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
+        if (isFrozen) return;
         var cfg = AIConfig.Instance;
         if (monsterHealth.stats.type == MonsterType.Melee)
         {
@@ -49,6 +54,23 @@ public class MonsterAI : MonoBehaviour
             HandleRanged();
         }
     }
+    public void Freeze(float duration)
+    {
+        if (!gameObject.activeSelf) return;
+        StopAllCoroutines();
+        StartCoroutine(FreezeCoroutine(duration));
+    }
+
+    IEnumerator FreezeCoroutine(float duration)
+    {
+        isFrozen = true;
+
+        // Optional: animation / effect
+        yield return new WaitForSeconds(duration);
+
+        isFrozen = false;
+    }
+
     void HandleMelee() //AI của Unit cận chiến gồm: di chuyển và tấn công và xoay hướng
     {
         if (currentTarget == null || !currentTarget.gameObject.activeSelf) return;

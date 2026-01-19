@@ -6,29 +6,28 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 {
     private MonsterHealth unit;
     private Vector3 offset;
-    private int activePointerId = -999;
     void Awake()
     {
         unit = GetComponent<MonsterHealth>();
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf || activePointerId != -999) return;
-        activePointerId = eventData.pointerId;
+        if (BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf || Char.Instance.activePointerId != -999) return;
+        Char.Instance.activePointerId = eventData.pointerId;
         offset = transform.position - GetMouseWorldPos();   
         GridManager.Instance.Remove(unit.gridX, unit.gridY);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.pointerId != activePointerId || BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
+        if (eventData.pointerId != Char.Instance.activePointerId || BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
         transform.position = GetMouseWorldPos() + offset;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.pointerId != activePointerId || BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
-        activePointerId = -999;
+        if (eventData.pointerId != Char.Instance.activePointerId || BattleManager.Instance.startPvP || BattleManager.Instance.winPanel.activeSelf || BattleManager.Instance.losePanel.activeSelf) return;
+        Char.Instance.activePointerId = -999;
         AudioManager.Instance.Play(GameSound.snapSound);
         TrySnap();
     }
@@ -82,7 +81,12 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
         // MERGE
         GridManager.Instance.Remove(other.gridX, other.gridY);
         Destroy(other.gameObject);
-
+        MergeTracker.OnMerge();
+        GameLog.Log("unit_merge", new
+        {
+            mergeCount = MergeTracker.mergeCount,
+            timeToFirstMerge = MergeTracker.timeToFirstMerge
+        });
         unit.LevelUp(1);
         AudioManager.Instance.PlayUnitSound(unit.stats.level, unit.stats.type);
         unit.GetComponent<SpriteRenderer>().sortingOrder = -other.gridY;

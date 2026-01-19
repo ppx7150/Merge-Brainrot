@@ -11,7 +11,7 @@ public class MonsterHealth : MonoBehaviour
     public HPBar hpBar;
     public GameObject damageTextPrefab;
     public Transform textSpawnPoint;
-    public float damageInSecond=0; //Giá dame nhận được trong 1 giây
+    public int damageInSecond=0; //Giá dame nhận được trong 1 giây
     public float timeShowDameTxt = 1f; //Delay hiển thị dame
     void Awake()
     {
@@ -25,26 +25,26 @@ public class MonsterHealth : MonoBehaviour
     {
         if(timeShowDameTxt > 0) timeShowDameTxt -= Time.deltaTime;
     }
-    public void TakeDamage(float dmg) //Hàm tính lượng hp còn lại sau khi bị attack với sát thương dmg
+    public void TakeDamage(int dmg) //Hàm tính lượng hp còn lại sau khi bị attack với sát thương dmg
     {
         if (stats.currentHP > 0) dmg = Mathf.Min(dmg, stats.currentHP);
         damageInSecond += dmg;
         stats.currentHP -= dmg;
-        if (hpBar != null) hpBar.SetHP(stats.currentHP / stats.maxHP);
+        if (hpBar != null) hpBar.SetHP((stats.currentHP * 1.0f) / (stats.maxHP * 1.0f));
         if (stats.currentHP <= 0) Die();
         if (CompareTag("Enemy") && timeShowDameTxt <= 0 && BattleManager.Instance.startPvP)
         {
             ShowDamage(damageInSecond);
         }
     }
-    void ShowDamage(float damage) //Hàm hiển thị dame
+    void ShowDamage(int damage) //Hàm hiển thị dame
     {
         GameObject textObj = Instantiate(damageTextPrefab, textSpawnPoint.position, Quaternion.identity, textSpawnPoint);
         DamageText dmgText = textObj.GetComponent<DamageText>();
         dmgText.SetText(damage.ToString());
         dmgText.DamageSize(damage);
         timeShowDameTxt = 1f;
-        damageInSecond = 0f;
+        damageInSecond = 0;
     }
     void Die()
     {
@@ -59,22 +59,32 @@ public class MonsterHealth : MonoBehaviour
     }
     public void SetStats(int level)
     {
-        if (level < 1 || level > 8) return;
-        int index = level - 1;
+        var cfg = UnitStatsConfig.Instance.units;
+        int index = Mathf.Clamp(level - 1, 0, cfg.melee.hp.Length - 1);
         if (stats.type == MonsterType.Melee)
         {
-           //Debug.Log("Melee " + level);
-            stats.attackDamage = Char.Instance.damagesMelee[index];
-            stats.maxHP = Char.Instance.hpsMelee[index];
-            stats.currentHP = stats.maxHP;
+            stats.attackDamage = cfg.melee.damage[index];
+            stats.maxHP = cfg.melee.hp[index];
+            stats.attackSpeed = cfg.melee.attackSpeed[index];
+            stats.attackRange = cfg.melee.attackRange[index];
+            stats.moveSpeed = cfg.melee.moveSpeed[index];
         }
         else
         {
-            //Debug.Log("Range" + level);
-            stats.attackDamage = Char.Instance.damagesRange[index];
-            stats.maxHP = Char.Instance.hpsRange[index];
-            stats.currentHP = stats.maxHP;
+            stats.attackDamage = cfg.range.damage[index];
+            stats.maxHP = cfg.range.hp[index];
+            stats.attackSpeed = cfg.range.attackSpeed[index];
+            stats.attackRange = cfg.range.attackRange[index];
+            stats.moveSpeed = cfg.range.moveSpeed[index];
         }
+        // FAIL SAFE BUFF
+        if (LoseTracker.IsFailSafeActive())
+        {
+            var fs = FailSafeConfig.Instance.failSafe;
+            stats.attackDamage *= fs.damageMultiplier;
+            stats.maxHP *= fs.hpMultiplier;
+        }
+        stats.currentHP = stats.maxHP;
     }
 
     public void UpdateVisual() //Cập nhật visual cho phù hợp với level Unit
@@ -88,10 +98,14 @@ public class MonsterHealth : MonoBehaviour
     }
     public void ResetStatus() //Trả về trạng thái chuẩn bị
     {
-        stats.currentHP = stats.maxHP;
+        SetStats(stats.level);
         hpBar.SetHP(1f);
-        GetComponent<MonsterAI>().currentTarget = null;
+        MonsterAI ai = GetComponent<MonsterAI>();
+        ai.currentTarget = null;
+        ai.attackTimer = 0f;
         GridManager.Instance.Place(this, gridX, gridY);
         spriteRenderer.flipX = false;
+        damageInSecond = 0;
+        timeShowDameTxt = 1f;
     }
 }

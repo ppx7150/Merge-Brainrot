@@ -2,7 +2,7 @@
 
 public class Projectile : MonoBehaviour
 {
-    public float damage;
+    public int damage;
     public float lifeTime = 3f;
     public GameObject enemy;
     public void Awake()

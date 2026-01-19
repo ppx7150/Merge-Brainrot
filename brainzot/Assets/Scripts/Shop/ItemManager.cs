@@ -44,18 +44,20 @@ public class ItemManager : MonoBehaviour
     {
         if (level < 1 || level > 8) return;
         int index = level - 1;
+        var cfg = UnitStatsConfig.Instance.units;
         if (isMelee)
         {
-            dame = Char.Instance.damagesMelee[index];
-            hp = Char.Instance.hpsMelee[index];
+            dame = cfg.melee.damage[index];
+            hp = cfg.melee.hp[index];
         }
         else
         {
-            dame = Char.Instance.damagesRange[index];
-            hp = Char.Instance.hpsRange[index];
+            dame = cfg.range.damage[index];
+            hp = cfg.range.hp[index];
         }
         UpdateVisual();
     }
+
     public void BuyUnit() //Mua unit
     {
         if (!Char.Instance.SubGems(cost)) return;

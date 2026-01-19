@@ -10,8 +10,8 @@ public class DataUnit //Dữ liệu của mỗi Unit
 {
     public string type;
     public int level;
-    public float maxHP;
-    public float attackDamage;
+    public int maxHP;
+    public int attackDamage;
     public float attackSpeed;   // thời gian giữa các đòn
     public float attackRange;   // range đánh / bắn
     public float moveSpeed;
@@ -55,32 +55,16 @@ public class Char : MonoBehaviour
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
-    public int[] damagesRange = { 2, 5, 12, 27, 64, 152, 315, 645 }; //sửa trên unity obj char
-    public int[] hpsRange = { 7, 18, 43, 105, 225, 605, 1320, 2765 };
-    public int[] damagesMelee = { 1, 3, 7, 15, 33, 70, 150, 315 };
-    public int[] hpsMelee = { 18, 45, 115, 270, 625, 1320, 2675, 5550 };
     public string[] nameUnitMelee;
     public string[] nameUnitRange;
     public List<ItemManager> itemMelee;
     public List<ItemManager> itemRange;
 
+    public int activePointerId = -999;
     private void Awake()
     {
+        GameLog.Log("session_start");
         Instance = this;
-    }
-    public void LoadMyTeamNewBie()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            GameObject obj = Instantiate(i == 0 ? meleePrefabs : rangePrefabs);
-            MonsterHealth mh = obj.GetComponent<MonsterHealth>();
-            mh.SetGridPos(i == 0 ? 1 : 3, 0);
-            mh.stats.type = (i == 0 ? MonsterType.Melee : MonsterType.Ranged);
-            mh.LevelUp(0);
-            dataMyTeam.Add(mh);
-            BattleManager.Instance.playerTeam.Add(obj);
-            GridManager.Instance.Place(mh, mh.gridX, mh.gridY);
-        }
     }
     void Start()
     {
@@ -157,7 +141,7 @@ public class Char : MonoBehaviour
         gems = saveData.gems;
         unlockUnitMelee = saveData.unlockUnitMelee;
         unlockUnitRange = saveData.unlockUnitRange;
-        if (level >= 2) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
+        if (level >= EconomyConfig.Instance.unitShop.increaseAfterLevel) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
         foreach (var m in saveData.dataMyTeam.units)
         {
             MonsterType tp = (MonsterType)Enum.Parse(typeof(MonsterType), m.type); ;
@@ -177,11 +161,21 @@ public class Char : MonoBehaviour
     }
     public void OnApplicationPause(bool pause) //Lưu dữ liệu khi rời khỏi game(chưa out game)
     {
+        GameLog.Log("session_end", new
+        {
+            level = level,
+            coins = coins
+        });
         if (pause && level > 2) Save(Application.persistentDataPath + "/save.json");
     }
     private void OnApplicationQuit() //Lưu dữ liệu khi out game
     {
-        if(level > 2) Save(Application.persistentDataPath + "/save.json");
+        GameLog.Log("session_end", new
+        {
+            level = level,
+            coins = coins
+        });
+        if (level > 2) Save(Application.persistentDataPath + "/save.json");
     }
     public bool SubCoins(long a) //Trừ coin của người chơi
     {

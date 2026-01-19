@@ -17,8 +17,6 @@ public class BattleManager : MonoBehaviour
     public TMP_Text[] txtCoinReward;
     public GameObject rangeEnemyPrefab;
     public GameObject meleeEnemyPrefab;
-    public float xBonusWin = 2.8f;
-    public float xBonusLose = 1.3f;
     private void Awake()
     {
         Instance = this;
@@ -33,27 +31,40 @@ public class BattleManager : MonoBehaviour
     }
     public float GetDifficulty(int level)
     {
-        // Level 1–10: đặt tay
-        float[] manual = { 0f, 0.5f, 0.6f, 0.6f, 0.7f, 0.7f, 0.8f, 0.8f, 0.9f, 1.0f, 1.3f };
-        if (level <= 10) return manual[level];
-        // Base pattern cho bộ 11–15
-        float[] baseGroup = { 0.62f, 0.72f, 0.92f, 1.12f, 1.32f };
+        var cfg = BattleConfig.Instance.difficulty;
+        var manual = cfg.manualLevels.ToDictionary();
 
-        int groupIndex = (level - 11) / 5;     // 0 cho 11–15
-        int indexInGroup = (level - 11) % 5;   // 0–4
+        if (manual.ContainsKey(level))
+            return manual[level];
 
-        return baseGroup[indexInGroup] + groupIndex * 0.02f;
+        int groupIndex = (level - 11) / 5;
+        int indexInGroup = (level - 11) % 5;
+
+        return cfg.baseGroup[indexInGroup] + groupIndex * cfg.groupIncrease;
     }
-
     public long CalulatorReward(bool isWin)
     {
-        double reward = (UnitSpawner.Instance.costMelee + UnitSpawner.Instance.costRange) / 2f * (isWin ? xBonusWin : xBonusLose) * GetDifficulty(Char.Instance.level);
+        var rewardCfg = BattleConfig.Instance.reward;
+        double reward = (UnitSpawner.Instance.costMelee + UnitSpawner.Instance.costRange) / 2.0 * (isWin ? rewardCfg.winMultiplier : rewardCfg.loseMultiplier) * GetDifficulty(Char.Instance.level);
+        //FAIL SAFE REWARD
+        if (!isWin && LoseTracker.IsFailSafeActive())
+        {
+            reward *= FailSafeConfig.Instance.failSafe.rewardBonus;
+        }
         return (long)System.Math.Round(reward);
     }
+
     void CheckBattleEnd() //Kiểm tra xem team nào thắng team nào thua
     {
         if (!enemyTeam.Exists(m => m.activeSelf))
         {
+            GameLog.Log("battle_win", new
+            {
+                level = Char.Instance.level,
+                loseStreak = LoseTracker.loseStreak,
+                mergeCount = MergeTracker.mergeCount
+            });
+            LoseTracker.OnWin();
             Debug.Log("Player Win");
             winPanel.SetActive(true);
             AudioManager.Instance.Play(GameSound.victorySound);
@@ -68,6 +79,12 @@ public class BattleManager : MonoBehaviour
         }
         else if (!playerTeam.Exists(m => m.activeSelf))
         {
+            GameLog.Log("battle_lose", new
+            {
+                level = Char.Instance.level,
+                loseStreak = LoseTracker.loseStreak
+            });
+            LoseTracker.OnLose();
             Debug.Log("Enemy Win");
             losePanel.SetActive(true);
             AudioManager.Instance.Play(GameSound.loseSound);
@@ -124,6 +141,7 @@ public class BattleManager : MonoBehaviour
     }
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
+        MergeTracker.Reset();
         Time.timeScale = 1f;
         GridManager.Instance.CLear(4,5);
         arrUnitReady.Clear();

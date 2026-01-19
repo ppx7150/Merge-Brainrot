@@ -12,7 +12,7 @@ public class MonsterAI : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileForce = 10f; //Tốc độ bay của đạn
 
-    private float attackTimer;  //Thời gian thực để đánh tiếp
+    public float attackTimer;  //Delay đánh
     public Transform currentTarget;
     public GameObject projectile;
 
@@ -21,6 +21,16 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
+        var cfg = AIConfig.Instance;
+        if (monsterHealth.stats.type == MonsterType.Melee)
+        {
+            if(laneTolerance != cfg.melee.laneTolerance) laneTolerance = cfg.melee.laneTolerance;
+            if (xTolerance != cfg.melee.xTolerance) xTolerance = cfg.melee.xTolerance;
+        }
+        else
+        {
+            if (projectileForce != cfg.range.projectileForce) projectileForce = cfg.range.projectileForce;
+        }
         if (currentTarget == null || !currentTarget.gameObject.activeSelf)
         {
             if (projectile != null) Destroy(projectile);
@@ -151,7 +161,7 @@ public class MonsterAI : MonoBehaviour
 
     void FindNearestTarget() //Tìm kiếm địch gần nhất
     {
-        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 10f, enemyLayer);
+        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, AIConfig.Instance.targeting.searchRadius, enemyLayer);
         float minDist = Mathf.Infinity;
         Transform nearest = null;
         foreach (var col in cols)

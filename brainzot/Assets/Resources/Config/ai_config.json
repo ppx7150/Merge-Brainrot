@@ -1,0 +1,12 @@
+{
+  "melee": {
+    "laneTolerance": 0.2,
+    "xTolerance": 0.35
+  },
+  "range": {
+    "projectileForce": 7
+  },
+  "targeting": {
+    "searchRadius": 10
+  }
+}

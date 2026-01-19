@@ -10,10 +10,10 @@ public class MonsterStats
     public MonsterType type;
     public int level;
 
-    public float maxHP;
-    public float currentHP;
+    public int maxHP;
+    public int currentHP;
 
-    public float attackDamage;
+    public int attackDamage;
     public float attackSpeed;
     public float attackRange;
 

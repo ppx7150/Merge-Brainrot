@@ -18,7 +18,12 @@ public class UnitSpawner : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        var shop = EconomyConfig.Instance.unitShop;
+        costMelee = shop.startCost.melee;
+        costRange = shop.startCost.range;
+        OnCost();
     }
+
     public void LoadCost(long cM, long cR) //Làm mới giá tiền mua Unit
     {
         costMelee = cM;
@@ -32,18 +37,15 @@ public class UnitSpawner : MonoBehaviour
         txtCostMelee.SetText(Char.FormatMoney(costMelee) + "$");
         txtCostRange.SetText(Char.FormatMoney(costRange) + "$");
     }
-    public void UpgradeCost(bool isMelee) //Nâng giá tiền mua Unit
+    public void UpgradeCost(bool isMelee)
     {
-        if (isMelee)
-        {
-            costMelee = (long)System.Math.Round(costMelee * 1.1);
-        }
-        else
-        {
-            costRange = (long)System.Math.Round(costRange * 1.1);
-        }
+        var shop = EconomyConfig.Instance.unitShop;
+        if (Char.Instance.level < shop.increaseAfterLevel) return;
+        if (isMelee) costMelee = (long)System.Math.Round(costMelee * shop.costIncreaseRate);
+        else costRange = (long)System.Math.Round(costRange * shop.costIncreaseRate);
         OnCost();
     }
+
     public void SpawnRangeUnit(int level) //Spawn Unit đánh xa
     {
         GridManager grid = GridManager.Instance;
@@ -61,12 +63,11 @@ public class UnitSpawner : MonoBehaviour
                     unit.LevelUp(level);
                     AudioManager.Instance.PlayUnitSound(level, unit.stats.type);
                     grid.Place(unit, x, y);
-                    if(Char.Instance.level >= 2) UpgradeCost(false);
+                    if(Char.Instance.level >= EconomyConfig.Instance.unitShop.increaseAfterLevel) UpgradeCost(false);
                     return;
                 }
             }
         }
-        Debug.Log("Grid full - cannot spawn unit");
     }
 
     public void SpawnMeleeUnit(int level) //Spawn unit cận chiến
@@ -85,7 +86,7 @@ public class UnitSpawner : MonoBehaviour
                     unit.LevelUp(level);
                     AudioManager.Instance.PlayUnitSound(level, unit.stats.type);
                     grid.Place(unit, x, y);
-                    if (Char.Instance.level >= 2) UpgradeCost(true);
+                    if (Char.Instance.level >= EconomyConfig.Instance.unitShop.increaseAfterLevel) UpgradeCost(true);
                     return;
                 }
             }

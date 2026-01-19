@@ -181,7 +181,7 @@ public class BattleManager : MonoBehaviour
             Destroy(m.gameObject);
         }
         enemyTeam.Clear();
-
+        Char.Instance.txtLevel.SetText(Noti.Get("level_format", Char.Instance.level));
         // Load JSON từ Resources
         string path = "Level/" + Char.Instance.level;
         TextAsset jsonFile = Resources.Load<TextAsset>(path);

@@ -105,7 +105,7 @@ public class TutorialController : MonoBehaviour
         switch (state)
         {
             case TutorialState.Phase1_BuyMelee:
-                HighlightUI(btnBuyMeleeObj, "Buy Your Melee Brain rot");
+                HighlightUI(btnBuyMeleeObj, Noti.Get("buy_melee"));
                 ShowHandAt(btnBuyMeleeObj.transform.position);
                 if (btnBuyMeleeObj.GetComponent<SpriteRenderer>())
                     btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = 101;
@@ -114,7 +114,7 @@ public class TutorialController : MonoBehaviour
                 if (btnBuyMeleeObj.GetComponent<SpriteRenderer>())
                     btnBuyMeleeObj.GetComponent<SpriteRenderer>().sortingOrder = -10;
                 RestoreUI(btnBuyMeleeObj);
-                HighlightUI(goldDisplayUI, "You need gold to Buy Brain rot");
+                HighlightUI(goldDisplayUI, Noti.Get("need_gold_buy"));
                 goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = 95;
                 handPointer.gameObject.SetActive(false);
                 Invoke(nameof(MoveToBuyRange), 2.5f);
@@ -122,22 +122,22 @@ public class TutorialController : MonoBehaviour
             case TutorialState.Phase1_BuyRange:
                 RestoreUI(goldDisplayUI);
                 goldtxtUI.GetComponent<MeshRenderer>().sortingOrder = -10;
-                HighlightUI(btnBuyRangeObj, "Buy your range brain rot");
+                HighlightUI(btnBuyRangeObj, Noti.Get("buy_range"));
                 ShowHandAt(btnBuyRangeObj.transform.position);
                 break;
             case TutorialState.Phase1_ClickBattle:
-                HighlightUI(btnBattleObj, "Click here to start");
+                HighlightUI(btnBattleObj, Noti.Get("click_start"));
                 ShowHandAt(btnBattleObj.transform.position);
                 break;
 
             case TutorialState.Phase2_BuyMelee:
                 UnitSpawner.Instance.txtCostMelee.GetComponent<MeshRenderer>().sortingOrder = 95;
-                HighlightUI(btnBuyMeleeObj, "Buy one more to Merge!");
+                HighlightUI(btnBuyMeleeObj, Noti.Get("buy_to_merge"));
                 ShowHandAt(btnBuyMeleeObj.transform.position);
                 break;
             case TutorialState.Phase2_ClickBattle:
                 RestoreUI(btnBuyRangeObj);
-                HighlightUI(btnBattleObj, "Click here to start");
+                HighlightUI(btnBattleObj, Noti.Get("click_start"));
                 ShowHandAt(btnBattleObj.transform.position);
                 break;
         }
@@ -228,7 +228,7 @@ public class TutorialController : MonoBehaviour
 
         RestoreUI(btnBuyRangeObj);
         darkMaskSprite.SetActive(true);
-        instructionText.text = "Drag to here!";
+        instructionText.text = Noti.Get("drag_here");
 
         yield return new WaitForSeconds(0.2f);
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 [Serializable]
 public class DataUnit //Dữ liệu của mỗi Unit
 {
@@ -47,6 +48,7 @@ public class Char : MonoBehaviour
     public int gems; //Số tiền của người chơi 
     public TMP_Text txtCoins; 
     public TMP_Text txtGems;
+    public TMP_Text txtLevel;
     public List<MonsterHealth> dataMyTeam = new List<MonsterHealth>();
     public List<bool> unlockUnitMelee = new List<bool>() { true, false, false, false, false, false, false, false };
     public List<bool> unlockUnitRange = new List<bool>() { true, false, false, false, false, false, false, false };
@@ -185,7 +187,7 @@ public class Char : MonoBehaviour
     {
         if (a > coins)
         {
-            Debug.Log("Don't enough coins");
+            Noti.Instance.Show("not_enough_gold");
             return false;
         }
         coins -= a;
@@ -211,7 +213,7 @@ public class Char : MonoBehaviour
     {
         if (a > gems)
         {
-            Debug.Log("Don't enough gems");
+            Noti.Instance.Show("not_enough_gem");
             return false;
         }
         gems -= a;

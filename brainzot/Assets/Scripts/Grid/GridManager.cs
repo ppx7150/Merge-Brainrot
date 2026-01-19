@@ -7,6 +7,8 @@ public class GridManager : MonoBehaviour
     public static GridManager Instance;
     public float MinX => origin.x; //vị trí biên nhỏ nhất của trục Ox
     public float MaxX => origin.x + (columns - 1) * cellSize; //vị trí biên lớn nhất của trục Ox
+    public Vector2 GridSize =>
+    new Vector2(columns * cellSize, rows * cellSize);
 
     [Header("Grid Size")]   //khai báo 6 hàng 5 cột.
     public int columns = 5;
@@ -21,7 +23,12 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        grid = new MonsterHealth[columns, rows];     //khởi tạo grid
+        grid = new MonsterHealth[columns, rows];
+
+        origin = new Vector2(
+            -(columns - 1) * cellSize / 2f,
+            -(rows - 1) * cellSize / 2f
+        );
     }
 
     public Vector3 GetWorldPos(int x, int y)        
@@ -95,7 +102,7 @@ public class GridManager : MonoBehaviour
             {
                 Gizmos.DrawWireCube(
                     GetWorldPos(x, y),
-                    Vector3.one * cellSize
+                    new Vector3(cellSize, cellSize, 0)
                 );
             }
         }
@@ -122,11 +129,11 @@ public class GridManager : MonoBehaviour
     }
     public bool isFull()
     {
-        for (int i = 0; i <= 2; i++)
+        for (int y = 0; y < rows/2; y++)
         {
-            for (int j = 0; j <= 4; j++)
+            for (int x = 0; x < columns; x++)
             {
-                if (IsEmpty(j, i)) return false;
+                if (IsEmpty(x, y)) return false;
             }
         }
         return true;

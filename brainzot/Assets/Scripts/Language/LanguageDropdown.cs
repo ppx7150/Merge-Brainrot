@@ -21,7 +21,7 @@ public class LanguageDropdown : MonoBehaviour
         int index = LocalizationSettings.AvailableLocales.Locales
             .IndexOf(LocalizationSettings.SelectedLocale);
 
-        dropdown.SetValueWithoutNotify(index-1);
+        dropdown.SetValueWithoutNotify(index);
         dropdown.onValueChanged.AddListener(OnLanguageChanged);
     }
 

@@ -18,7 +18,6 @@ public class LoadingController : MonoBehaviour
     {
         // 1. Random nhân vật
         ShowRandomCharacter();
-
         // 2. Bắt đầu load scene
         StartCoroutine(LoadSceneAsync());
     }

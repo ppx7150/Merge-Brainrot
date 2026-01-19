@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class HPBar : MonoBehaviour
 {
     public Transform fill;
     private float maxWidth = 1f;
+    private float currentRatio = 1f;
 
-    public void SetHP(float ratio) //Hiển thị hp thực
+    public void SetHP(float ratio)
     {
         ratio = Mathf.Clamp01(ratio);
-        Vector3 scale = fill.localScale;
-        scale.x = maxWidth * ratio;
-        fill.localScale = scale;
-        Vector3 pos = fill.localPosition;
-        pos.x = -(maxWidth - scale.x) / 2f;
-        fill.localPosition = pos;
+
+        float targetWidth = maxWidth * ratio;
+        float targetPosX = -(maxWidth - targetWidth) / 2f;
+        fill.DOKill();
+        float duration = ratio < currentRatio ? 0.15f : 0.3f;
+        fill.DOScaleX(targetWidth, duration).SetEase(Ease.OutCubic).SetUpdate(true);
+        fill.DOLocalMoveX(targetPosX, duration).SetEase(Ease.OutCubic).SetUpdate(true);
+        currentRatio = ratio;
     }
 }

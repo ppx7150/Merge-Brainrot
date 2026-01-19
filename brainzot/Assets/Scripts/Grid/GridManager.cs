@@ -24,11 +24,7 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         grid = new MonsterHealth[columns, rows];
-
-        origin = new Vector2(
-            -(columns - 1) * cellSize / 2f,
-            -(rows - 1) * cellSize / 2f
-        );
+        origin = new Vector2(-(columns - 1) * cellSize / 2f, -(rows - 1) * cellSize / 2f);
     }
 
     public Vector3 GetWorldPos(int x, int y)        

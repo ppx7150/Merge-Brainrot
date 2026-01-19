@@ -146,27 +146,27 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void GenerateEnemy()
-    {
-        GameObject obj;
-        MonsterHealth mh;
+    //public void GenerateEnemy()
+    //{
+    //    GameObject obj;
+    //    MonsterHealth mh;
 
-        for (int i = 5; i >= 3; i--)
-        {
-            int sl = Random.Range(1, 4);
-            List<int> arr = new List<int> { 0, 1, 2, 3, 4 };
-            for (int j = 0; j < sl; j++)
-            {
-                obj = Instantiate(i == 5 ? rangeEnemyPrefabs : meleeEnemyPrefabs);
-                mh = obj.GetComponent<MonsterHealth>();
-                mh.LevelUp(Random.Range(1, 3));
-                enemyTeam.Add(obj);
-                int x = arr[Random.Range(0, arr.Count)];
-                arr.Remove(x);
-                GridManager.Instance.Place(mh, x, i);
-            }
-        }
-    }
+    //    for (int i = 5; i >= 3; i--)
+    //    {
+    //        int sl = Random.Range(1, 4);
+    //        List<int> arr = new List<int> { 0, 1, 2, 3, 4 };
+    //        for (int j = 0; j < sl; j++)
+    //        {
+    //            obj = Instantiate(i == 5 ? rangeEnemyPrefabs : meleeEnemyPrefabs);
+    //            mh = obj.GetComponent<MonsterHealth>();
+    //            mh.LevelUp(Random.Range(1, 3));
+    //            enemyTeam.Add(obj);
+    //            int x = arr[Random.Range(0, arr.Count)];
+    //            arr.Remove(x);
+    //            GridManager.Instance.Place(mh, x, i);
+    //        }
+    //    }
+    //}
     public void LoadLevel()
     {
         GridManager grid = GridManager.Instance;

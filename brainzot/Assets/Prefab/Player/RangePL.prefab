@@ -337,6 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
+  isFrozen: 0
+  isReady: 0
   laneTolerance: 0.2
   xTolerance: 0.35
   monsterHealth: {fileID: 3463350441921700269}
@@ -346,6 +348,8 @@ MonoBehaviour:
   attackPoint: {fileID: 6267916871649445724}
   projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
   projectileForce: 7
+  attackTimer: 0
+  currentTarget: {fileID: 0}
   projectile: {fileID: 0}
   visualRoot: {fileID: 1848856770379285704}
   sprite: {fileID: 7127517159774211878}
@@ -376,10 +380,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
-  audioClips:
-  - {fileID: 8300000, guid: a288ac4aca7d81142a7188d95417f893, type: 3}
-  - {fileID: 8300000, guid: 289a86e6f3368cc41810bc552bb34750, type: 3}
-  - {fileID: 8300000, guid: 1150c94e78ff9414f82a05458c966052, type: 3}
   stats:
     type: 1
     level: 1
@@ -389,6 +389,7 @@ MonoBehaviour:
     attackSpeed: 1
     attackRange: 10
     moveSpeed: 0
+  monsterAI: {fileID: -9182228970048543328}
   hpBar: {fileID: 8350215555379370174}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
   textSpawnPoint: {fileID: 4185664463812087801}

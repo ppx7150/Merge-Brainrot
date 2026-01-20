@@ -8,6 +8,7 @@ public class MonsterHealth : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite[] visuals;
     public MonsterStats stats;
+    public MonsterAI monsterAI;
     public HPBar hpBar;
     public GameObject damageTextPrefab;
     public Transform textSpawnPoint;
@@ -71,6 +72,10 @@ public class MonsterHealth : MonoBehaviour
         }
         else
         {
+            if (!BattleManager.Instance.arrRange.Contains(monsterAI))
+            {
+                BattleManager.Instance.arrRange.Add(monsterAI);
+            }
             stats.attackDamage = cfg.range.damage[index];
             stats.maxHP = cfg.range.hp[index];
             stats.attackSpeed = cfg.range.attackSpeed[index];
@@ -78,12 +83,12 @@ public class MonsterHealth : MonoBehaviour
             stats.moveSpeed = cfg.range.moveSpeed[index];
         }
         // FAIL SAFE BUFF
-        if (LoseTracker.IsFailSafeActive())
-        {
-            var fs = FailSafeConfig.Instance.failSafe;
-            stats.attackDamage *= fs.damageMultiplier;
-            stats.maxHP *= fs.hpMultiplier;
-        }
+        //if (LoseTracker.IsFailSafeActive())
+        //{
+        //    var fs = FailSafeConfig.Instance.failSafe;
+        //    stats.attackDamage *= fs.damageMultiplier;
+        //    stats.maxHP *= fs.hpMultiplier;
+        //}
         stats.currentHP = stats.maxHP;
     }
 

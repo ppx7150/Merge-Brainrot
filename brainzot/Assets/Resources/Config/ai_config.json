@@ -4,7 +4,7 @@
     "xTolerance": 0.35
   },
   "range": {
-    "projectileForce": 7
+    "projectileForce": 4
   },
   "targeting": {
     "searchRadius": 10

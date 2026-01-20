@@ -1287,6 +1287,7 @@ MonoBehaviour:
   playerTeam: []
   enemyTeam: []
   arrUnitReady: []
+  arrRange: []
   meleeEnemyPrefabs: {fileID: 4747127205807759293, guid: f96813442063546488f17de3bfac209e, type: 3}
   rangeEnemyPrefabs: {fileID: 8332007673813886209, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
   winPanel: {fileID: 642913043}
@@ -1298,6 +1299,14 @@ MonoBehaviour:
   rangeEnemyPrefab: {fileID: 8332007673813886209, guid: 6a33cca9b59a2fb49a61ba5f2ccf9818, type: 3}
   meleeEnemyPrefab: {fileID: 4747127205807759293, guid: f96813442063546488f17de3bfac209e, type: 3}
   Booster: {fileID: 1697161020}
+  btnReward:
+  - {fileID: 131900118}
+  - {fileID: 1818119479}
+  animationDelay: 0.2
+  reloadTime: 0.5
+  maxWaitTime: 5
+  currentState: 0
+  activeBulletCount: 0
 --- !u!4 &90523042
 Transform:
   m_ObjectHideFlags: 0
@@ -2705,7 +2714,7 @@ Transform:
   m_GameObject: {fileID: 310975059}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.68671, y: -4.24195, z: 0}
+  m_LocalPosition: {x: 0.68671, y: -3.81, z: 0}
   m_LocalScale: {x: 1.4504, y: 0.58878505, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14108,7 +14117,7 @@ Transform:
   m_GameObject: {fileID: 1459920701}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.79009, y: -4.24195, z: 0}
+  m_LocalPosition: {x: -1.79009, y: -3.81, z: 0}
   m_LocalScale: {x: 1.4504, y: 0.58878505, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -336,6 +336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
+  isFrozen: 0
+  isReady: 0
   laneTolerance: 0.2
   xTolerance: 0.35
   monsterHealth: {fileID: 1932192664758145213}
@@ -345,6 +347,8 @@ MonoBehaviour:
   attackPoint: {fileID: 6267916871649445724}
   projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
   projectileForce: 7
+  attackTimer: 0
+  currentTarget: {fileID: 0}
   projectile: {fileID: 0}
   visualRoot: {fileID: 5066677265385204835}
   sprite: {fileID: 7127517159774211878}
@@ -384,6 +388,7 @@ MonoBehaviour:
     attackSpeed: 1
     attackRange: 10
     moveSpeed: 0
+  monsterAI: {fileID: -2755056493500798928}
   hpBar: {fileID: 6394125982353192692}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
   textSpawnPoint: {fileID: 9065371513198478407}

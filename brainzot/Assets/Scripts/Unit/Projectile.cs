@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
     }
     void Update()
     {
-        if (enemy == null || !enemy.activeSelf)
+        if (enemy == null || !enemy.activeSelf || !BattleManager.Instance.startPvP)
         {
             Delete();
             return;

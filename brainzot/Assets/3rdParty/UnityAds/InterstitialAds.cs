@@ -28,9 +28,9 @@ public class InterstitialAds : MonoBehaviour
         
     }
 
-    IEnumerator ShowAdsOnStart()
+    public IEnumerator ShowAdsOnStart()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.5f);
         while(!interstitialAd.IsAdReady())
         {
             yield return new WaitForSeconds(1f);
@@ -53,7 +53,6 @@ public class InterstitialAds : MonoBehaviour
         
         // Load interstitial ad as soon as it is enabled
         LoadInterstitial();
-        //StartCoroutine(ShowAdsOnStart());
     }   
 
     public void LoadInterstitial()

@@ -99,7 +99,7 @@ public class BattleManager : MonoBehaviour
         for (int i = arrRange.Count - 1; i >= 0; i--)
         {
             MonsterAI unit = arrRange[i];
-            if (unit != null && unit.gameObject.activeSelf && !unit.isFrozen && unit.HasTarget())
+            if (unit != null && unit.gameObject.activeSelf && !unit.isFrozen && unit.HasTarget() && unit.projectile == null)
             {
                 unit.ForceAttack(); // Bắn
                 shootersCount++;
@@ -174,8 +174,8 @@ public class BattleManager : MonoBehaviour
             winPanel.SetActive(true);
             AudioManager.Instance.Play(GameSound.victorySound);
             Char.Instance.level++;
-            if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
             EndGame(true);
+            if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
             return true;
         }
         else if (!playerTeam.Exists(m => m.activeSelf))
@@ -203,7 +203,7 @@ public class BattleManager : MonoBehaviour
         ButtonList.SetActive(true);
         Booster.SetActive(false);
         float duration = Time.time - _levelStartTime;
-        if (AdsConfig.Instance.adsConfig.InterEnable && (!isWin || duration > AdsConfig.Instance.adsConfig.MinGameplaySec))
+        if (Char.Instance.level > 3 && AdsConfig.Instance.adsConfig.InterEnable && (!isWin || duration > AdsConfig.Instance.adsConfig.MinGameplaySec))
         {
             InterstitialAds.Instance.ShowInterstitial();
         }

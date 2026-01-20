@@ -30,6 +30,7 @@ public class AdsInitializer : MonoBehaviour
         LevelPlay.OnInitFailed  += OnInitializationFailed;
         LevelPlay.OnImpressionDataReady += OnAdsImpression;
         InitializeAds();
+        StartCoroutine(InterstitialAds.Instance.ShowAdsOnStart());
     }
 
     private void OnDestroy()

@@ -12,7 +12,7 @@ public class Noti : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            noticeText.gameObject.SetActive(false);
+            gameObject.SetActive(false);
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -27,13 +27,13 @@ public class Noti : MonoBehaviour
     public void Show(string key, float duration = 1f)
     {
         noticeText.text = Get(key);
-        noticeText.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         StopAllCoroutines(); // Dừng nếu có Coroutine cũ đang chạy
         StartCoroutine(HideAfterSeconds(duration));
     }
     private System.Collections.IEnumerator HideAfterSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        noticeText.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

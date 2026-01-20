@@ -43,8 +43,7 @@ public class GameHintManager : MonoBehaviour
         isHinting = false;
         canvas.SetActive(false);
         handCursor.DOKill(); // Dừng tween bàn tay
-        battleButton.transform.DOKill(); // Dừng tween nút battle
-        battleButton.transform.localScale = defaultScalebtn;
+        DOTween.Kill("HieuUngHint"); ; // Dừng tween nút battle
     }
 
     void DecideAndShowHint()
@@ -166,7 +165,7 @@ public class GameHintManager : MonoBehaviour
         battleButton.transform
             .DOScale(defaultScalebtn * 1.1f, 1f)
             .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+            .SetLoops(-1, LoopType.Yoyo).SetId("HieuUngHint");
     }
 
     bool CanStartBattle()

@@ -160,11 +160,12 @@ MonoBehaviour:
     attackRange: 1.2
     moveSpeed: 1
   monsterAI: {fileID: -4125358627283974148}
-  hpBar: {fileID: 7420313260831619357}
+  hpBar: {fileID: 8875562749627783393}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
   textSpawnPoint: {fileID: 3380226708007497256}
   damageInSecond: 0
   timeShowDameTxt: 1
+  yOffset: 0.2
 --- !u!61 &6223354445588274637
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -199,17 +200,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.41412163}
+  m_Offset: {x: 0.027164266, y: 0.46030092}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0.42999998}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.39, y: 0.12}
-    oldSize: {x: 1.045, y: 1.68}
+    oldSize: {x: 1.045, y: 1.225}
     newSize: {x: 2.09, y: 3.36}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1.2566388}
+  m_Size: {x: 0.84788024, y: 1.2294745}
   m_EdgeRadius: 0
 --- !u!1 &7061723603817554508
 GameObject:
@@ -221,8 +222,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2017208327047741089}
   - component: {fileID: 5441028084199979528}
+  - component: {fileID: 8875562749627783393}
   m_Layer: 7
-  m_Name: Square
+  m_Name: hpbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,6 +306,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &8875562749627783393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061723603817554508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HPBar
+  fill: {fileID: 5074020620299391516}
 --- !u!1 &7686360143638540791
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +329,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5074020620299391516}
   - component: {fileID: 6780149199126608890}
-  - component: {fileID: 7420313260831619357}
   m_Layer: 7
   m_Name: fill
   m_TagString: Untagged
@@ -396,19 +410,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &7420313260831619357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7686360143638540791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HPBar
-  fill: {fileID: 5074020620299391516}
 --- !u!1 &8629740522280747566
 GameObject:
   m_ObjectHideFlags: 0

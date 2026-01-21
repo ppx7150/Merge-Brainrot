@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.XR;
 
 public class MonsterHealth : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class MonsterHealth : MonoBehaviour
     public Transform textSpawnPoint;
     public int damageInSecond=0; //Giá dame nhận được trong 1 giây
     public float timeShowDameTxt = 1f; //Delay hiển thị dame
+
+    public float yOffset = 0.2f;
     void Awake()
     {
         stats.currentHP = stats.maxHP;
@@ -57,6 +61,10 @@ public class MonsterHealth : MonoBehaviour
         stats.level += count;
         SetStats(stats.level);
         UpdateVisual();
+        Bounds b = spriteRenderer.bounds;
+        Vector2 pos = transform.position;
+        pos.y = b.max.y + yOffset;
+        hpBar.transform.position = pos;
     }
     public void SetStats(int level)
     {
@@ -90,6 +98,7 @@ public class MonsterHealth : MonoBehaviour
         //    stats.maxHP *= fs.hpMultiplier;
         //}
         stats.currentHP = stats.maxHP;
+        hpBar.SetHP(1f);
     }
 
     public void UpdateVisual() //Cập nhật visual cho phù hợp với level Unit
@@ -104,7 +113,6 @@ public class MonsterHealth : MonoBehaviour
     public void ResetStatus() //Trả về trạng thái chuẩn bị
     {
         SetStats(stats.level);
-        hpBar.SetHP(1f);
         MonsterAI ai = GetComponent<MonsterAI>();
         ai.currentTarget = null;
         ai.attackTimer = 0f;

@@ -161,11 +161,12 @@ MonoBehaviour:
     attackRange: 1.2
     moveSpeed: 1
   monsterAI: {fileID: -4125358627283974148}
-  hpBar: {fileID: 1939455055191878246}
+  hpBar: {fileID: 4662130480548980052}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
   textSpawnPoint: {fileID: 2163977473109316960}
   damageInSecond: 0
   timeShowDameTxt: 1
+  yOffset: 0.2
 --- !u!114 &5568918496463615813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,17 +213,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.41589576}
+  m_Offset: {x: 0.04564628, y: 0.46154213}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0.42999998}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.39, y: 0.12}
-    oldSize: {x: 1.045, y: 1.68}
+    oldSize: {x: 1.045, y: 1.225}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1.2503451}
+  m_Size: {x: 0.90870744, y: 1.2337465}
   m_EdgeRadius: 0
 --- !u!1 &6961742265410148596
 GameObject:
@@ -265,7 +266,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3643821676943472628}
   - component: {fileID: 1983627171631333762}
-  - component: {fileID: 1939455055191878246}
   m_Layer: 7
   m_Name: fill
   m_TagString: Untagged
@@ -347,19 +347,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &1939455055191878246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7193347732467448204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HPBar
-  fill: {fileID: 3643821676943472628}
 --- !u!1 &8147735422021138062
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,8 +357,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2950313533504591076}
   - component: {fileID: 1834946670139425888}
+  - component: {fileID: 4662130480548980052}
   m_Layer: 7
-  m_Name: Square
+  m_Name: hpbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,3 +441,16 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &4662130480548980052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147735422021138062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HPBar
+  fill: {fileID: 3643821676943472628}

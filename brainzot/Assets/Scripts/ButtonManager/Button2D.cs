@@ -12,7 +12,8 @@ public enum ButtonType
     LuckySpin,
     MoreGems,
     DailyReward,
-    Gift
+    Gift,
+    NoAds
 }
 public class Button2D : MonoBehaviour, IPointerClickHandler
 {
@@ -23,6 +24,12 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
         bool isSuccess = false;
         switch (buttonType)
         {
+            case ButtonType.NoAds:
+                if (BattleManager.Instance.startPvP) return;
+                PanelManager.Instance.showNoAds();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
+                isSuccess = true;
+                break;
             case ButtonType.Gift:
                 if (BattleManager.Instance.startPvP) return;
                 PanelManager.Instance.OpenPanel(PanelManager.Instance.giftPanel);
@@ -50,6 +57,11 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 break;
             case ButtonType.LuckySpin:
                 PanelManager.Instance.showLuckySpinPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
+                isSuccess = true;
+                break;
+            case ButtonType.DailyReward:
+                PanelManager.Instance.OpenPanel(PanelManager.Instance.dailyRewardPanel);
                 AudioManager.Instance.Play(GameSound.clickButtonSound);
                 isSuccess = true;
                 break;

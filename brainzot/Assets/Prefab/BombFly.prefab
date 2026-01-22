@@ -104,4 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5897de93b92001d4e8aae74c388e23f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombPlane
-  speed: 0
+  speed: 2
+  isGift: 0
+  buttonGift: []

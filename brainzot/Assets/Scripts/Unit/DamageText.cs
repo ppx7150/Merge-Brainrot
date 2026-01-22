@@ -30,7 +30,7 @@ public class DamageText : MonoBehaviour
     //private void Start()
     //{
     //    transform.localPosition = new Vector3(Random.Range(-0.7f, 0.7f), 0, 0);
-        
+
     //}
 
     void Update()

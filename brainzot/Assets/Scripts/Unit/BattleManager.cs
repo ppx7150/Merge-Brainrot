@@ -205,6 +205,7 @@ public class BattleManager : MonoBehaviour
         startPvP = false;
         ButtonList.SetActive(true);
         Booster.SetActive(false);
+        PanelManager.Instance.streakPanel.SetActive(false);
         float duration = Time.time - _levelStartTime;
         buttonGift[0].SetActive(false);
         buttonGift[1].SetActive(false);
@@ -216,7 +217,6 @@ public class BattleManager : MonoBehaviour
     }
     public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
     {
-        Time.timeScale = 1f;
         GridManager.Instance.CLear(4,5);
         arrUnitReady.Clear();
         foreach (var m in enemyTeam)
@@ -263,7 +263,6 @@ public class BattleManager : MonoBehaviour
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
         MergeTracker.Reset();
-        Time.timeScale = 1f;
         GridManager.Instance.CLear(4,5);
         arrUnitReady.Clear();
         foreach (var m in playerTeam)
@@ -307,7 +306,8 @@ public class BattleManager : MonoBehaviour
     //}
     public void LoadLevel(bool isLoadGame)
     {
-        LevelBgrManager.Instance.Load(isLoadGame);
+        DangerWarning.Instance.Show((Char.Instance.level > 9 && Char.Instance.level % 5 == 0) ? TypeDanger.VeryHard : (Char.Instance.level > 9 && (Char.Instance.level + 1) % 5 == 0) ? TypeDanger.Hard : TypeDanger.Normal);
+        StartCoroutine(LevelBgrManager.Instance.Load(isLoadGame));
         _levelStartTime = Time.time;
         GridManager grid = GridManager.Instance;
 

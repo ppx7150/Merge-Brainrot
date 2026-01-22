@@ -27,6 +27,8 @@ public class SaveData //Dữ liệu cần lưu
     public int coutStreak;
     public long costMelee;
     public long costRange;
+    public int freeSpinLeft;
+    public float timerSpin;
     public List<bool> giftCollected;
     public Team dataMyTeam;
     public List<bool> unlockUnitMelee;
@@ -48,6 +50,8 @@ public class Char : MonoBehaviour
     public int level; //Level màn chơi của người chơi 
     public long coins; //Số tiền của người chơi 
     public int gems; //Số tiền của người chơi 
+    public int freeSpinLeft;
+    public float timerSpin;
     public TMP_Text txtCoins; 
     public TMP_Text txtGems;
     public TMP_Text txtLevel;
@@ -92,6 +96,8 @@ public class Char : MonoBehaviour
         saveData.coins = coins;
         saveData.gems = gems;
         saveData.coutStreak = coutStreak;
+        saveData.freeSpinLeft = freeSpinLeft;
+        saveData.timerSpin = timerSpin;
         saveData.costMelee = UnitSpawner.Instance.costMelee;
         saveData.costRange = UnitSpawner.Instance.costRange;
         saveData.giftCollected = giftCollected;
@@ -152,6 +158,8 @@ public class Char : MonoBehaviour
         coins = saveData.coins;
         gems = saveData.gems;
         coutStreak = saveData.coutStreak;
+        freeSpinLeft = saveData.freeSpinLeft;
+        timerSpin = saveData.timerSpin;
         giftCollected = saveData.giftCollected;
         unlockUnitMelee = saveData.unlockUnitMelee;
         unlockUnitRange = saveData.unlockUnitRange;

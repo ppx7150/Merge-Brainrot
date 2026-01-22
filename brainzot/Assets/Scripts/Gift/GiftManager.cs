@@ -35,7 +35,6 @@ public class GiftManager : MonoBehaviour
     }
     public void closePanel()
     {
-        Time.timeScale = 1f;
         PanelManager.Instance.ClosePanel(gameObject);
         BattleManager.Instance.plane.speed = 2;
     }

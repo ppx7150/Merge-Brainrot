@@ -126,6 +126,26 @@ MonoBehaviour:
     m_Localized: Jarak Dekat
     m_Metadata:
       m_Items: []
+  - m_Id: 1548409153011712
+    m_Localized: Hadiah Beruntun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548411237580800
+    m_Localized: 'Rentetan Menang Saat Ini:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548413569613824
+    m_Localized: Lingkungan Baru
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548426085416960
+    m_Localized: Keren!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1581885432545280
+    m_Localized: Blokir Iklan
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -24,25 +24,16 @@ public class LuckySpinManager : MonoBehaviour
     public GameObject luckySpinPanel;
     public GameObject luckySpinRewardPanel;
 
-    [Header("Daily Spin")]
-    public int freeSpinPerDay = 1;
-    public int freeSpinLeft;
-
+    public float regenTime = 300f; // 5 phút = 300 giây
     [Header("Fake Near Win")]
     [Range(0f, 1f)]
     public float fakeNearWinChance = 0.35f;
 
     bool isSpinning;
-    
-
-    const string FREE_SPIN_KEY = "FREE_SPIN";
 
     private Quaternion initialRotation;
 
     int currentIndex = 0;
-
-    public float regenTime = 300f; // 5 phút = 300 giây
-    float timer;
 
     void Start()
     {
@@ -52,12 +43,12 @@ public class LuckySpinManager : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        Char.Instance.timerSpin += Time.deltaTime;
 
-        if (timer >= regenTime)
+        if (Char.Instance.timerSpin >= regenTime)
         {
-            timer = 0f;
-            freeSpinLeft++;
+            Char.Instance.timerSpin = 0f;
+            Char.Instance.freeSpinLeft++;
             UpdateUI();
         }
 
@@ -68,10 +59,9 @@ public class LuckySpinManager : MonoBehaviour
 
     public void SpinFree()
     {
-        if (isSpinning || freeSpinLeft <= 0) return;
+        if (isSpinning || Char.Instance.freeSpinLeft <= 0) return;
 
-        freeSpinLeft--;
-        SaveDailySpin();
+        Char.Instance.freeSpinLeft--;
         StartSpin();
     }
 
@@ -183,19 +173,14 @@ public class LuckySpinManager : MonoBehaviour
         r.image.SetActive(true);
     }
 
-    void SaveDailySpin()
-    {
-        PlayerPrefs.SetInt(FREE_SPIN_KEY, freeSpinLeft);
-    }
-
     void UpdateCooldownUI()
     {
-        txtSpinLeft.text = $"x{freeSpinLeft}";
+        txtSpinLeft.text = $"x{Char.Instance.freeSpinLeft}";
 
-        float remain = regenTime - timer;
+        float remain = regenTime - Char.Instance.timerSpin;
         int min = Mathf.FloorToInt(remain / 60);
         int sec = Mathf.FloorToInt(remain % 60);
-        if (freeSpinLeft == 0)
+        if (Char.Instance.freeSpinLeft == 0)
         {
             txtCooldown.text = $"{min:D2}:{sec:D2}";
         }

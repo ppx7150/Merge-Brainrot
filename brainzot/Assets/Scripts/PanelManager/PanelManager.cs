@@ -70,7 +70,6 @@ public class PanelManager : MonoBehaviour
     public void ClosePanel(GameObject panel)
     {
         isOpenPanel = false;
-        darkPanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.clickButtonSound);
         // Thu nhỏ về 0
         panel.transform.DOScale(Vector3.zero, duration) // Đóng thì nên nhanh hơn mở 1 chút
@@ -79,6 +78,7 @@ public class PanelManager : MonoBehaviour
             {
                 // Sau khi thu nhỏ xong -> Tắt toàn bộ Container (biến mất cả nền đen)
                 panel.SetActive(false);
+                if(Char.Instance.level > 2) darkPanel.SetActive(false);
             });
         if (TutorialController.Instance.currentState == TutorialController.TutorialState.Phase2_DragMerge)
         {
@@ -106,14 +106,14 @@ public class PanelManager : MonoBehaviour
             ClosePanel(luckySpinPanel);
         }
     }
-    public void showDailyRewardAds()
+    public void showNoAds()
     {
         if (adsPanel != null)
         {
             OpenPanel(adsPanel);
         }
     }
-    public void hideDailyRewardAds()
+    public void hideNoAds()
     {
         if (adsPanel != null)
         {

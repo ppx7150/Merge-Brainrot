@@ -158,6 +158,26 @@ MonoBehaviour:
     m_Localized: Melee
     m_Metadata:
       m_Items: []
+  - m_Id: 1548409153011712
+    m_Localized: STREAK REWARD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548411237580800
+    m_Localized: 'Current Winning Streak:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548413569613824
+    m_Localized: NEW ENVIRONMENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1548426085416960
+    m_Localized: Cool!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1581885432545280
+    m_Localized: Block Ads
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

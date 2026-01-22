@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,9 @@ public class LevelBgrManager : MonoBehaviour
     {
         Instance = this;
     }
-    public void Load(bool isLoadGame)
+    public IEnumerator Load(bool isLoadGame)
     {
+        yield return new WaitForSeconds(2f);
         int level = Char.Instance.level;
         int lvInPage = (level - 1) % 10;
         int page = (level - 1) / 10;

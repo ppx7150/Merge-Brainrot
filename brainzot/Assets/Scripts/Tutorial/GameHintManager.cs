@@ -32,7 +32,7 @@ public class GameHintManager : MonoBehaviour
         }
 
         // 2. Kiểm tra thời gian Idle
-        if (!isHinting && !BattleManager.Instance.startPvP && !BattleManager.Instance.winPanel.activeSelf && !BattleManager.Instance.losePanel.activeSelf && Time.time - lastInputTime > idleTimeThreshold)
+        if (!isHinting && !BattleManager.Instance.startPvP && Time.time - lastInputTime > idleTimeThreshold)
         {
             DecideAndShowHint();
         }
@@ -52,7 +52,7 @@ public class GameHintManager : MonoBehaviour
         var mergePair = FindMergeablePair();
 
         // Lưu ý: mergePair là nullable struct, cần check .HasValue hoặc != null
-        if (mergePair != null)
+        if (mergePair != null && !PanelManager.Instance.isOpenPanel)
         {
             isHinting = true;
             // Gọi hàm hiển thị bàn tay (đã viết ở câu trả lời trước)

@@ -46,7 +46,7 @@ public class MonsterHealth : MonoBehaviour
     {
         GameObject textObj = Instantiate(damageTextPrefab, textSpawnPoint.position, Quaternion.identity, textSpawnPoint);
         DamageText dmgText = textObj.GetComponent<DamageText>();
-        dmgText.SetText(damage.ToString());
+        dmgText.SetText(Char.FormatMoney(damage));
         dmgText.DamageSize(damage);
         timeShowDameTxt = 1f;
         damageInSecond = 0;

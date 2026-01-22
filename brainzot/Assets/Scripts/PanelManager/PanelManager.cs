@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
+    public GameObject darkPanel;
     public GameObject dailyRewardPanel;
 
     public GameObject adsPanel;
@@ -18,6 +19,9 @@ public class PanelManager : MonoBehaviour
     public GameObject rangeSummon;
     public GameObject meleeSummon;
     public GameObject unlockUnit;
+    public GameObject giftPanel;
+    public GameObject streakPanel;
+    public GameObject bgrPanel;
     public ItemManager statsUnit;
 
     public static PanelManager Instance;
@@ -29,11 +33,14 @@ public class PanelManager : MonoBehaviour
 
     private Vector3 initialScale;
     public ScrollRect[] scolls;
+    public bool isOpenPanel;
 
     // Gọi hàm này để MỞ Panel
     public void OpenPanel(GameObject panel)
     {
-        if(panel == unlockUnit)
+        isOpenPanel = true;
+        darkPanel.SetActive(true);
+        if (panel == unlockUnit)
         {
             statsUnit.Load();
         }
@@ -58,6 +65,8 @@ public class PanelManager : MonoBehaviour
     // Gọi hàm này để ĐÓNG Panel
     public void ClosePanel(GameObject panel)
     {
+        isOpenPanel = false;
+        darkPanel.SetActive(false);
         AudioManager.Instance.Play(GameSound.clickButtonSound);
         // Thu nhỏ về 0
         panel.transform.DOScale(Vector3.zero, duration) // Đóng thì nên nhanh hơn mở 1 chút

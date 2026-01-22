@@ -5,19 +5,32 @@ using System.Collections;
 public class BombPlane : MonoBehaviour
 {
     public float speed;
-
+    public bool isGift;
     private Action onDropBomb;
     private bool dropped;
     private float targetDropX = 0f;
 
     private Vector3 endPos;
     private Vector3 dir;
-
-    public void Init(Action dropCallback)
+    public GameObject[] buttonGift;
+    private bool hasEnteredBackground = false;
+    public void Init(Action dropCallback, bool isgift = false)
     {
+        gameObject.SetActive(true);
+        isGift = isgift;
         onDropBomb = dropCallback;
         dropped = false;
+        hasEnteredBackground = false;
         StartFly(UnityEngine.Random.value < 0.5);
+    }
+    bool IsInsideBackground()
+    {
+        return LevelBgrManager.Instance.bgr.bounds.Contains(transform.position);
+    }
+    bool IsOutOfBackground()
+    {
+        Bounds bgBounds = LevelBgrManager.Instance.bgr.bounds;
+        return !bgBounds.Contains(transform.position);
     }
 
     void StartFly(bool isLeftToRight)
@@ -46,17 +59,24 @@ public class BombPlane : MonoBehaviour
     void Update()
     {
         transform.position += dir * speed * Time.deltaTime;
-
+        if (!hasEnteredBackground && IsInsideBackground())
+        {
+            hasEnteredBackground = true;
+        }
         // ===== THẢ BOM TẠI X = 0 =====
-        if (!dropped && HasReachedDropX())
+        if (!dropped && HasReachedDropX() && !isGift)
         {
             dropped = true;
             onDropBomb?.Invoke();
         }
 
         // Kết thúc đường bay
-        if (Vector3.Dot(endPos - transform.position, dir) <= 0 || !BattleManager.Instance.startPvP)
+        if (hasEnteredBackground  && (IsOutOfBackground() || (!BattleManager.Instance.startPvP && !isGift)))
         {
+            if (isGift)
+            {
+                buttonGift[transform.localScale.x == 1 ? 1 : 0].SetActive(true);
+            }
             BombPlanePool.Instance.Release(this);
         }
     }

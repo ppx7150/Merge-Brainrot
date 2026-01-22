@@ -36,7 +36,8 @@ public class BattleManager : MonoBehaviour
     [Header("Status")]
     public BattleState currentState = BattleState.Idle;
     public int activeBulletCount = 0;
-
+    public BombPlane plane;
+    public GameObject[] buttonGift;
     private float _levelStartTime;
     private long lastCoinReward;
     private float _stateTimer;
@@ -146,18 +147,18 @@ public class BattleManager : MonoBehaviour
     }
     public void ShowRewardedFromButton()
     {
-        RewardedAds.Instance.LoadRewardedAd((isSuccess) =>
-        {
-            if (isSuccess)
-            {
-                Char.Instance.AddCoins(lastCoinReward * AdsConfig.Instance.adsConfig.RewardMultiplier);
-                Debug.Log("Đã cộng tiền thành công!");
-            }
-            else
-            {
-                Debug.Log("Người chơi tắt ngang hoặc lỗi Ad, không thưởng.");
-            }
-        });
+        //RewardedAds.Instance.LoadRewardedAd((isSuccess) =>
+        //{
+        //    if (isSuccess)
+        //    {
+        //        Char.Instance.AddCoins(lastCoinReward * AdsConfig.Instance.adsConfig.RewardMultiplier);
+        //        Debug.Log("Đã cộng tiền thành công!");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Người chơi tắt ngang hoặc lỗi Ad, không thưởng.");
+        //    }
+        //});
     }
     public bool CheckBattleEnd() //Kiểm tra xem team nào thắng team nào thua
     {
@@ -171,9 +172,10 @@ public class BattleManager : MonoBehaviour
             });
             LoseTracker.OnWin();
             Debug.Log("Player Win");
-            winPanel.SetActive(true);
+            PanelManager.Instance.OpenPanel(winPanel);
             AudioManager.Instance.Play(GameSound.victorySound);
             Char.Instance.level++;
+            Char.Instance.AddStreakBar(1);
             EndGame(true);
             if (Char.Instance.level <= 2) Char.Instance.Save(Application.persistentDataPath + "/save.json");
             return true;
@@ -187,7 +189,8 @@ public class BattleManager : MonoBehaviour
             });
             LoseTracker.OnLose();
             Debug.Log("Enemy Win");
-            losePanel.SetActive(true);
+            Char.Instance.AddStreakBar(-Char.Instance.coutStreak);
+            PanelManager.Instance.OpenPanel(losePanel);
             AudioManager.Instance.Play(GameSound.loseSound);
             EndGame(false);
             return true;
@@ -197,17 +200,19 @@ public class BattleManager : MonoBehaviour
     public void EndGame(bool isWin)
     {
         long coin = CalulatorReward(isWin);
-        txtCoinReward[isWin ? 0:1].SetText("+" + coin + "$");
+        txtCoinReward[isWin ? 0:1].SetText("+"+Char.FormatMoney(coin));
         Char.Instance.AddCoins(coin);
         startPvP = false;
         ButtonList.SetActive(true);
         Booster.SetActive(false);
         float duration = Time.time - _levelStartTime;
+        buttonGift[0].SetActive(false);
+        buttonGift[1].SetActive(false);
         if (Char.Instance.level > 3 && AdsConfig.Instance.adsConfig.InterEnable && (!isWin || duration > AdsConfig.Instance.adsConfig.MinGameplaySec))
         {
-            InterstitialAds.Instance.ShowInterstitial();
+            //StartCoroutine(InterstitialAds.Instance.ShowAdsOnStart());
         }
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
     public void resetlevel() //Thua nên bấm nút sẽ chơi lại màn đấy
     {
@@ -232,7 +237,8 @@ public class BattleManager : MonoBehaviour
             Destroy(ai.projectile);
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
-        losePanel.SetActive(false);
+        PanelManager.Instance.ClosePanel(losePanel);
+        plane.Init(() =>{}, true);
         AudioManager.Instance.Play(GameSound.coinSound);
     }
     public void StartBattle() //Bắt đầu Fight
@@ -252,6 +258,7 @@ public class BattleManager : MonoBehaviour
         startPvP = true;
         ButtonList.SetActive(false);
         Booster.SetActive(true);
+        plane.gameObject.SetActive(false);
     }
     public void ChangeLevelUp() //Thắng nên bấm nút sẽ chuyển tới level tiếp theo
     {
@@ -268,9 +275,8 @@ public class BattleManager : MonoBehaviour
             Destroy(ai.projectile);
             m.GetComponent<MonsterHealth>().ResetStatus();
         }
-        LoadLevel();
-
-        winPanel.SetActive(false);
+        LoadLevel(false);
+        PanelManager.Instance.ClosePanel(winPanel);
         AudioManager.Instance.Play(GameSound.coinSound);
         if (Char.Instance.level == 2) {
             TutorialController.Instance.StartPhase2_Merge();
@@ -299,8 +305,9 @@ public class BattleManager : MonoBehaviour
     //        }
     //    }
     //}
-    public void LoadLevel()
+    public void LoadLevel(bool isLoadGame)
     {
+        LevelBgrManager.Instance.Load(isLoadGame);
         _levelStartTime = Time.time;
         GridManager grid = GridManager.Instance;
 

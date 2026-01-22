@@ -9,7 +9,8 @@ public enum ButtonType
     Summon,
     Setting,
     Collection,
-    DailyReward
+    LuckySpin,
+    MoreGems,
 }
 public class Button2D : MonoBehaviour, IPointerClickHandler
 {
@@ -38,8 +39,8 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 AudioManager.Instance.Play(GameSound.fightSound);
                 isSuccess = true;
                 break;
-            case ButtonType.DailyReward:
-                PanelManager.Instance.showDailyRewardPanel();
+            case ButtonType.LuckySpin:
+                PanelManager.Instance.showLuckySpinPanel();
                 AudioManager.Instance.Play(GameSound.clickButtonSound);
                 isSuccess = true;
                 break;
@@ -58,6 +59,12 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
                 AudioManager.Instance.Play(GameSound.clickButtonSound);
                 isSuccess = true;
                 break;
+            case ButtonType.MoreGems:
+                PanelManager.Instance.showMoreGemsPanel();
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
+                isSuccess = true;
+                break;
+
         }
         if (isSuccess)
         {

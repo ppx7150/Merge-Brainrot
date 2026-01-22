@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
-    public GameObject dailyRewardPanel;
+    public GameObject luckySpinPanel;
 
     public GameObject adsPanel;
 
@@ -17,8 +17,11 @@ public class PanelManager : MonoBehaviour
     public GameObject summonPanel;
     public GameObject rangeSummon;
     public GameObject meleeSummon;
+
     public GameObject unlockUnit;
     public ItemManager statsUnit;
+
+    public GameObject moreGemsPanel;
 
     public static PanelManager Instance;
 
@@ -79,18 +82,18 @@ public class PanelManager : MonoBehaviour
         Instance = this;
     }
 
-    public void showDailyRewardPanel()
+    public void showLuckySpinPanel()
     {
-        if (dailyRewardPanel != null)
+        if (luckySpinPanel != null)
         {
-            OpenPanel(dailyRewardPanel);
+            OpenPanel(luckySpinPanel);
         }
     }
-    public void hideDailyRewardPanel()
+    public void hideLuckySpinPanel()
     {
-        if (dailyRewardPanel != null)
+        if (luckySpinPanel != null)
         {
-            ClosePanel(dailyRewardPanel);
+            ClosePanel(luckySpinPanel);
         }
     }
     public void showDailyRewardAds()
@@ -212,6 +215,21 @@ public class PanelManager : MonoBehaviour
             meleeSummon.SetActive(true);
             ResetScroll();
             AudioManager.Instance.Play(GameSound.clickButtonSound);
+        }
+    }
+
+    public void showMoreGemsPanel()
+    {
+        if (moreGemsPanel != null)
+        {
+            OpenPanel(moreGemsPanel);
+        }
+    }
+    public void hideMoreGemsPanel()
+    {
+        if (moreGemsPanel != null)
+        {
+            ClosePanel(moreGemsPanel);
         }
     }
 }

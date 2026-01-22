@@ -38,7 +38,6 @@ public class MonsterAI : MonoBehaviour
         }
         if (currentTarget == null || !currentTarget.gameObject.activeSelf)
         {
-            if (projectile != null) Destroy(projectile);
             FindNearestTarget();
             return;
         }
@@ -173,12 +172,16 @@ public class MonsterAI : MonoBehaviour
             BattleManager.Instance.arrUnitReady.Add(gameObject);
             isReady = true;
         }
-        if (attackTimer <= 0 && projectile == null && currentTarget != null && currentTarget.gameObject.activeSelf && BattleManager.Instance.isOkPvP())
+        if (HasTarget())
         {
             sprite.flipX = currentTarget.position.x < transform.position.x;
-            Shoot();
-            attackTimer = monsterHealth.stats.attackSpeed;
         }
+        //if (attackTimer <= 0 && projectile == null && currentTarget != null && currentTarget.gameObject.activeSelf && BattleManager.Instance.isOkPvP())
+        //{
+        //    sprite.flipX = currentTarget.position.x < transform.position.x;
+        //    Shoot();
+        //    attackTimer = monsterHealth.stats.attackSpeed;
+        //}
     }
 
     void FindNearestTarget() //Tìm kiếm địch gần nhất
@@ -207,16 +210,22 @@ public class MonsterAI : MonoBehaviour
             hp.TakeDamage(monsterHealth.stats.attackDamage);
         }
     }
-
-    void Shoot() //Hàm bắn của Unit đánh xa
+    public bool HasTarget()
+    {
+        if (currentTarget == null || !currentTarget.gameObject.activeSelf)
+        {
+            FindNearestTarget();
+        }
+        return currentTarget != null;
+    }
+    public void ForceAttack() //Hàm bắn của Unit đánh xa
     {
         GameObject proj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
         projectile = proj;
         Projectile p = proj.GetComponent<Projectile>();
         p.enemy = currentTarget.gameObject;
         p.damage = monsterHealth.stats.attackDamage;
-        Vector2 dir = (currentTarget.position - attackPoint.position).normalized;
-        proj.GetComponent<Rigidbody2D>().AddForce(dir * projectileForce, ForceMode2D.Impulse);
+        p.speed = projectileForce;
         AudioManager.Instance.Play(GameSound.rangeAttackSound);
     }
 }

@@ -32,7 +32,7 @@ public class GameHintManager : MonoBehaviour
         }
 
         // 2. Kiểm tra thời gian Idle
-        if (!isHinting && !BattleManager.Instance.startPvP && !BattleManager.Instance.winPanel.activeSelf && !BattleManager.Instance.losePanel.activeSelf && Time.time - lastInputTime > idleTimeThreshold)
+        if (!isHinting && !BattleManager.Instance.startPvP && Time.time - lastInputTime > idleTimeThreshold)
         {
             DecideAndShowHint();
         }
@@ -43,8 +43,7 @@ public class GameHintManager : MonoBehaviour
         isHinting = false;
         canvas.SetActive(false);
         handCursor.DOKill(); // Dừng tween bàn tay
-        battleButton.transform.DOKill(); // Dừng tween nút battle
-        battleButton.transform.localScale = defaultScalebtn;
+        DOTween.Kill("HieuUngHint"); ; // Dừng tween nút battle
     }
 
     void DecideAndShowHint()
@@ -53,7 +52,7 @@ public class GameHintManager : MonoBehaviour
         var mergePair = FindMergeablePair();
 
         // Lưu ý: mergePair là nullable struct, cần check .HasValue hoặc != null
-        if (mergePair != null)
+        if (mergePair != null && !PanelManager.Instance.isOpenPanel)
         {
             isHinting = true;
             // Gọi hàm hiển thị bàn tay (đã viết ở câu trả lời trước)
@@ -166,7 +165,7 @@ public class GameHintManager : MonoBehaviour
         battleButton.transform
             .DOScale(defaultScalebtn * 1.1f, 1f)
             .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+            .SetLoops(-1, LoopType.Yoyo).SetId("HieuUngHint");
     }
 
     bool CanStartBattle()

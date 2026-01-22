@@ -34,8 +34,8 @@ public class UnitSpawner : MonoBehaviour
     {
         if (!txtCostMelee.gameObject.activeSelf) txtCostMelee.gameObject.SetActive(true);
         if (!txtCostRange.gameObject.activeSelf) txtCostRange.gameObject.SetActive(true);
-        txtCostMelee.SetText(Char.FormatMoney(costMelee) + "$");
-        txtCostRange.SetText(Char.FormatMoney(costRange) + "$");
+        txtCostMelee.SetText(Char.FormatMoney(costMelee));
+        txtCostRange.SetText(Char.FormatMoney(costRange));
     }
     public void UpgradeCost(bool isMelee)
     {

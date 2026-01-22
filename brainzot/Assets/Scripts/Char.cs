@@ -24,8 +24,10 @@ public class SaveData //Dữ liệu cần lưu
     public long coins;
     public int gems;
     public int level;
+    public int coutStreak;
     public long costMelee;
     public long costRange;
+    public List<bool> giftCollected;
     public Team dataMyTeam;
     public List<bool> unlockUnitMelee;
     public List<bool> unlockUnitRange;
@@ -52,6 +54,7 @@ public class Char : MonoBehaviour
     public List<MonsterHealth> dataMyTeam = new List<MonsterHealth>();
     public List<bool> unlockUnitMelee = new List<bool>() { true, false, false, false, false, false, false, false };
     public List<bool> unlockUnitRange = new List<bool>() { true, false, false, false, false, false, false, false };
+    public List<bool> giftCollected = new List<bool>() { false, false, false };
     public static Char Instance;
     public GameObject meleePrefabs;
     public GameObject rangePrefabs;
@@ -59,6 +62,7 @@ public class Char : MonoBehaviour
     public string[] nameUnitRange;
     public List<ItemManager> itemMelee;
     public List<ItemManager> itemRange;
+    public int coutStreak;
 
     public int activePointerId = -999;
     private void Awake()
@@ -69,11 +73,17 @@ public class Char : MonoBehaviour
     void Start()
     {
         Load(Application.persistentDataPath + "/save.json");
-        txtCoins.SetText(FormatMoney(coins) + "$");
+        txtCoins.SetText(FormatMoney(coins));
         txtGems.SetText(gems.ToString());
         if (level <= 1) TutorialController.Instance.StartPhase1();
         else if(level == 2) TutorialController.Instance.StartPhase2_Merge();
-        BattleManager.Instance.LoadLevel();
+        BattleManager.Instance.LoadLevel(true);
+        AddStreakBar(0);
+    }
+    public void AddStreakBar(int a)
+    {
+        coutStreak += a;
+        StreakManager.Instance.LoadBar();
     }
     public void Save(string path) //Lưu lại dữ liệu của người chơi
     {
@@ -81,8 +91,10 @@ public class Char : MonoBehaviour
         saveData.level = level;
         saveData.coins = coins;
         saveData.gems = gems;
+        saveData.coutStreak = coutStreak;
         saveData.costMelee = UnitSpawner.Instance.costMelee;
         saveData.costRange = UnitSpawner.Instance.costRange;
+        saveData.giftCollected = giftCollected;
         List<DataUnit> data = new List<DataUnit>();
         foreach(var m in dataMyTeam)
         {
@@ -139,6 +151,8 @@ public class Char : MonoBehaviour
         level = saveData.level;
         coins = saveData.coins;
         gems = saveData.gems;
+        coutStreak = saveData.coutStreak;
+        giftCollected = saveData.giftCollected;
         unlockUnitMelee = saveData.unlockUnitMelee;
         unlockUnitRange = saveData.unlockUnitRange;
         if (level >= EconomyConfig.Instance.unitShop.increaseAfterLevel) UnitSpawner.Instance.LoadCost(saveData.costMelee, saveData.costRange);
@@ -186,14 +200,14 @@ public class Char : MonoBehaviour
         }
         coins -= a;
         coins = Max(coins, 0);
-        txtCoins.SetText(FormatMoney(coins) + "$");
+        txtCoins.SetText(FormatMoney(coins));
         return true;
     }
     public void AddCoins(long a) //Thêm coin của người chơi
     {
         coins += a;
         coins = Min(coins, long.MaxValue);
-        txtCoins.SetText(FormatMoney(coins) + "$");
+        txtCoins.SetText(FormatMoney(coins));
     }
     public long Min(long a, long b)
     {

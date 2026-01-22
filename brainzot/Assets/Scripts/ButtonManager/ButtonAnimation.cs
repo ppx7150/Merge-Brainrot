@@ -13,23 +13,25 @@ public class ButtonAnimation : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
     void Start()
     {
-        originalScale = transform.localScale;
+        originalScale = transform.localScale == Vector3.zero ? Vector3.one: transform.localScale;
     }
 
     // Khi nhấn chuột xuống (hoặc chạm tay vào màn hình)
     public void OnPointerDown(PointerEventData eventData)
     {
         // Xóa các Tween cũ để tránh xung đột
-        transform.DOKill();
+        //transform.DOKill();
+        DOTween.Kill("buttondown");
         // Phóng to lên
-        transform.DOScale(originalScale * scaleSize, duration).SetEase(easeType).SetUpdate(true);
+        transform.DOScale(originalScale * scaleSize, duration).SetEase(easeType).SetUpdate(true).SetId("buttondown");
     }
 
     // Khi nhả chuột ra
     public void OnPointerUp(PointerEventData eventData)
     {
-        transform.DOKill();
+        //transform.DOKill();
+        DOTween.Kill("buttonup");
         // Thu nhỏ về trạng thái ban đầu
-        transform.DOScale(originalScale, duration).SetEase(easeType).SetUpdate(true);
+        transform.DOScale(originalScale, duration).SetEase(easeType).SetUpdate(true).SetId("buttonup");
     }
 }

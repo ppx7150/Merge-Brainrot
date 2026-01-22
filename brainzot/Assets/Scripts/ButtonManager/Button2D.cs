@@ -11,6 +11,8 @@ public enum ButtonType
     Collection,
     LuckySpin,
     MoreGems,
+    DailyReward,
+    Gift
 }
 public class Button2D : MonoBehaviour, IPointerClickHandler
 {
@@ -21,6 +23,13 @@ public class Button2D : MonoBehaviour, IPointerClickHandler
         bool isSuccess = false;
         switch (buttonType)
         {
+            case ButtonType.Gift:
+                if (BattleManager.Instance.startPvP) return;
+                PanelManager.Instance.OpenPanel(PanelManager.Instance.giftPanel);
+                AudioManager.Instance.Play(GameSound.clickButtonSound);
+                BattleManager.Instance.plane.speed = 0;
+                isSuccess = true;
+                break;
             case ButtonType.SpawnMelee:
                 if (BattleManager.Instance.startPvP || GridManager.Instance.isFull() || (Char.Instance.level >= EconomyConfig.Instance.unitShop.increaseAfterLevel && !Char.Instance.SubCoins((int)UnitSpawner.Instance.costMelee))) return;
                 UnitSpawner.Instance.SpawnMeleeUnit(0);

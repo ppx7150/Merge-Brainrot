@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1848856770379285704}
   - component: {fileID: 9054868953577879451}
-  - component: {fileID: 8350215555379370174}
   m_Layer: 7
   m_Name: fill
   m_TagString: Untagged
@@ -123,19 +122,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8350215555379370174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926182648542500382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HPBar
-  fill: {fileID: 1848856770379285704}
 --- !u!1 &7973801137191716203
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,8 +132,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5079203527850533403}
   - component: {fileID: 647718107821286406}
+  - component: {fileID: 3223508434607268203}
   m_Layer: 7
-  m_Name: Square
+  m_Name: hpbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -229,6 +216,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3223508434607268203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7973801137191716203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca663cd61cd538b4f887e9bf203eea02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HPBar
+  fill: {fileID: 1848856770379285704}
 --- !u!1 &8332007673813886209
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3dbe384228edad448867aaed2099386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAI
+  isFrozen: 0
+  isReady: 0
   laneTolerance: 0.2
   xTolerance: 0.35
   monsterHealth: {fileID: 3463350441921700269}
@@ -346,6 +348,8 @@ MonoBehaviour:
   attackPoint: {fileID: 6267916871649445724}
   projectilePrefab: {fileID: 3136393591688538956, guid: 3548c0515e38e5840a34afe0a110477d, type: 3}
   projectileForce: 7
+  attackTimer: 0
+  currentTarget: {fileID: 0}
   projectile: {fileID: 0}
   visualRoot: {fileID: 1848856770379285704}
   sprite: {fileID: 7127517159774211878}
@@ -376,10 +380,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
   - {fileID: 11400000, guid: 64892005878848b498e46d5c80d5ad3c, type: 2}
-  audioClips:
-  - {fileID: 8300000, guid: a288ac4aca7d81142a7188d95417f893, type: 3}
-  - {fileID: 8300000, guid: 289a86e6f3368cc41810bc552bb34750, type: 3}
-  - {fileID: 8300000, guid: 1150c94e78ff9414f82a05458c966052, type: 3}
   stats:
     type: 1
     level: 1
@@ -389,11 +389,13 @@ MonoBehaviour:
     attackSpeed: 1
     attackRange: 10
     moveSpeed: 0
-  hpBar: {fileID: 8350215555379370174}
+  monsterAI: {fileID: -9182228970048543328}
+  hpBar: {fileID: 3223508434607268203}
   damageTextPrefab: {fileID: 2073901017679802959, guid: b0428105d086e904a86a14ce4698a487, type: 3}
   textSpawnPoint: {fileID: 4185664463812087801}
   damageInSecond: 0
   timeShowDameTxt: 1
+  yOffset: 0.2
 --- !u!61 &4680543719672247251
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -428,7 +430,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.45766422}
+  m_Offset: {x: 0.020167649, y: 0.45766425}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.4, y: 0.12}
@@ -438,7 +440,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1.2099869}
+  m_Size: {x: 0.93546355, y: 1.2099869}
   m_EdgeRadius: 0
 --- !u!114 &6079721699848866302
 MonoBehaviour:

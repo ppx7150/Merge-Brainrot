@@ -28,7 +28,7 @@ public class LevelBgrManager : MonoBehaviour
 
         imgBgr[0].sprite = BgrSprite[page];
         imgBgr[1].sprite = BgrSprite[page + 1];
-        //bgr.sprite = BgrSprite[page];
+        bgr.sprite = BgrSprite[page];
         bgrIcon.sprite = BgrSprite[page];
         if(!isLoadGame && (level - 1) % 10 == 0) PanelManager.Instance.OpenPanel(PanelManager.Instance.bgrPanel);
     }
